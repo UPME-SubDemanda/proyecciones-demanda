@@ -23,6 +23,6 @@ jobs:
         with: {version: 9}
       - name: Pruebas frontend
         working-directory: frontend
-        run: pnpm install --frozen-lockfile=false && pnpm test --run && pnpm build
+        run: pnpm install --frozen-lockfile=false && pnpm test && pnpm build
       - name: Documentación
         run: uvx --with mkdocs-material mkdocs build --strict -f mkdocs.usuario.yml && uvx --with mkdocs-material mkdocs build --strict -f mkdocs.tecnica.yml

@@ -3,3 +3,11 @@ name = "proyecciones-demanda-pipelines"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = ["prefect>=3.0", "pandas>=2.2", "sqlalchemy>=2.0", "psycopg[binary]>=3.2", "httpx>=0.27"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+# Paquetes explícitos: con flows/ y lib/ en la raíz, el descubrimiento automático falla.
+[tool.setuptools.packages.find]
+include = ["flows*", "lib*"]

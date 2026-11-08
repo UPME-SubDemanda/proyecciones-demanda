@@ -3,10 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint src",
     "lint:design": "python ../scripts/lint_design.py src",
     "gen:api": "openapi-typescript http://localhost:8000/openapi.json -o src/api/schema.d.ts",
