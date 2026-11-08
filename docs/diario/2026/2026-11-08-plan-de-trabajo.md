@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-08
 autor: David Bedoya
-pr: ?
+pr: 10
 issue: 7
 tipo: modifica
 vistas: [portal-inicio, modo-pantalla]

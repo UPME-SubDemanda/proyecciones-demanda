@@ -21,7 +21,7 @@ Copia de `upme-estandares` en `reglas/` (versión en `reglas/VERSION`), marca **
 | Agregar, cambiar o quitar una librería o tecnología; tocar arquitectura, base de datos o autenticación | `reglas/REGLAS-TECNICAS.md`. Para una tecnología: **no la instales**; entrega el prompt de TEC-10 para Claude Code en `upme-estandares` |
 | Publicar un release o decidir una versión | `docs/tecnica/versionado.md` |
 
-Cita los IDs de las reglas (GRA-03, FLU-07…) en tus resúmenes y PR.
+Cita los IDs de las reglas (GRA-03, FLU-07…) en tus resúmenes y PR. Qué significa cada ID (reglas, pasos T-xx, pendientes X-xx, decisiones): `docs/tecnica/referencias.md`, generada con `python scripts/referencias.py`.
 
 ## Stack
 Python 3.12 + uv · FastAPI · SQLAlchemy 2 + Alembic · PostgreSQL 16 · React + TypeScript + Vite · Tailwind (preset de marca) · ECharts (tema de marca) · Prefect (provisional) · pytest, Vitest, Playwright · Docker Compose · MkDocs.
@@ -33,7 +33,7 @@ frontend/     React: src/zones/{app,portal,pantalla}, src/components, src/estand
 pipelines/    Flujos de Prefect (flows/), lógica pura (lib/), horarios (deployments.py)
 reglas/       Copia de las reglas de upme-estandares (no editar)
 docs/         usuario/ (pública) · tecnica/ (privada) · diario/ · decisiones/ · producto/
-scripts/      lint_design.py · check_changelog.py · inventario.py · reporte.py
+scripts/      lint_design.py · check_changelog.py · inventario.py · referencias.py · reporte.py
 ```
 
 ## Comandos
@@ -43,6 +43,7 @@ cd backend && uv run pytest
 cd frontend && pnpm dev | pnpm test | pnpm screenshots
 python scripts/lint_design.py frontend/src
 python scripts/inventario.py                 # regenera docs/usuario/inventario/index.md
+python scripts/referencias.py                # regenera docs/tecnica/referencias.md (tras cambiar reglas, pendientes o ADR)
 uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 ```
 

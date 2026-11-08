@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-08
 autor: David Bedoya
-pr: ?
+pr: 6
 issue: 5
 tipo: agrega
 vistas: []

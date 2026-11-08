@@ -1,6 +1,6 @@
 # Documentación técnica
 
-¿Nuevo en el equipo? Empiece por el [flujo de trabajo del equipo](flujo-de-trabajo-equipo.md): issues, ramas, Pull Requests y publicación, con ejemplos.
+¿Nuevo en el equipo? Empiece por el [flujo de trabajo del equipo](flujo-de-trabajo-equipo.md): issues, ramas, Pull Requests y publicación, con ejemplos. Para saber qué significa un ID como `DOC-04`, `T-05` o `X-04`, búsquelo en el buscador o en [Referencias](referencias.md).
 
 ## Levantar el proyecto
 
