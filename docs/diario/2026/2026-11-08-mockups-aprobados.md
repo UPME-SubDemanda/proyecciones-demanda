@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-08
 autor: David Bedoya
-pr: pendiente
+pr: 4
 issue: 2
 tipo: agrega
 vistas: [tablero-ejecutivo, historico-revisiones, monitor-exogenas, portal-inicio, modo-pantalla, ejecutar-proyeccion, registro-modelos]
