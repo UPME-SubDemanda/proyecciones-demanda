@@ -1,5 +1,7 @@
 # Documentación técnica
 
+¿Nuevo en el equipo? Empiece por el [flujo de trabajo del equipo](flujo-de-trabajo-equipo.md): issues, ramas, Pull Requests y publicación, con ejemplos.
+
 ## Levantar el proyecto
 
 ```bash
