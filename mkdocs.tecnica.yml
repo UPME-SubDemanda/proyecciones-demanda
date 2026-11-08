@@ -9,6 +9,7 @@ nav:
   - Inicio: tecnica/index.md
   - Producto: producto/index.md
   - Técnica:
+      - tecnica/flujo-de-trabajo-equipo.md
       - tecnica/arquitectura.md
       - tecnica/diseno-app.md
       - tecnica/modelo-de-datos.md

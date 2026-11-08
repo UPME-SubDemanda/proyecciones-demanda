@@ -48,7 +48,7 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 
 ## Reglas para trabajar aquí
 1. **Vista o feature nueva**: debe existir un issue con ficha y **diseño aprobado** (FLU-01, FLU-03). Si no existe, pídelo antes de programar.
-2. **Ramas**: `feature/<issue>-<slug>` desde `develop`; `hotfix/` desde `main` (FLU-04). Commits en inglés con Conventional Commits (FLU-06).
+2. **Ramas**: `feature/<issue>-<slug>` desde `develop`; `hotfix/` desde `main` (FLU-04). Commits en inglés con Conventional Commits (FLU-06). Guía con ejemplos: `docs/tecnica/flujo-de-trabajo-equipo.md`.
 3. **Diseño**: solo tokens, componentes del inventario, íconos de la marca, ECharts con el tema (TOK-02, CMP-01, GRA-00). Ejecuta `lint_design.py`.
 4. **Definición de hecho (FLU-07)**: pruebas + revisión de diseño (REV) + página del inventario con capturas (DOC-01, DOC-03) + documentación técnica si aplica (DOC-07, DOC-08) + entrada en `CHANGELOG.md` (DOC-04) + entrada en `docs/diario/` (DOC-05).
 5. **Base de datos**: cambios solo con migraciones de Alembic; esquemas raw/staging/core/publicacion/auth (BD-03, BD-04).
