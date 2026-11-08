@@ -9,6 +9,10 @@ site-tecnica/
 .pytest_cache/
 playwright-report/
 test-results/
+.DS_Store
+
+# Bases SQLite locales (pruebas y valor por defecto sin .env)
+*.db
 
 # Archivos fuente locales (no se versionan)
 data/raw/
