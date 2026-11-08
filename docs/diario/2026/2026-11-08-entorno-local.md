@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-08
 autor: David Bedoya
-pr: pendiente
+pr: 3
 issue: 1
 tipo: corrige
 vistas: []
