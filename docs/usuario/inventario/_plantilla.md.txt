@@ -1,0 +1,22 @@
+---
+id: <id-en-kebab>
+titulo: <Título visible>
+zona: app            # app | portal | pantalla
+ruta: /app/<ruta>
+roles: [viewer]
+estado: diseno       # diseno | desarrollo | publicada | retirada
+version_desde: <x.y.z>
+diseno: <enlace al mockup aprobado>
+capturas: [../capturas/<id>.png]
+actualizado: AAAA-MM-DD
+---
+
+# <Título visible>
+
+## Para qué sirve
+## Cómo llegar
+## Qué muestra
+## Cómo se usa (paso a paso)
+## Filtros y opciones
+## Preguntas frecuentes
+## Historial

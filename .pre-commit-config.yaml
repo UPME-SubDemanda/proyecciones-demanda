@@ -1,0 +1,11 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks: [{id: ruff}, {id: ruff-format}]
+  - repo: local
+    hooks:
+      - id: lint-design
+        name: lint de diseño (TOK-02)
+        entry: python scripts/lint_design.py frontend/src
+        language: system
+        pass_filenames: false

@@ -1,0 +1,28 @@
+name: ci
+on:
+  pull_request:
+    branches: [develop, main]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: astral-sh/setup-uv@v3
+      - name: Changelog obligatorio (FLU-10)
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'sin-changelog') }}
+        run: python scripts/check_changelog.py origin/${{ github.base_ref }}
+      - name: Lint de diseño (TOK-02)
+        run: python scripts/lint_design.py frontend/src
+      - name: Inventario completo (DOC-02)
+        run: python scripts/inventario.py --check
+      - name: Pruebas backend
+        working-directory: backend
+        run: uv sync && uv run pytest -q
+      - uses: pnpm/action-setup@v4
+        with: {version: 9}
+      - name: Pruebas frontend
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile=false && pnpm test --run && pnpm build
+      - name: Documentación
+        run: uvx --with mkdocs-material mkdocs build --strict -f mkdocs.usuario.yml && uvx --with mkdocs-material mkdocs build --strict -f mkdocs.tecnica.yml

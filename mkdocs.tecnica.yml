@@ -1,0 +1,23 @@
+site_name: Proyecciones de Demanda · Documentación técnica
+docs_dir: docs
+site_dir: site-tecnica
+exclude_docs: |
+  usuario/capturas/
+theme: {name: material, language: es, features: [navigation.sections, navigation.indexes, search.highlight, content.code.copy]}
+markdown_extensions: [admonition, tables, attr_list, pymdownx.superfences, {pymdownx.tasklist: {custom_checkbox: true}}, {toc: {permalink: true}}]
+nav:
+  - Inicio: tecnica/index.md
+  - Producto: producto/index.md
+  - Técnica:
+      - tecnica/arquitectura.md
+      - tecnica/diseno-app.md
+      - tecnica/modelo-de-datos.md
+      - tecnica/api.md
+      - tecnica/flujos.md
+      - tecnica/versionado.md
+      - tecnica/despliegue.md
+      - Herramientas: tecnica/herramientas/index.md
+  - Guía de usuario: usuario/index.md
+  - Diario: diario/index.md
+  - Decisiones: decisiones/index.md
+  - Pendientes: pendientes.md

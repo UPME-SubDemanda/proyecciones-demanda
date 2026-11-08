@@ -1,0 +1,14 @@
+---
+fecha: AAAA-MM-DD
+autor: <nombre>
+pr: <número>
+tipo: agrega        # agrega | modifica | elimina | corrige
+vistas: [<id>]
+features: []
+version: sin publicar
+---
+
+## Qué cambió
+## Por qué
+## Cómo se ve
+## Notas técnicas

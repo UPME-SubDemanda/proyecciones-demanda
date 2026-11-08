@@ -1,0 +1,143 @@
+{
+ "base": "1.0.0",
+ "brand": "upme",
+ "brandVersion": "1.0.0",
+ "colors": {
+  "surface": {
+   "light": "#F7F7F5",
+   "dark": "#121212"
+  },
+  "surface-raised": {
+   "light": "#FFFFFF",
+   "dark": "#1C1C1C"
+  },
+  "surface-sunken": {
+   "light": "#EFEEEA",
+   "dark": "#0B0B0B"
+  },
+  "line": {
+   "light": "#DEDCD5",
+   "dark": "#333333"
+  },
+  "line-strong": {
+   "light": "#8C8A84",
+   "dark": "#6E6E6E"
+  },
+  "ink": {
+   "light": "#262626",
+   "dark": "#F2F2F2"
+  },
+  "ink-muted": {
+   "light": "#5C5C5C",
+   "dark": "#A8A8A8"
+  },
+  "revision-past": {
+   "light": "#A8A6A0",
+   "dark": "#5A5A5A"
+  },
+  "success": {
+   "light": "#1D7344",
+   "dark": "#5CC98A"
+  },
+  "success-soft": {
+   "light": "#E3F3EA",
+   "dark": "#12301F"
+  },
+  "warning": {
+   "light": "#B54708",
+   "dark": "#F79009"
+  },
+  "warning-soft": {
+   "light": "#FEF0E6",
+   "dark": "#3A1F0C"
+  },
+  "critical": {
+   "light": "#B42318",
+   "dark": "#F97066"
+  },
+  "critical-soft": {
+   "light": "#FDECEA",
+   "dark": "#3D1614"
+  },
+  "info": {
+   "light": "#1F5FBF",
+   "dark": "#8FB0F5"
+  },
+  "info-soft": {
+   "light": "#E6EEFA",
+   "dark": "#16244A"
+  },
+  "brand": {
+   "light": "#E4B33C",
+   "dark": "#E4B33C"
+  },
+  "brand-soft": {
+   "light": "#FBF1D6",
+   "dark": "#3A2E10"
+  },
+  "on-brand": {
+   "light": "#262626",
+   "dark": "#262626"
+  },
+  "primary": {
+   "light": "#003189",
+   "dark": "#8FB0F5"
+  },
+  "primary-soft": {
+   "light": "#E6ECF7",
+   "dark": "#16244A"
+  },
+  "on-primary": {
+   "light": "#FFFFFF",
+   "dark": "#121212"
+  },
+  "govco": {
+   "light": "#3366CC",
+   "dark": "#3366CC"
+  },
+  "flag-yellow": {
+   "light": "#FFC800",
+   "dark": "#FFC800"
+  },
+  "flag-red": {
+   "light": "#D80025",
+   "dark": "#D80025"
+  },
+  "focus": {
+   "light": "#003189",
+   "dark": "#8FB0F5"
+  },
+  "ee-line": {
+   "light": "#8C6400",
+   "dark": "#E4B33C"
+  },
+  "ee-fill": {
+   "light": "#E4B33C",
+   "dark": "#E4B33C"
+  },
+  "ee-soft": {
+   "light": "#FBF1D6",
+   "dark": "#3A2E10"
+  },
+  "ee-band": {
+   "light": "rgba(228, 179, 60, 0.28)",
+   "dark": "rgba(228, 179, 60, 0.22)"
+  },
+  "gn-line": {
+   "light": "#3B7300",
+   "dark": "#B8FF65"
+  },
+  "gn-fill": {
+   "light": "#B8FF65",
+   "dark": "#B8FF65"
+  },
+  "gn-soft": {
+   "light": "#EEFBDC",
+   "dark": "#1F3310"
+  },
+  "gn-band": {
+   "light": "rgba(184, 255, 101, 0.45)",
+   "dark": "rgba(184, 255, 101, 0.20)"
+  }
+ }
+}

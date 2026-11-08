@@ -1,0 +1,104 @@
+/* Generado por scripts/build_tokens.py. NO EDITAR A MANO (TOK-01). Marca: upme v1.0.0 · base v1.0.0 */
+:root {
+  --surface: #F7F7F5;
+  --surface-raised: #FFFFFF;
+  --surface-sunken: #EFEEEA;
+  --line: #DEDCD5;
+  --line-strong: #8C8A84;
+  --ink: #262626;
+  --ink-muted: #5C5C5C;
+  --revision-past: #A8A6A0;
+  --success: #1D7344;
+  --success-soft: #E3F3EA;
+  --warning: #B54708;
+  --warning-soft: #FEF0E6;
+  --critical: #B42318;
+  --critical-soft: #FDECEA;
+  --info: #1F5FBF;
+  --info-soft: #E6EEFA;
+  --brand: #E4B33C;
+  --brand-soft: #FBF1D6;
+  --on-brand: #262626;
+  --primary: #003189;
+  --primary-soft: #E6ECF7;
+  --on-primary: #FFFFFF;
+  --govco: #3366CC;
+  --flag-yellow: #FFC800;
+  --flag-red: #D80025;
+  --focus: #003189;
+  --ee-line: #8C6400;
+  --ee-fill: #E4B33C;
+  --ee-soft: #FBF1D6;
+  --ee-band: rgba(228, 179, 60, 0.28);
+  --gn-line: #3B7300;
+  --gn-fill: #B8FF65;
+  --gn-soft: #EEFBDC;
+  --gn-band: rgba(184, 255, 101, 0.45);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --shadow-overlay: 0 8px 24px rgba(20, 32, 46, 0.16);
+  --font-sans: "Nunito Sans", Verdana, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+[data-theme="dark"] {
+  --surface: #121212;
+  --surface-raised: #1C1C1C;
+  --surface-sunken: #0B0B0B;
+  --line: #333333;
+  --line-strong: #6E6E6E;
+  --ink: #F2F2F2;
+  --ink-muted: #A8A8A8;
+  --revision-past: #5A5A5A;
+  --success: #5CC98A;
+  --success-soft: #12301F;
+  --warning: #F79009;
+  --warning-soft: #3A1F0C;
+  --critical: #F97066;
+  --critical-soft: #3D1614;
+  --info: #8FB0F5;
+  --info-soft: #16244A;
+  --brand: #E4B33C;
+  --brand-soft: #3A2E10;
+  --on-brand: #262626;
+  --primary: #8FB0F5;
+  --primary-soft: #16244A;
+  --on-primary: #121212;
+  --govco: #3366CC;
+  --flag-yellow: #FFC800;
+  --flag-red: #D80025;
+  --focus: #8FB0F5;
+  --ee-line: #E4B33C;
+  --ee-fill: #E4B33C;
+  --ee-soft: #3A2E10;
+  --ee-band: rgba(228, 179, 60, 0.22);
+  --gn-line: #B8FF65;
+  --gn-fill: #B8FF65;
+  --gn-soft: #1F3310;
+  --gn-band: rgba(184, 255, 101, 0.20);
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+.text-display { font-family: var(--font-sans); font-size: 32px; line-height: 40px; font-weight: 800; }
+.text-h1 { font-family: var(--font-sans); font-size: 24px; line-height: 32px; font-weight: 700; }
+.text-h2 { font-family: var(--font-sans); font-size: 18px; line-height: 26px; font-weight: 700; }
+.text-h3 { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 700; }
+.text-body { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 400; }
+.text-small { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 400; }
+.text-label { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 700; }
+.text-kpi { font-family: var(--font-sans); font-size: 32px; line-height: 36px; font-weight: 800; }
+.text-kpi-small { font-family: var(--font-sans); font-size: 20px; line-height: 26px; font-weight: 700; }
+.text-mono { font-family: var(--font-mono); font-size: 13px; line-height: 18px; font-weight: 400; }
+[data-zone="pantalla"] .text-h1 { font-size: 36px; line-height: 42px; }
+[data-zone="pantalla"] .text-h2 { font-size: 26px; line-height: 32px; }
+[data-zone="pantalla"] .text-body { font-size: 18px; line-height: 24px; }
+[data-zone="pantalla"] .text-small { font-size: 15px; line-height: 20px; }
+[data-zone="pantalla"] .text-kpi { font-size: 56px; line-height: 60px; }

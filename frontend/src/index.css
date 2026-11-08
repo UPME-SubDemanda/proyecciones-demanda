@@ -1,0 +1,6 @@
+@import "./estandares/tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { font-family: var(--font-sans); background: var(--surface); color: var(--ink); margin: 0; }

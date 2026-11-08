@@ -1,0 +1,5 @@
+site_name: Proyecciones de Demanda · Guía de usuario
+docs_dir: docs/usuario
+site_dir: site-usuario
+theme: {name: material, language: es, features: [navigation.sections, search.highlight]}
+markdown_extensions: [admonition, tables, attr_list, {toc: {permalink: true}}]
