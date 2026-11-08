@@ -6,14 +6,14 @@ ruta: /app
 roles: [viewer, modeler, approver, admin]
 estado: diseno
 version_desde: —
-diseno: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX (borrador; aprobación pendiente X-06)
+diseno: docs/tecnica/mockups/tablero-ejecutivo.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/tablero-ejecutivo.png]
-actualizado: 2026-11-07
+actualizado: 2026-11-08
 ---
 
 # Tablero ejecutivo
 
-> Etapa 1 · En diseño. La página se completa al desarrollar la vista.
+> Etapa 1 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
 
 ## Para qué sirve
 Cifras clave por producto, proyección vigente frente al dato real, alertas abiertas.

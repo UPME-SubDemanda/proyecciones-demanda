@@ -1,6 +1,6 @@
 # Diseño propio de la app
 
-Sigue `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`. Mockups de referencia: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX. Si un mockup contradice el estándar, manda el estándar.
+Sigue `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`. Mockups aprobados: `docs/tecnica/mockups/` (capturas congeladas y registro de aprobación); tablero fuente: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX. Si un mockup contradice el estándar, manda el estándar.
 
 ## Zonas activas
 - **App interna** `/app` (etapa 1)

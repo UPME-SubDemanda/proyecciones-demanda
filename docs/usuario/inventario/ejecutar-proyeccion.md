@@ -6,14 +6,14 @@ ruta: /app/operacion/ejecutar
 roles: [modeler, admin]
 estado: diseno
 version_desde: —
-diseno: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX (borrador; aprobación pendiente X-06)
+diseno: docs/tecnica/mockups/ejecutar-proyeccion-supuestos.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/ejecutar-proyeccion.png]
-actualizado: 2026-11-07
+actualizado: 2026-11-08
 ---
 
 # Ejecutar proyección
 
-> Etapa 2 · En diseño. La página se completa al desarrollar la vista.
+> Etapa 2 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
 
 ## Para qué sirve
 Asistente de 4 pasos para ejecutar una proyección (fase 2).
