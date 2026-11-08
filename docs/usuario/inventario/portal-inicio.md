@@ -6,9 +6,9 @@ ruta: /
 roles: [publico]
 estado: desarrollo
 version_desde: 0.1.0
-diseno: pendiente
+diseno: docs/tecnica/mockups/portal-inicio-escritorio.png y portal-inicio-movil.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/portal-inicio.png]
-actualizado: 2026-11-07
+actualizado: 2026-11-08
 ---
 
 # Inicio del portal

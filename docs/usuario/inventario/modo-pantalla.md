@@ -6,14 +6,14 @@ ruta: /pantalla
 roles: [publico]
 estado: diseno
 version_desde: —
-diseno: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX (borrador; aprobación pendiente X-06)
+diseno: docs/tecnica/mockups/modo-pantalla.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/modo-pantalla.png]
-actualizado: 2026-11-07
+actualizado: 2026-11-08
 ---
 
 # Modo pantalla
 
-> Etapa 1.2 · En diseño. La página se completa al desarrollar la vista.
+> Etapa 1.2 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
 
 ## Para qué sirve
 Tableros rotativos para televisores con datos publicados.

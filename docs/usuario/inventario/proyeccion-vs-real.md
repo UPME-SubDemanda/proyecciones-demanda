@@ -6,9 +6,9 @@ ruta: /app/proyecciones
 roles: [viewer, modeler, approver, admin]
 estado: diseno
 version_desde: —
-diseno: https://claude.ai/artifact/DJrR79dHKDgYv77oe9b3sX (borrador; aprobación pendiente X-06)
+diseno: pendiente (sin mockup en el tablero; X-06)
 capturas: [../capturas/proyeccion-vs-real.png]
-actualizado: 2026-11-07
+actualizado: 2026-11-08
 ---
 
 # Proyección vs. real
