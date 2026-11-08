@@ -13,7 +13,7 @@ actualizado: 2026-11-08
 
 # Modo pantalla
 
-> Etapa 1.2 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
+> Etapa 1.1 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
 
 ## Para qué sirve
 Tableros rotativos para televisores con datos publicados.

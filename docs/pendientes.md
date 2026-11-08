@@ -1,5 +1,59 @@
 # Pendientes del proyecto
 
+Dos partes: el **plan de trabajo** (qué se construye y en qué orden) y los **pendientes de decisión** (preguntas abiertas que no son tareas de código).
+
+## Plan de trabajo
+
+Orden acordado el 2026-11-08. Cada paso de código nace de un issue y entra por un PR (FLU-01, FLU-05); al cerrarlo se anotan aquí el issue, el PR y el estado. Las vistas usan **cifras ilustrativas** hasta que se conecten los datos reales (ver *Datos ilustrativos* abajo).
+
+Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloqueado** (con el pendiente que lo bloquea).
+
+### Base y documentación
+
+| ID | Paso | Etapa | Depende de | Issue | PR | Estado |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-01 | Entorno local de desarrollo | — | — | #1 | #3 | Hecho |
+| T-02 | Mockups aprobados (8 pantallas) | — | — | #2 | #4 | Hecho |
+| T-03 | Guía del flujo de trabajo del equipo | — | — | #5 | #6 | Hecho |
+| T-04 | Plan de trabajo y cambio de etapas (público pasa a 1.1) | — | — | #7 | — | En curso |
+| T-20 | Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs | — | T-04 | #9 | — | Siguiente |
+
+### Construcción visual con cifras ilustrativas
+
+| ID | Paso | Etapa | Depende de | Issue | PR | Estado |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | — | Siguiente |
+| T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | — | — | Pendiente |
+| T-07 | Modo pantalla: tableros rotativos | 1.1 | T-05 | — | — | Pendiente |
+| T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07) | 1 | T-05 | — | — | Pendiente |
+| T-09 | Tablero ejecutivo | 1 | T-08 | — | — | Pendiente |
+| T-10 | Histórico de revisiones | 1 | T-08 | — | — | Pendiente |
+| T-11 | Monitor de variables exógenas | 1 | T-08 | — | — | Pendiente |
+| T-12 | Proyección vs. real | 1 | T-08 | — | — | Bloqueado (X-06, sin mockup) |
+| T-13 | Comparar revisiones | 1 | T-08 | — | — | Bloqueado (X-06, sin mockup) |
+| T-14 | Usuarios y roles | 1 | T-08 | — | — | Bloqueado (X-06, sin mockup) |
+
+### Datos reales (en paralelo)
+
+| ID | Paso | Etapa | Depende de | Issue | PR | Estado |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-15 | Reunir archivos de revisiones, series reales y exógenas, y decidir desde qué revisión cargar | 1 | — | — | — | En curso (X-01, X-02) |
+| T-16 | Tablas `raw`/`staging` y ajustes al modelo de datos según lo que pidan las vistas | 1 | T-15 | — | — | Pendiente |
+| T-17 | Flujos de carga (Prefect) | 1 | T-16 | — | — | Pendiente |
+| T-18 | Endpoints de la API y conexión de cada vista a datos reales; retirar las cifras ilustrativas | 1 y 1.1 | T-17 | — | — | Pendiente |
+| T-19 | Vistas `publicacion.*` para el portal y el modo pantalla | 1.1 | T-18 | — | — | Bloqueado (X-04) |
+
+### Datos ilustrativos
+
+Decisión del 2026-11-08 para la construcción visual:
+
+- Los datos de ejemplo van **en el código del frontend**, en un solo módulo (`frontend/src/demo/`), con los tipos que se esperan de la API. **No** se crean tablas de prueba: el modelo de datos se ajusta cuando se conozcan los datos reales (T-16), y unas tablas de prueba se tendrían que diseñar, migrar y luego borrar.
+- Las vistas leen esos datos con las mismas funciones con las que leerán la API, de modo que al conectar los datos reales (T-18) solo cambia ese módulo.
+- Toda vista con datos de ejemplo muestra el aviso «Cifras ilustrativas» (CON-07).
+- Cada vista anota en su PR qué campos necesitó; esa lista alimenta T-16.
+
+## Pendientes de decisión
+
 Los pendientes generales (servidores, Keycloak, DVC, Prefect vs. Dagster, Google Chat, aprobación de PR, revisión automática, publicación de documentación…) están en `PENDIENTES.md` de `upme-estandares`.
 
 | ID | Tema | Qué falta | Responsable | Estado |
@@ -10,8 +64,9 @@ Los pendientes generales (servidores, Keycloak, DVC, Prefect vs. Dagster, Google
 | X-04 | Publicación | Qué desagregaciones son públicas (regional, sectorial, horaria) | Líder + jurídica | Abierto |
 | X-05 | Aprobación de revisiones | Quién aprueba formalmente y con qué acto administrativo. El mockup aprobado de ejecutar proyección asume doble aprobación (líder técnico y Subdirectora): confirmarlo o ajustar el mockup | Subdirectora | Abierto |
 | X-06 | Aprobación de mockups | 8 pantallas aprobadas el 2026-11-08 (`docs/tecnica/mockups/`). Faltan mockups de proyección vs. real, comparar revisiones, usuarios y roles, inicio de la app, ingresar, alertas y datos y documentación (FLU-03) | Líder | Parcial |
-| X-07 | Catálogo de notificaciones | Confirmar eventos y espacios de Google Chat para la etapa 1.1 | Líder | Planeado (1.1) |
+| X-07 | Catálogo de notificaciones | Confirmar eventos y espacios de Google Chat para la etapa 1.2 | Líder | Planeado (1.2) |
 | X-08 | Migración de modelos | Plan de migración de MATLAB a Python y modelos sin ruta definida | Equipo de modelos | Planeado (fase 2) |
 | X-09 | Corrección de revisiones | Agregar estado `superseded` y columna `supersedes_id` en `core.revisions` para enlazar una revisión corregida con la original (P-0003). El mockup aprobado del histórico ya muestra «Crear corrección»: alinear el flujo con esta decisión | Equipo | Abierto |
 | X-10 | Vistas del menú sin inventario | Los mockups aprobados muestran en el menú **Alertas** y **Datos y documentación**, sin página en `docs/usuario/inventario/`; «Datos y documentación» tampoco está en el menú de `docs/tecnica/diseno-app.md`. Decidir si son vistas, crear su ficha (FLU-01) y su página (DOC-01) | Líder | Abierto |
-| X-11 | Contenidos del portal | El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME | Líder | Planeado (1.2) |
+| X-11 | Contenidos del portal | El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME | Líder | Planeado (1.1) |
+| X-12 | Documentación en Notion | Llevar la documentación y los pendientes a Notion. Las reglas (DOC, FLU-09) dicen que la documentación vive en el repositorio junto al código: decidir si Notion es un espejo de solo lectura o la fuente de algunos contenidos (pendientes, plan de trabajo); en el segundo caso, ADR en `upme-estandares` | Líder | Abierto |

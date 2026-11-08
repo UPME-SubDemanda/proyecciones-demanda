@@ -20,9 +20,11 @@ Modeladores · Subdirectora de Demanda · Director · funcionarios UPME · otras
 | Etapa | Alcance | Estado |
 | --- | --- | --- |
 | **1 · Arranque** | Cargar en PostgreSQL: series históricas reales (EE y GN), **revisiones ya publicadas** (escenarios por año/mes) y variables exógenas con los supuestos de cada revisión. Vistas: tablero ejecutivo, proyección vs. real, histórico de revisiones, comparar revisiones, monitor de exógenas. Autenticación con módulo compartido. | Por iniciar |
-| **1.1 · Notificaciones** | Google Chat: fallas de carga, desvío fuera de umbral, exógenas fuera de supuesto, publicación de revisiones (P-05 del estándar). | Planeada |
-| **1.2 · Público** | Portal público y modo pantalla para televisores con datos publicados. | Planeada |
+| **1.1 · Público** | Portal público y modo pantalla para televisores con datos publicados. Se construye en paralelo con la etapa 1, primero con cifras ilustrativas. | Planeada |
+| **1.2 · Notificaciones** | Google Chat: fallas de carga, desvío fuera de umbral, exógenas fuera de supuesto, publicación de revisiones (P-05 del estándar). | Planeada |
 | **2 · Modelos** | Migración de modelos de MATLAB a Python, nuevos modelos, ejecución de proyecciones desde la plataforma, **DVC** y **MLflow** obligatorios, registro de modelos. | Planeada |
 | **3 · Apertura** | API pública, datos abiertos, simulador de escenarios. | Planeada |
 
 **Fuera del alcance de la etapa 1:** ejecutar o entrenar modelos, versionar modelos o datasets con DVC, notificaciones.
+
+El orden de trabajo y su avance están en el [plan de trabajo](../pendientes.md#plan-de-trabajo). El portal y el modo pantalla pasaron a la etapa 1.1 (antes 1.2) el 2026-11-08 por decisión del líder: son clave para presentar el proyecto.

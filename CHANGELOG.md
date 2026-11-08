@@ -12,8 +12,10 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Reglas de versionado del proyecto: casos de vistas, modelos, datos y revisiones (P-0003).
 - Mockups aprobados de 8 pantallas (tablero ejecutivo, histórico de revisiones, monitor de exógenas, portal escritorio y móvil, modo pantalla, ejecutar proyección y registro de modelos) en `docs/tecnica/mockups/`, con registro de aprobación (FLU-03, X-06) (issue #2, PR #4).
 - Guía del flujo de trabajo del equipo (issues, ramas, PR, CI y publicación, con ejemplos) en `docs/tecnica/flujo-de-trabajo-equipo.md` (FLU-01 a FLU-10) (issue #5).
+- Plan de trabajo ordenado (T-01 a T-20) en `docs/pendientes.md`, con la decisión de construir las vistas con cifras ilustrativas en el frontend antes de conectar datos reales; incluye la página de referencias (T-20) como paso siguiente (issue #7).
 
 ### Cambiado
+- Hoja de ruta: el portal público y el modo pantalla pasan a la etapa 1.1 y las notificaciones a la 1.2 (issue #7).
 - Inventario: el campo `diseno` de cada vista apunta a su mockup aprobado; proyección vs. real, comparar revisiones y usuarios y roles quedan sin diseño (issue #2, PR #4).
 
 ### Eliminado

@@ -1,6 +1,6 @@
 # Flujos de datos (Prefect)
 
-| Flujo | Qué hace | Cuándo corre | Tablas que toca | Etapa | Notifica (1.1) |
+| Flujo | Qué hace | Cuándo corre | Tablas que toca | Etapa | Notifica (1.2) |
 | --- | --- | --- | --- | --- | --- |
 | `load-published-revisions` | Carga los archivos de revisiones ya publicadas (escenarios y supuestos) | Una vez y cuando se publique una revisión | `raw.*` → `core.revisions`, `core.revision_values`, `core.revision_assumptions` | 1 | Revisión cargada |
 | `ingest-observed-demand` | Carga el dato real de EE (XM) y GN (Gestor del Mercado de Gas) | Diario 6:00 (Bogotá) | `raw.*` → `core.series_observed` | 1 | Falla o fuente sin actualizar |
