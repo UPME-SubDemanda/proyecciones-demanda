@@ -4,8 +4,8 @@ Sigue `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`. Mockups aprobados: `do
 
 ## Zonas activas
 - **App interna** `/app` (etapa 1)
-- **Portal público** `/` (etapa 1.2)
-- **Modo pantalla** `/pantalla` (etapa 1.2)
+- **Portal público** `/` (etapa 1.1)
+- **Modo pantalla** `/pantalla` (etapa 1.1)
 
 ## Menú lateral (LAY-06)
 1. **Inicio** — tablero ejecutivo (`home`)

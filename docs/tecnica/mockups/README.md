@@ -23,9 +23,9 @@ Todas las cifras de las capturas son **ilustrativas**: muestran formato, jerarqu
 | `tablero-ejecutivo.png` | `tablero-ejecutivo` | app | 1 |
 | `historico-revisiones.png` | `historico-revisiones` | app | 1 |
 | `monitor-exogenas.png` | `monitor-exogenas` | app | 1 |
-| `portal-inicio-escritorio.png` | `portal-inicio` | portal | 1.2 |
-| `portal-inicio-movil.png` | `portal-inicio` | portal | 1.2 |
-| `modo-pantalla.png` | `modo-pantalla` | pantalla | 1.2 |
+| `portal-inicio-escritorio.png` | `portal-inicio` | portal | 1.1 |
+| `portal-inicio-movil.png` | `portal-inicio` | portal | 1.1 |
+| `modo-pantalla.png` | `modo-pantalla` | pantalla | 1.1 |
 | `ejecutar-proyeccion-supuestos.png` | `ejecutar-proyeccion` | app | 2 |
 | `registro-modelos.png` | `registro-modelos` | app | 2 |
 

@@ -66,7 +66,7 @@ Un mismo trabajo puede mover más de un reloj. Por ejemplo, programar un modelo 
 | Copiar una versión nueva de las reglas (FLU-09) | Ninguno si solo cambian `reglas/`; PARCHE si se ajusta código para cumplirlas; MENOR si trae funciones nuevas | `reglas/VERSION` queda con la versión nueva |
 | Nuevo flujo de Prefect (p. ej. carga automática de exógenas) | MENOR | Capacidad nueva |
 | Cambiar la programación de un flujo (de semanal a diaria) | PARCHE | Configuración de algo existente |
-| Notificaciones nuevas por Google Chat (etapa 1.1) | MENOR | |
+| Notificaciones nuevas por Google Chat (etapa 1.2) | MENOR | |
 | Solo documentación, tests, CI o refactor | Ninguno | Entra en el próximo release |
 | **Hotfix** en producción | PARCHE | Rama `hotfix/`, PR a `main` y luego a `develop` |
 

@@ -22,4 +22,4 @@ core.products ──< core.series_observed            (dato real por producto y 
 
 Esquemas `raw` y `staging`: tablas de carga por fuente (archivos de revisiones pasadas, XM, Gestor del Mercado de Gas, DANE), definidas al conocer los formatos (pendiente X-01).
 
-Vistas `publicacion.*` (etapa 1.2): solo revisiones con estado `published`.
+Vistas `publicacion.*` (etapa 1.1): solo revisiones con estado `published`.
