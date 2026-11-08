@@ -44,6 +44,7 @@ cd frontend && pnpm dev | pnpm test | pnpm screenshots
 python scripts/lint_design.py frontend/src
 python scripts/inventario.py                 # regenera docs/usuario/inventario/index.md
 python scripts/referencias.py                # regenera docs/tecnica/referencias.md (tras cambiar reglas, pendientes o ADR)
+git config core.hooksPath .githooks          # una vez: el hook pre-commit regenera referencias e inventario solo
 uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 ```
 
@@ -55,3 +56,4 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 5. **Base de datos**: cambios solo con migraciones de Alembic; esquemas raw/staging/core/publicacion/auth (BD-03, BD-04).
 6. **Si una regla no encaja o falta una**: detente y pregunta. Propón un ADR (en el proyecto si es propio de esta app, o en `upme-estandares` si es general). Anota lo no resuelto en `docs/pendientes.md`.
 7. Interfaz y documentación en español de Colombia; código en inglés.
+8. **Páginas generadas**: `docs/tecnica/referencias.md` y `docs/usuario/inventario/index.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/referencias.py` e `scripts/inventario.py` antes de cada commit que toque Markdown o rutas.
