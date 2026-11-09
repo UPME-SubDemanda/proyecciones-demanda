@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-09
 autor: David Bedoya
-pr: ?
+pr: 20
 issue: 19
 tipo: agrega
 vistas: [tablero-ejecutivo, app-inicio]
@@ -33,5 +33,5 @@ Es la primera vista que responde la pregunta principal del equipo: si la proyecc
 - Componentes nuevos `Banner` y `AlertItem`, en la galería. `projectionChart` acepta `ytdPoint` (marca sobre la línea real).
 - Datos: alertas de ejemplo (`useAlerts`), sin reglas reales (X-03, X-10).
 - Corrección: `projectionChart` pasaba `axisLabel: undefined` fuera del modo pantalla y eso borraba las etiquetas del eje que pone el tema (entró con el PR #16). Ahora esas claves solo se agregan con `kiosk`; hay una prueba que lo verifica.
-- Inventario: `tablero-ejecutivo` completa; `app-inicio` pasa a «retirada». Capturas con sesión simulada.
+- Inventario: `tablero-ejecutivo` completa; `app-inicio` pasa a «retirada». Capturas con sesión simulada. La captura retirada `app-inicio.png` se conserva para el diario en `docs/diario/2026/capturas/2026-11-08-app-interna.png`.
 - Pendientes nuevos: X-18 (revisión extraordinaria) y X-19 (informe del tablero).

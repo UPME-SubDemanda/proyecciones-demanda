@@ -1160,7 +1160,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Tablero ejecutivo
 
-Etapa: 1 · Depende de: T-08 · Issue: #19 · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #19 · PR: #20
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
