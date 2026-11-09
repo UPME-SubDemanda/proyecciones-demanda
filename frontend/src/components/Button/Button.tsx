@@ -6,7 +6,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Props = {
   children: ReactNode; // verbo + objeto: «Descargar datos» (CON-02)
   variant?: ButtonVariant; // `primary`: máximo uno por vista
-  size?: 'md' | 'sm'; // 40 px; `sm` 32 px en tablas y barras de gráfico
+  size?: 'md' | 'sm' | 'touch'; // 40 px; `sm` 32 px en tablas y barras de gráfico; `touch` 44 px en portal y modo pantalla (A11-07)
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
   href?: string; // si se da, es un enlace con aspecto de botón
   onClick?: () => void;
@@ -29,7 +29,7 @@ export function Button({
 }: Props) {
   const classes = cn(
     'inline-flex items-center justify-center gap-2 rounded-md font-bold whitespace-nowrap',
-    size === 'md' ? 'h-10 px-4 text-body' : 'h-8 px-3 text-small',
+    { md: 'h-10 px-4 text-body', sm: 'h-8 px-3 text-small', touch: 'h-11 px-4 text-body' }[size],
     VARIANTS[variant],
     disabledReason && 'opacity-50 cursor-not-allowed',
     className,

@@ -1,5 +1,6 @@
 import { useCallback, useId, useRef, useState, type ReactNode } from 'react';
-import type { ECharts, EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts';
+import type { EChartsType as ECharts } from 'echarts/core';
 import { Button } from '../Button/Button';
 import { ILLUSTRATIVE_LABEL } from '../Badge/Badge';
 import { EChart } from '../charts/EChart';
@@ -25,6 +26,8 @@ type Props = {
   illustrative?: boolean;
   height?: number;
   dark?: boolean;
+  /** `touch`: acciones de 44 px para portal y modo pantalla (A11-07). */
+  actionSize?: 'sm' | 'touch';
   /** Decimales de las cifras en la tabla visible. */
   decimals?: number;
   className?: string;
@@ -35,7 +38,7 @@ type Props = {
  * (datos, imagen, tabla, pantalla completa) y fuente (GRA-08).
  */
 export function ChartCard({
-  title, subtitle, option, table, download, controls, illustrative = false, height = 360, dark = false, decimals = 1, className,
+  title, subtitle, option, table, download, controls, illustrative = false, height = 360, dark = false, actionSize = 'sm', decimals = 1, className,
 }: Props) {
   const [showTable, setShowTable] = useState(false);
   const chartRef = useRef<ECharts | null>(null);
@@ -62,19 +65,21 @@ export function ChartCard({
       data-chart-card=""
       className={cn('flex flex-col gap-4 p-6 bg-surface-raised border border-line rounded-md', className)}
     >
-      <header className="flex flex-wrap items-start justify-between gap-4">
+      <header className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <h2 id={titleId} className="text-h2">{title}</h2>
           <p className="text-small text-ink-muted">{subtitle}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {controls}
-          <Button variant="ghost" size="sm" icon={icons.download} onClick={downloadCsv}>Descargar datos</Button>
-          <Button variant="ghost" size="sm" onClick={downloadPng}>Descargar imagen</Button>
-          <Button variant="ghost" size="sm" onClick={() => setShowTable((v) => !v)}>
-            {showTable ? 'Ver gráfico' : 'Ver como tabla'}
-          </Button>
-          <Button variant="ghost" size="sm" onClick={fullscreen}>Pantalla completa</Button>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">{controls}</div>
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1" role="group" aria-label="Acciones del gráfico">
+            <Button variant="ghost" size={actionSize} icon={icons.download} onClick={downloadCsv}>Descargar datos</Button>
+            <Button variant="ghost" size={actionSize} onClick={downloadPng}>Descargar imagen</Button>
+            <Button variant="ghost" size={actionSize} onClick={() => setShowTable((v) => !v)}>
+              {showTable ? 'Ver gráfico' : 'Ver como tabla'}
+            </Button>
+            <Button variant="ghost" size={actionSize} onClick={fullscreen}>Pantalla completa</Button>
+          </div>
         </div>
       </header>
 

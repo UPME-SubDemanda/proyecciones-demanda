@@ -26,6 +26,8 @@ export type ProjectionChartInput = {
   kiosk?: boolean; // líneas más gruesas en modo pantalla (GRA-01)
   /** Rótulos «Bajo»/«Alto» al final de la banda, como en el portal. */
   scenarioLabels?: boolean;
+  /** Pantallas angostas: márgenes y etiquetas más pequeños para dar espacio a la gráfica. */
+  compact?: boolean;
 };
 
 const DATA_DECIMALS = 1;
@@ -61,7 +63,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const at = (map: Map<string, number>) => periods.map((p) => map.get(p) ?? null);
 
   const endLabel = (text: string, color: string): LineSeriesOption['endLabel'] => ({
-    show: true, formatter: text, color, fontWeight: 700,
+    show: true, formatter: text, color, fontWeight: 700, fontSize: input.compact ? 11 : 12,
   });
 
   const series: LineSeriesOption[] = [
@@ -129,7 +131,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
 
   return {
     animationDuration: 400, // ≤ 500 ms (GRA-11)
-    grid: { left: 56, right: 120, top: 72, bottom: 32 },
+    grid: input.compact ? { left: 40, right: 56, top: 72, bottom: 32 } : { left: 56, right: 120, top: 72, bottom: 32 },
     legend: {
       top: 0,
       left: 0,

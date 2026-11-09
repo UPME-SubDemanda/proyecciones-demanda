@@ -24,8 +24,8 @@ Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloque
 
 | ID | Paso | Etapa | Depende de | Issue | PR | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
-| T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | — | En curso |
-| T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | — | — | Pendiente |
+| T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | #12 | Hecho |
+| T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | #13 | — | En curso |
 | T-07 | Modo pantalla: tableros rotativos | 1.1 | T-05 | — | — | Pendiente |
 | T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07) | 1 | T-05 | — | — | Pendiente |
 | T-09 | Tablero ejecutivo | 1 | T-08 | — | — | Pendiente |
@@ -73,3 +73,4 @@ Los pendientes generales (servidores, Keycloak, DVC, Prefect vs. Dagster, Google
 | X-11 | Contenidos del portal | El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME | Líder | Planeado (1.1) |
 | X-12 | Documentación en Notion | Llevar la documentación y los pendientes a Notion. Las reglas (DOC, FLU-09) dicen que la documentación vive en el repositorio junto al código: decidir si Notion es un espejo de solo lectura o la fuente de algunos contenidos (pendientes, plan de trabajo); en el segundo caso, ADR en `upme-estandares` | Líder | Abierto |
 | X-13 | Componentes compartidos entre proyectos | Los componentes de React y su galería (`/dev/componentes`) viven solo en este proyecto; `upme-estandares` no entrega componentes. Evaluar cómo compartirlos (copia en `dist/`, paquete versionado o catálogo publicado) y proponer CMP-04. [Detalle](pendientes/x-13-componentes-compartidos.md) | Líder | Abierto (revisar al cerrar T-08) |
+| X-14 | Datos del portal | Antes de conectar datos reales al portal (T-18, T-19): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, y el texto de la licencia de los datos descargados (X-04) | Líder | Abierto |

@@ -34,3 +34,8 @@ export function useRevisionValues(revisionId: number | undefined) {
 export function useExogenous() {
   return useQuery({ queryKey: ['exogenous'], queryFn: withOrigin(() => source.exogenous()) });
 }
+
+/** Acierto de las proyecciones publicadas (definición pendiente, X-14). */
+export function useAccuracy() {
+  return useQuery({ queryKey: ['accuracy'], queryFn: withOrigin(() => source.accuracy()) });
+}

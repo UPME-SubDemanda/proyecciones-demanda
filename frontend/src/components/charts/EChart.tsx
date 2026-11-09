@@ -1,17 +1,32 @@
 import { useEffect, useRef } from 'react';
-import * as echarts from 'echarts';
+import type { EChartsOption } from 'echarts';
+import type { EChartsType as ECharts } from 'echarts/core';
+import * as echarts from 'echarts/core';
+import { BarChart, LineChart } from 'echarts/charts';
+import {
+  AriaComponent, DataZoomComponent, GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent,
+  MarkPointComponent, TitleComponent, TooltipComponent,
+} from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
 import { themeDark, themeLight } from '../../estandares/echarts-theme.js';
+
+// Solo los módulos que usan los gráficos del proyecto: el portal carga mucho menos que con ECharts completo.
+// Si un gráfico nuevo necesita otro tipo o componente, se agrega aquí.
+echarts.use([
+  LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, MarkLineComponent, MarkAreaComponent,
+  MarkPointComponent, DataZoomComponent, AriaComponent, TitleComponent, CanvasRenderer,
+]);
 
 echarts.registerTheme('brand-light', themeLight);
 echarts.registerTheme('brand-dark', themeDark);
 
 type Props = {
-  option: echarts.EChartsOption;
+  option: EChartsOption;
   height?: number;
   dark?: boolean;
   ariaLabel: string;
   /** Recibe la instancia para acciones como descargar la imagen (GRA-08). */
-  onReady?: (chart: echarts.ECharts) => void;
+  onReady?: (chart: ECharts) => void;
 };
 
 export function prefersReducedMotion(): boolean {
