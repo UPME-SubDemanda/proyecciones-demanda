@@ -1108,15 +1108,15 @@ Etapa: — · Depende de: — · Issue: #7 · PR: #10
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-20 · En curso {#t-20}
+### T-20 · Hecho {#t-20}
 
 Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs
 
-Etapa: — · Depende de: T-04 · Issue: #9 · PR: —
+Etapa: — · Depende de: T-04 · Issue: #9 · PR: #11
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-05 · Siguiente {#t-05}
+### T-05 · En curso {#t-05}
 
 Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos
 

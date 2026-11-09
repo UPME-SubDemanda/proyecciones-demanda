@@ -12,6 +12,7 @@ nav:
       - tecnica/flujo-de-trabajo-equipo.md
       - tecnica/referencias.md
       - tecnica/arquitectura.md
+      - tecnica/frontend.md
       - tecnica/diseno-app.md
       - tecnica/modelo-de-datos.md
       - tecnica/api.md

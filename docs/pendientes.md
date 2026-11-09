@@ -16,13 +16,13 @@ Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloque
 | T-02 | Mockups aprobados (8 pantallas) | — | — | #2 | #4 | Hecho |
 | T-03 | Guía del flujo de trabajo del equipo | — | — | #5 | #6 | Hecho |
 | T-04 | Plan de trabajo y cambio de etapas (público pasa a 1.1) | — | — | #7 | #10 | Hecho |
-| T-20 | Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs | — | T-04 | #9 | — | En curso |
+| T-20 | Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs | — | T-04 | #9 | #11 | Hecho |
 
 ### Construcción visual con cifras ilustrativas
 
 | ID | Paso | Etapa | Depende de | Issue | PR | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
-| T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | — | Siguiente |
+| T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | — | En curso |
 | T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | — | — | Pendiente |
 | T-07 | Modo pantalla: tableros rotativos | 1.1 | T-05 | — | — | Pendiente |
 | T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07) | 1 | T-05 | — | — | Pendiente |

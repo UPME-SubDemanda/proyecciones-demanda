@@ -1,0 +1,73 @@
+# Frontend
+
+React + TypeScript + Vite, Tailwind con el preset de la marca y ECharts con su tema (TOK-02, GRA-00). Esta página explica cómo está organizado `frontend/src/` y cómo se agrega algo nuevo.
+
+## Estructura
+
+```
+frontend/
+  public/fonts/        Nunito Sans e IBM Plex Mono autoalojadas (UPME-TIP-02)
+  src/
+    components/        componentes del inventario de diseño, uno por carpeta con su prueba (CMP-01)
+      charts/          EChart (envoltorio único) y opciones de gráficos reutilizables
+    data/              tipos de datos y hooks con los que las vistas leen datos
+    demo/              cifras ilustrativas (se elimina en T-18)
+    dev/               herramientas solo de desarrollo (galería de componentes)
+    lib/               formatos es-CO, descargas, íconos, producto activo
+    estandares/        copia de upme-estandares (no editar, FLU-09)
+    zones/             vistas por zona: app, portal, pantalla (LAY-01)
+```
+
+## Componentes base (T-05)
+
+| Componente | Reglas | Notas |
+| --- | --- | --- |
+| `Button` | CMP, CON-02, CMP-03 | `primary` (máx. 1 por vista), `secondary`, `ghost`, `danger`; `sm` de 32 px; `href` lo vuelve enlace; `disabledReason` lo deshabilita con explicación |
+| `Badge`, `IllustrativeBadge` | CMP, A11-05, CON-07 | Estados y productos; `IllustrativeBadge` marca las cifras de ejemplo |
+| `ProductIcon` | CMP, UPME-ICO-02 | Círculo con el relleno del producto; `decorative` si el nombre ya está al lado |
+| `KpiCard` | CMP, PRI-02, CON-04 | Etiqueta, cifra con unidad, variación con tono (`good`/`bad` solo si subir o bajar es bueno o malo), procedencia y «Cifras ilustrativas» |
+| `ChartCard` | CMP, GRA-02, GRA-08, UX-07 | Título con hallazgo, subtítulo, controles, acciones (datos CSV, imagen PNG, tabla, pantalla completa) y fuente; la tabla equivalente siempre está para lectores de pantalla |
+| `SegmentedControl` | CMP, A11-03, A11-07 | `aria-pressed`; `size="touch"` (44 px) en portal y modo pantalla |
+| `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
+
+Gráficos reutilizables en `components/charts/`:
+
+- `EChart`: único envoltorio de ECharts. Registra el tema claro y oscuro, se redimensiona, lleva `aria-label` y desactiva la animación con `prefers-reduced-motion` (GRA-11).
+- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV.
+
+Faltan componentes del inventario que llegan con su vista: `PublicHeader` (T-06), `KioskShell` (T-07), `SideNav` (T-08), `DataTable`, `VersionSelect`, `RangeSlider`, `Chip`, `AlertItem`, `Banner` y `Stepper`.
+
+## Datos: un solo punto de acceso
+
+```
+vista ──> data/queries.ts (hooks React Query) ──> data/source.ts ──> demo/fixtures.ts   (hoy)
+                                                                └──> /api/v1/...        (T-18)
+```
+
+- Las vistas **solo** usan los hooks de `data/queries.ts`: `useObservedSeries`, `useRevisions`, `useRevisionValues`, `useExogenous`.
+- Cada hook devuelve `{ data, illustrative }`. Si `illustrative` es `true`, la vista muestra «Cifras ilustrativas» (CON-07).
+- `data/source.ts` decide de dónde salen los datos. Para conectar la API (T-18) se cambia ese archivo, `ILLUSTRATIVE` pasa a `false` y se borra `demo/`.
+- `data/types.ts` sigue el modelo de datos de la etapa 1. Si una vista necesita un campo que no existe, se agrega aquí y se anota en el PR para T-16.
+
+Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y deterministas, con magnitudes parecidas a las de los mockups. No son datos oficiales.
+
+## Utilidades
+
+| Archivo | Para qué |
+| --- | --- |
+| `lib/format.ts` | `formatNumber`, `formatValue`, `formatPercent`, `formatDate`, `formatMonth`, `revisionLabel`, `formatProvenance` (CON-04 a CON-06) |
+| `lib/download.ts` | Nombre de archivo `{contexto}_{version}_{contenido}`, CSV con encabezado de fuente, versión, corte y licencia (UX-07). La licencia queda «por definir» hasta X-04 |
+| `lib/icons.ts` | Íconos de la marca por concepto (UPME-ICO-03) |
+| `lib/product.ts` | Producto activo en la URL (`?producto=ee`, LAY-07) con `useProduct()` |
+
+## Galería de componentes (solo desarrollo)
+
+Con `pnpm dev`, la ruta `/dev/componentes` muestra todos los componentes base con cifras ilustrativas, en energía eléctrica o gas natural y en tema claro u oscuro. Se carga aparte y **no entra al build de producción**, por eso no tiene página en el inventario.
+
+## Pruebas
+
+Las pruebas de componentes renderizan a HTML con `react-dom/server` (sin librerías adicionales) y verifican estructura, tokens, accesibilidad y formatos. La interacción se revisa en la galería y, más adelante, con Playwright.
+
+## Pendiente conocido
+
+ECharts se importa completo (≈ 1 MB). Cuando las vistas de T-06 a T-09 lo usen, conviene importar solo los módulos necesarios (`echarts/core`) para reducir la carga del portal.
