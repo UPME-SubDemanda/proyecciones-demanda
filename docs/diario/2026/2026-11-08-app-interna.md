@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-08
 autor: David Bedoya
-pr: ?
+pr: 18
 issue: 17
 tipo: agrega
 vistas: [app-inicio, portal-inicio]

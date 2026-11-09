@@ -28,7 +28,7 @@ Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloque
 | T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | #13 | #14 | Hecho |
 | T-07 | Modo pantalla: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy, con acceso desde el portal | 1.1 | T-05 | #15 | #16 | Hecho |
 | T-21 | Modo pantalla: tablero de variables exógenas | 1.1 | T-07 | — | — | Bloqueado (X-06, sin mockup) |
-| T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07), con acceso desde el portal | 1 | T-05 | #17 | — | En curso |
+| T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07), con acceso desde el portal | 1 | T-05 | #17 | #18 | En curso |
 | T-09 | Tablero ejecutivo | 1 | T-08 | — | — | Pendiente |
 | T-10 | Histórico de revisiones | 1 | T-08 | — | — | Pendiente |
 | T-11 | Monitor de variables exógenas | 1 | T-08 | — | — | Pendiente |

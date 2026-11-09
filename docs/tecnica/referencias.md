@@ -1152,7 +1152,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07), con acceso desde el portal
 
-Etapa: 1 · Depende de: T-05 · Issue: #17 · PR: —
+Etapa: 1 · Depende de: T-05 · Issue: #17 · PR: #18
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
