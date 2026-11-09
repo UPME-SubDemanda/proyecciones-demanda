@@ -21,6 +21,8 @@ Quedó escrito cómo trabajamos con un asistente de IA (Claude, Cursor, Codex o 
 
 Sin asistente vale lo mismo: quien desarrolla hace las dos partes.
 
+También se precisó «Quién hace qué». El líder asigna y prioriza, revisa los issues cuando puede, aprueba diseños y decide publicaciones. Quien desarrolla puede crear el issue de lo que le asignaron, idealmente después de que el líder apruebe el texto, y une su propio PR. La CI no es una persona: son las verificaciones automáticas de cada PR.
+
 ## Por qué
 Las reglas decían qué debe existir en cada cambio, pero no cómo se reparte el trabajo con un asistente ni cuándo revisa la persona. Mientras el autor pueda unir su propio PR (P-06), revisar la rama contra el mockup es la única revisión humana. Por eso conviene que esté escrita.
 

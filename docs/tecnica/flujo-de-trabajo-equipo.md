@@ -100,7 +100,7 @@ Con un asistente (Claude, Cursor, Codex, Gemini) el ciclo es **el mismo**: issue
 
 | Paso | Asistente | Persona |
 | --- | --- | --- |
-| 1. Issue | Redacta el título y el cuerpo con la plantilla que corresponda, con una sección **Supuestos**. | Revisa el texto, crea el issue en GitHub y le pasa el número. |
+| 1. Issue | Redacta el título y el cuerpo con la plantilla que corresponda, con una sección **Supuestos**. | Revisa el texto (y, si puede, lo pasa al líder para que lo apruebe), crea el issue en GitHub y le pasa el número. |
 | 2. Rama | La crea desde `develop` actualizado, con el número del issue. | — |
 | 3. Desarrollo | Programa y documenta hasta cumplir la definición de hecho (FLU-07). | Responde las dudas. Si un supuesto cambia, actualiza el issue. |
 | 4. Entrega | Redacta el título y el cuerpo del PR con `Closes #<n>`, y recuerda qué revisar. | Revisa el desarrollo, hace las pruebas que considere y compara con el mockup aprobado. |
@@ -176,7 +176,7 @@ Cuando `develop` tiene un conjunto de cambios listo para producción:
 
 | Rol | Responsabilidad |
 | --- | --- |
-| Líder del equipo | Crea o prioriza issues, aprueba diseños (FLU-03), une los PR y decide publicaciones. |
-| Quien desarrolla | Se asigna el issue, crea la rama, los commits, la documentación y el PR. |
-| CI | Verifica CHANGELOG, diseño, inventario, pruebas y documentación en cada PR. |
+| Líder del equipo | Asigna responsabilidades y prioriza los issues. Revisa el texto de los issues cuando puede, aprueba los diseños (FLU-03) y decide las publicaciones. También puede crear issues. |
+| Quien desarrolla | Puede crear el issue de lo que le asignaron cuando ya sabe cómo resolverlo. Lo recomendable es pasarle antes el texto al líder y crearlo cuando esté aprobado; según la disponibilidad o la urgencia, lo puede crear directamente. Crea la rama, los commits, la documentación y el PR, y une su PR con la CI en verde (FLU-05). |
+| CI (revisión automática) | No es una persona: son las verificaciones que GitHub Actions corre solas en cada PR (`.github/workflows/ci.yml`). Revisan CHANGELOG, diseño, inventario, pruebas y documentación. Si alguna falla, el PR no se une hasta corregirla. |
 | Asistentes de IA | Siguen las mismas reglas (IA-03); su trabajo pasa por el mismo PR y la misma CI. Redactan el issue y el PR, pero no los crean ni los unen (ver [Trabajar con un asistente de IA](#trabajar-con-un-asistente-de-ia)). |
