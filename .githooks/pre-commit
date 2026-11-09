@@ -4,6 +4,8 @@
 #   docs/diario/index.md               <- scripts/diario.py      (si cambia una entrada del diario)
 #   docs/tecnica/referencias.md        <- scripts/referencias.py (si cambia cualquier .md)
 #   docs/usuario/inventario/index.md   <- scripts/inventario.py  (si cambia el inventario o las rutas)
+#   README.md (mapa del repositorio)   <- scripts/mapa.py        (si se agregan o borran archivos, o cambia repo-map.toml)
+#     Si hay una carpeta nueva sin descripción en repo-map.toml, el commit se detiene y dice cuál.
 # Se activa una vez por copia del repositorio:  git config core.hooksPath .githooks
 set -e
 
@@ -29,4 +31,11 @@ fi
 if echo "$changed" | grep -qE '^docs/usuario/inventario/|^frontend/src/routes\.config\.tsx$|^scripts/inventario\.py$'; then
   "$PY" scripts/inventario.py >/dev/null
   git add docs/usuario/inventario/index.md
+fi
+
+# El mapa cambia cuando aparecen o desaparecen archivos (y con ellos carpetas) o cambia su descripción.
+added_or_deleted=$(git diff --cached --name-only --diff-filter=ADR)
+if [ -n "$added_or_deleted" ] || echo "$changed" | grep -qE '^repo-map\.toml$|^scripts/mapa\.py$|^README\.md$'; then
+  "$PY" scripts/mapa.py
+  git add README.md
 fi

@@ -1,0 +1,197 @@
+# Mapa del repositorio: qué es cada carpeta y qué debe ir en ella.
+#
+# scripts/mapa.py lo convierte en la sección «Mapa del repositorio» del README (entre marcas) y la CI falla si:
+#   - hay una carpeta versionada sin descripción aquí (toda carpeta de primer y segundo nivel, y las de tercer
+#     nivel dentro de las rutas de `expandir`), o
+#   - aquí se describe una carpeta o un archivo que ya no existe.
+# Quien crea una carpeta la describe en este archivo en el mismo PR (también los asistentes de IA, ver AGENTS.md).
+#
+# Cada carpeta: `breve` (una línea, aparece en el árbol) y `va_aqui` (qué debe ir y qué no).
+
+# Rutas cuyas subcarpetas también se describen (tercer nivel).
+expandir = ["frontend/src", "backend/app", "docs/tecnica", "docs/usuario"]
+
+[carpetas.".githooks"]
+breve = "Hooks de git del proyecto"
+va_aqui = "Solo `pre-commit`, que regenera las páginas generadas. Se activa con `dev-setup.sh` (`git config core.hooksPath .githooks`)."
+
+[carpetas.".github"]
+breve = "Configuración de GitHub"
+va_aqui = "Plantillas de issue y de PR, y la CI. Nada de código de la app."
+
+[carpetas.".github/ISSUE_TEMPLATE"]
+breve = "Plantillas de issue"
+va_aqui = "Feature, Corrección, Hotfix y Documentación (FLU-01). Una plantilla nueva se acuerda con el estándar."
+
+[carpetas.".github/workflows"]
+breve = "CI (GitHub Actions)"
+va_aqui = "`ci.yml`: verificaciones que un PR debe pasar. Cada página generada o regla verificable nueva suma aquí su paso `--check`."
+
+[carpetas.backend]
+breve = "API en FastAPI y migraciones"
+va_aqui = "Todo el servidor: API, autenticación, acceso a la base y sus pruebas. Python 3.12 con uv."
+
+[carpetas."backend/alembic"]
+breve = "Migraciones de la base de datos"
+va_aqui = "Una migración de Alembic por cambio de esquema (BD-04). Nunca cambiar la base a mano."
+
+[carpetas."backend/app"]
+breve = "Código de la API"
+va_aqui = "Organizado por capa: rutas (`api`), autenticación (`auth`), configuración (`core`) y base de datos (`db`)."
+
+[carpetas."backend/app/api"]
+breve = "Rutas de la API, por versión"
+va_aqui = "Endpoints en `api/v1/`, uno por recurso. Si cambia la API, actualizar `docs/tecnica/api.md` (DOC-08)."
+
+[carpetas."backend/app/auth"]
+breve = "Ingreso, sesión, usuarios y roles"
+va_aqui = "Ingreso local y con Google, roles y la CLI de usuarios (`cli.py`). Ver `docs/tecnica/herramientas/autenticacion.md`."
+
+[carpetas."backend/app/core"]
+breve = "Configuración de la API"
+va_aqui = "Lectura de `.env` (`config.py`) y piezas transversales. Nada de lógica de negocio."
+
+[carpetas."backend/app/db"]
+breve = "Conexión y modelos de la base"
+va_aqui = "Sesión de SQLAlchemy y modelos por esquema (raw, staging, core, publicacion, auth; BD-03)."
+
+[carpetas."backend/tests"]
+breve = "Pruebas del backend (pytest)"
+va_aqui = "Una prueba por comportamiento de la API o de la CLI. Usan SQLite (`test.db`, no versionado)."
+
+[carpetas.docs]
+breve = "Toda la documentación (MkDocs)"
+va_aqui = "Guía de usuario, técnica, diario, decisiones, producto y pendientes. La documentación cambia en el mismo PR que el código."
+
+[carpetas."docs/decisiones"]
+breve = "Decisiones del proyecto (ADR)"
+va_aqui = "Un ADR por decisión propia de esta app (`NNNN-tema.md`, ID P-NNNN). Las generales van en upme-estandares."
+
+[carpetas."docs/diario"]
+breve = "Diario de cambios"
+va_aqui = "Una entrada por PR en `AAAA/AAAA-MM-DD-tema.md` (DOC-05). El índice se genera solo (`scripts/diario.py`)."
+
+[carpetas."docs/pendientes"]
+breve = "Detalle de pendientes"
+va_aqui = "Una página por pendiente que necesita contexto, alternativas o un prompt (`x-NN-tema.md`), enlazada desde `docs/pendientes.md`."
+
+[carpetas."docs/producto"]
+breve = "Producto: objetivos, públicos y hoja de ruta"
+va_aqui = "Qué es la plataforma y hacia dónde va. Cambia cuando cambian alcance o etapas."
+
+[carpetas."docs/tecnica"]
+breve = "Documentación técnica (sitio privado)"
+va_aqui = "Cómo levantar, arquitectura, frontend, modelo de datos, API, flujos, versionado, despliegue y referencias (DOC-07, DOC-08)."
+
+[carpetas."docs/tecnica/herramientas"]
+breve = "Fichas locales de herramientas"
+va_aqui = "Una ficha por herramienta usada (DOC-07): cómo encaja aquí, comandos y reglas propias."
+
+[carpetas."docs/tecnica/mockups"]
+breve = "Mockups aprobados"
+va_aqui = "Capturas congeladas de cada diseño aprobado, con su registro en `README.md` (FLU-03)."
+
+[carpetas."docs/usuario"]
+breve = "Guía de usuario (sitio público)"
+va_aqui = "Escrita para personas no técnicas: inicio, roles, glosario e inventario de vistas."
+
+[carpetas."docs/usuario/capturas"]
+breve = "Capturas de la guía"
+va_aqui = "Generadas con Playwright (`pnpm screenshots`, DOC-03). No se pegan a mano. Antes de borrar una, buscar quién la enlaza."
+
+[carpetas."docs/usuario/inventario"]
+breve = "Una página por vista o feature"
+va_aqui = "Con las secciones de DOC-01 (para qué sirve, cómo llegar, qué muestra, paso a paso, filtros, preguntas). El índice se genera solo."
+
+[carpetas.frontend]
+breve = "Interfaz en React + TypeScript (Vite)"
+va_aqui = "Portal, modo pantalla y app interna, con sus pruebas (Vitest) y capturas (Playwright)."
+
+[carpetas."frontend/e2e"]
+breve = "Pruebas de punta a punta y capturas (Playwright)"
+va_aqui = "Recorridos de usuario (`app-shell.spec.ts`) y capturas de la guía (`screenshots.spec.ts`)."
+
+[carpetas."frontend/public"]
+breve = "Archivos servidos tal cual"
+va_aqui = "Fuentes autoalojadas (`fonts/`, UPME-TIP-02) y otros estáticos. Nada que deba pasar por el build."
+
+[carpetas."frontend/src"]
+breve = "Código del frontend"
+va_aqui = "Organizado por función: zonas, componentes, datos, utilidades. Ver `docs/tecnica/frontend.md`."
+
+[carpetas."frontend/src/auth"]
+breve = "Sesión e ingreso en el frontend"
+va_aqui = "Contexto de sesión, ruta protegida, página de ingreso y regreso a la página pedida."
+
+[carpetas."frontend/src/components"]
+breve = "Componentes del inventario de diseño"
+va_aqui = "Uno por carpeta con su prueba (CMP-01); solo tokens. Todo componente nuevo se agrega a la galería en el mismo PR."
+
+[carpetas."frontend/src/data"]
+breve = "Acceso a datos (único punto)"
+va_aqui = "Tipos, hooks de React Query (`queries.ts`) y fuente (`source.ts`). Las vistas solo leen datos por aquí."
+
+[carpetas."frontend/src/demo"]
+breve = "Cifras ilustrativas"
+va_aqui = "Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-18."
+
+[carpetas."frontend/src/dev"]
+breve = "Herramientas solo de desarrollo"
+va_aqui = "Galería de componentes (`/dev/componentes`). No entra al build de producción."
+
+[carpetas."frontend/src/estandares"]
+breve = "Copia de la marca de upme-estandares"
+va_aqui = "Tokens, preset de Tailwind, tema de ECharts, logos e íconos (FLU-09). **No editar**: se actualiza copiando una versión."
+
+[carpetas."frontend/src/iconos-locales"]
+breve = "Íconos pendientes de pasar al estándar"
+va_aqui = "Íconos que aún no están en `estandares/`, con su origen en `iconos.json` (X-17). Se vacía al actualizar el estándar."
+
+[carpetas."frontend/src/lib"]
+breve = "Utilidades compartidas"
+va_aqui = "Formatos es-CO, descargas, íconos por concepto, producto activo, hallazgos y pequeños hooks."
+
+[carpetas."frontend/src/zones"]
+breve = "Vistas por zona"
+va_aqui = "`app/` (interna), `portal/` (pública) y `pantalla/` (televisores), cada una con su esqueleto (LAY-01)."
+
+[carpetas.pipelines]
+breve = "Flujos de datos (Prefect)"
+va_aqui = "Cargas y cálculos programados. Lógica pura en `lib/`, flujos en `flows/`, horarios en `deployments.py`."
+
+[carpetas."pipelines/flows"]
+breve = "Flujos de Prefect"
+va_aqui = "Un flujo por carga o cálculo, documentado en `docs/tecnica/flujos.md`."
+
+[carpetas."pipelines/lib"]
+breve = "Lógica de los flujos, sin Prefect"
+va_aqui = "Funciones puras y probables que usan los flujos."
+
+[carpetas.reglas]
+breve = "Copia de las reglas de upme-estandares"
+va_aqui = "Reglas de flujo, diseño, técnicas y de marca, y `VERSION` (FLU-09). **No editar aquí**: se cambian en upme-estandares."
+
+[carpetas.scripts]
+breve = "Scripts del proyecto"
+va_aqui = "Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash."
+
+[archivos]
+"README.md" = "Esta puerta de entrada. El mapa se genera con `scripts/mapa.py`."
+"AGENTS.md" = "Contexto y reglas para asistentes de IA y personas nuevas. `CLAUDE.md` y `GEMINI.md` lo cargan."
+"CHANGELOG.md" = "Cambios por versión (DOC-04). La CI exige una línea en cada PR."
+"docker-compose.yml" = "Entorno local completo: base, API, app, documentación y Prefect."
+".env.example" = "Variables de entorno de ejemplo. `dev-setup.sh` crea `.env` (no versionado) a partir de este."
+"repo-map.toml" = "Descripción de cada carpeta; fuente de este mapa."
+"mkdocs.usuario.yml" = "Sitio de la guía de usuario (público)."
+"mkdocs.tecnica.yml" = "Sitio de la documentación técnica (privado)."
+".pre-commit-config.yaml" = "Configuración del framework pre-commit heredada de la plantilla; hoy no se usa (los hooks activos están en `.githooks`). Ver X-20."
+".githooks/pre-commit" = "Regenera las páginas generadas en cada commit."
+".github/workflows/ci.yml" = "Verificaciones de cada PR."
+".github/pull_request_template.md" = "Plantilla de PR con la definición de hecho (FLU-05, FLU-07)."
+"scripts/dev-setup.sh" = "Prepara y levanta el entorno local en un paso."
+"backend/dev-start.sh" = "Arranque de la API en desarrollo: migra, crea admin@local y recarga."
+"backend/pyproject.toml" = "Dependencias del backend (uv)."
+"frontend/package.json" = "Dependencias y comandos del frontend (pnpm)."
+"frontend/vite.config.ts" = "Servidor de desarrollo, proxy de la API y pruebas."
+"frontend/src/routes.config.tsx" = "Rutas de la app. Toda ruta necesita su página en el inventario (DOC-02)."
+"frontend/src/zones/app/navigation.ts" = "Menú lateral de la app interna (LAY-06)."

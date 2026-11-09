@@ -4,6 +4,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ## [Sin publicar]
 ### Agregado
+- README como puerta de entrada: qué es, estado, empezar en 5 minutos, cómo trabajamos, qué se documenta dónde, reglas, cómo funciona, mapa del repositorio, comandos, qué no hacer, primer PR, asistentes de IA, glosario y ayuda. Mapa generado desde `repo-map.toml` con `scripts/mapa.py`: el hook y la CI fallan si una carpeta no tiene descripción. Pendiente X-21 para llevar estas prácticas a `upme-estandares` (issue #29).
 - Entorno local en un paso: `scripts/dev-setup.sh` crea `.env` con secretos aleatorios, activa los hooks y levanta todo; la API migra la base y crea `admin@local` al arrancar (`backend/dev-start.sh`, CLI `create-user --if-missing`). Servicios de documentación en Docker (guía en 8002, técnica en 8001) y ficha local de MkDocs (issue #27, PR #28).
 - Estructura inicial del proyecto (upme-estandares 1.0.0).
 - Reglas de upme-estandares 2.1.0 copiadas en `reglas/` (incluye TEC-10); `CLAUDE.md` carga `AGENTS.md` y las reglas de flujo (FLU-09, IA-02).
