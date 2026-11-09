@@ -24,7 +24,7 @@ const views: View[] = [
   { id: 'modo-pantalla', path: '/pantalla?intervalo=60', viewport: { width: 1920, height: 1080 } },
   { id: 'modo-pantalla-comparar-proyecciones', path: '/pantalla?tableros=comparar&intervalo=60', viewport: { width: 1920, height: 1080 } },
   { id: 'modo-pantalla-el-sistema-hoy', path: '/pantalla?tableros=sistema&intervalo=60', viewport: { width: 1920, height: 1080 } },
-  { id: 'app-inicio', path: '/app', session: true, tablet: true, viewport: { width: 1280, height: 800 }, ready: 'h1' },
+  { id: 'tablero-ejecutivo', path: '/app', session: true, tablet: true, viewport: { width: 1280, height: 800 } },
 ];
 
 async function open(page: Page, v: View) {

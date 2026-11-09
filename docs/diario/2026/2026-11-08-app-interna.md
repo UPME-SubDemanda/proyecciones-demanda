@@ -21,7 +21,9 @@ Desde el portal público se llega con **Ingresar**, a la derecha del menú super
 Es la base de todas las vistas internas (T-09 a T-14): menú, producto activo y sesión en un solo lugar.
 
 ## Cómo se ve
-![Inicio de la app interna](../../usuario/capturas/app-inicio.png)
+![Inicio de la app interna, versión del 2026-11-08](capturas/2026-11-08-app-interna.png)
+
+Captura de esta versión, guardada con el diario: el inicio provisional se reemplazó por el tablero ejecutivo (T-09).
 
 ## Notas técnicas
 - `AppLayout` (ruta `/app` con hijos y `<Outlet />`), `navigation.ts` (menú de `diseno-app.md` con `built` y `role`), `AppPage` (LAY-05).

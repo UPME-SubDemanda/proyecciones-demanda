@@ -5,10 +5,10 @@
  */
 import type { ProductKey } from '../lib/product';
 import {
-  demoAccuracy, demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
+  demoAccuracy, demoAlerts, demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
 } from '../demo/fixtures';
 import type {
-  Accuracy, ExogenousVariable, ObservedSeries, Revision, RevisionPerformance, RevisionValues, SystemToday,
+  Accuracy, Alert, ExogenousVariable, ObservedSeries, Revision, RevisionPerformance, RevisionValues, SystemToday,
 } from './types';
 
 export const ILLUSTRATIVE = true;
@@ -21,4 +21,5 @@ export const source = {
   accuracy: async (): Promise<Accuracy> => demoAccuracy(),
   revisionPerformance: async (revisionId: number): Promise<RevisionPerformance> => demoRevisionPerformance(revisionId),
   systemToday: async (): Promise<SystemToday> => demoSystemToday(),
+  alerts: async (): Promise<Alert[]> => demoAlerts(),
 };

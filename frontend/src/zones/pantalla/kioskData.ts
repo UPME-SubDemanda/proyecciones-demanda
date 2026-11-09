@@ -1,6 +1,6 @@
 /** Cálculos de los tableros del modo pantalla, separados de la vista para probarlos. */
 import type { Point } from '../../data/types';
-import { formatPercent, monthName } from '../../lib/format';
+import { monthName } from '../../lib/format';
 
 /**
  * Tableros disponibles, en el orden de rotación por defecto. «Variables exógenas» (3 de 5 en el mockup)
@@ -35,18 +35,8 @@ export function dailyTitle(current: Point[], previous: Point[], lastDay: string)
   return `La demanda de energía de ${monthName(lastDay)} ${verb} de ${year}`;
 }
 
-/** Crecimiento promedio anual compuesto, en %. */
-export function averageGrowth(from: number, to: number, years: number): number {
-  return ((to / from) ** (1 / years) - 1) * 100;
-}
-
-/** Título con el hallazgo (GRA-02): «La demanda real va 1,8 % por debajo de la proyección vigente». */
-export function deviationTitle(yearToDate: number, revisionName: string, isCurrent: boolean): string {
-  const target = isCurrent ? 'la proyección vigente' : `la ${revisionName}`;
-  if (Math.abs(yearToDate) < 0.05) return `La demanda real va en línea con ${target}`;
-  const side = yearToDate < 0 ? 'por debajo de' : 'por encima de';
-  return `La demanda real va ${formatPercent(Math.abs(yearToDate))} ${side} ${target}`;
-}
+// Cálculos compartidos con la app interna: viven en lib/insights.ts.
+export { averageGrowth, deviationTitle } from '../../lib/insights';
 
 /** Antigüedad de los datos (TV-07): «hace 5 min», «hace 3 h», «hace 2 días». */
 export function formatAge(ms: number): string {

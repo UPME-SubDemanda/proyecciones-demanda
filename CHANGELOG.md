@@ -20,6 +20,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Índice del diario (`docs/diario/index.md`) con todas las entradas, generado por `scripts/diario.py`, regenerado por el hook y verificado en la CI (DOC-05) (issue #13, PR #14).
 - Modo pantalla (`modo-pantalla`, T-07): tableros rotativos de energía eléctrica y gas natural para televisores, con filtros de revisión, rango y escenarios, 4 cifras, gráfico principal, desviación mensual y demanda por escenario; rotación, pausa por interacción, arrastre, configuración por URL y datos de respaldo sin conexión. Componentes `KioskShell`, `VersionSelect`, `RangeSlider` y `Chip`. Tableros «Comparar proyecciones» (abanico de revisiones y exactitud de cada una) y «El sistema hoy» (demanda diaria de energía y gas). Controles de solo ícono (pausa y reproducir, creados en el proyecto porque la librería UPME no los tiene; pantalla completa y volver al inicio); pie con la fecha de corte de los datos; la barra de progreso se congela en las pausas en lugar de desaparecer. Acceso discreto desde el inicio del portal. Mockups de los dos tableros nuevos documentados. Pendientes X-15, X-16 y X-17 (con página de detalle, insumos y prompt para `upme-estandares`); paso T-21 para el tablero de variables exógenas (issue #15, PR #16).
 - App interna (`app-inicio`, T-08): estructura común con menú lateral (solo vistas construidas y permitidas al rol), encabezado con selector de producto guardado en la URL, menú del usuario (ir al portal, cerrar sesión) y menú plegable en tablet; esqueleto de vista interna. Enlace «Ingresar» en el portal; al ingresar se vuelve a la página pedida. Componentes `SideNav`, `AppShell` y `UserMenu` (issue #17, PR #18).
+- Tablero ejecutivo (`tablero-ejecutivo`, T-09), inicio de la app interna: aviso de alerta alta, cifras de energía eléctrica y gas natural con error del año corrido frente al umbral, gráfico real vs. proyección vigente con revisiones anteriores, punto del año corrido y rango de años en la URL, y alertas abiertas de ejemplo. «Descargar informe» deshabilitado («En construcción»). Componentes `Banner` y `AlertItem`. Pendientes X-18 (revisión extraordinaria) y X-19 (informe) (issue #19, PR #20).
 
 ### Cambiado
 - Ingreso: estados de verificación y sin permiso con los componentes de estado; enlace para volver al portal (issue #17, PR #18).
@@ -32,9 +33,11 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Inventario: el campo `diseno` de cada vista apunta a su mockup aprobado; proyección vs. real, comparar revisiones y usuarios y roles quedan sin diseño (issue #2, PR #4).
 
 ### Eliminado
+- Inicio provisional de la app interna (`app-inicio`): lo reemplaza el tablero ejecutivo; su página del inventario queda como retirada (issue #19, PR #20).
 - `backend/test.db` del repositorio; las bases SQLite locales quedan ignoradas (issue #1, PR #3).
 
 ### Corregido
+- Gráficos: los años del eje X no se veían en el portal ni en la app desde el modo pantalla (PR #16), porque las opciones de tamaño de pantalla borraban las etiquetas del tema fuera de ese modo (issue #19, PR #20).
 - Entorno local: `prefect-worker` no compilaba (paquetes de `pipelines/` sin declarar) y arrancaba antes de que `prefect-server` estuviera listo; ahora espera su healthcheck (issue #1, PR #3).
 - Entorno local: `web` no compilaba con pnpm reciente; se fija `pnpm@9.15.9` (la versión mayor de la CI), se permite el build de `esbuild` y se versiona `pnpm-lock.yaml` (issue #1, PR #3).
 - Migraciones: Alembic no encontraba el paquete `app` (`prepend_sys_path` en `alembic.ini`) (issue #1, PR #3).

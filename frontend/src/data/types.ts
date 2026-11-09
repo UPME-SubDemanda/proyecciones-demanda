@@ -96,5 +96,18 @@ export type Accuracy = {
   horizonMonths: number;
 };
 
+/** Alerta abierta (PRI-04): severidad, título con cifra, producto, tipo, fecha y acción hacia la causa. Reglas: X-03, X-10. */
+export type AlertSeverity = 'high' | 'medium' | 'low';
+export type Alert = {
+  id: string;
+  severity: AlertSeverity;
+  title: string;
+  product: ProductKey;
+  type: string; // «Exógena vs. supuesto», «Desempeño», «Evento climático»
+  date: string; // `2026-10-14`
+  /** Acción hacia la causa y la vista donde se resuelve (`target`, una ruta de la app). */
+  action: { label: string; target: string };
+};
+
 /** Datos de ejemplo o reales: las vistas muestran «Cifras ilustrativas» si es `true` (CON-07). */
 export type WithOrigin<T> = { data: T; illustrative: boolean };

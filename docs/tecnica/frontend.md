@@ -35,6 +35,8 @@ frontend/
 | `KioskShell` | CMP, TV-01 a TV-08 | Escenario de 1920 × 1080 escalado, tema oscuro, rotación con barra de progreso, flechas, puntos, arrastre de 80 px, pausa por interacción de 30 s, reinicio de filtros a los 5 min, reloj, intervalo, pantalla completa (entrar y salir) y «Volver al inicio» (`exitHref`). La lógica está en `rotation.ts`, sin React, con pruebas: el tiempo se acumula solo mientras corre, así que en una pausa la barra de progreso se congela (atenuada) y al reanudar continúa. Controles de solo ícono de 44 px con nombre accesible |
 | `SideNav` | CMP, LAY-04, LAY-06, A11-03 | Menú de la app: logo, grupos, ícono de 20 px + texto, ítem activo con barra de 3 px `brand` y `aria-current`, contadores en `critical`; conserva `?producto=` al navegar |
 | `AppShell` | LAY-01, LAY-03, LAY-04, LAY-08 | Esqueleto de la app: `SideNav` de 240 px en `surface-sunken`, encabezado con ubicación y controles y franja `brand` de 4 px; bajo 1024 px el menú se abre con «Menú» como panel (Esc o tocar fuera lo cierra) |
+| `Banner` | CMP, UX-05, A11-05 | Aviso de alerta alta: ícono + título con cifra + detalle + acción; máximo uno por vista; `role="alert"` |
+| `AlertItem` | CMP, PRI-04, A11-05 | Fila de alerta: barra de severidad (alta `critical`, media `warning`, baja `info`) con la severidad también en texto, título con cifra, producto, tipo y fecha, acción hacia la causa |
 | `UserMenu` | A11-03 | Nombre, correo y roles; «Ir al portal público» y «Cerrar sesión»; `aria-expanded`, se cierra con Esc o al tocar fuera |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
@@ -42,10 +44,10 @@ frontend/
 Gráficos reutilizables en `components/charts/`:
 
 - `EChart`: único envoltorio de ECharts. Importa solo los módulos que se usan (`echarts/core`: líneas, barras, ejes, tooltip, leyenda, marcas, zoom, aria); si un gráfico necesita otro, se agrega ahí. Registra el tema claro y oscuro, se redimensiona, lleva `aria-label` y desactiva la animación con `prefers-reduced-motion` (GRA-11).
-- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. Con `compact` reduce márgenes en teléfonos; con `kiosk`, líneas de 3,5 px y textos grandes. `scenarios` elige los escenarios visibles (bajo y alto juntos = banda; uno solo = línea punteada fina) y `range` recorta los años.
+- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. `ytdPoint` marca el año corrido con su cifra (marca hueca sobre la línea real). Las claves de tamaño del modo pantalla se agregan solo con `kiosk`: pasar `axisLabel: undefined` borra las etiquetas que pone el tema. Con `compact` reduce márgenes en teléfonos; con `kiosk`, líneas de 3,5 px y textos grandes. `scenarios` elige los escenarios visibles (bajo y alto juntos = banda; uno solo = línea punteada fina) y `range` recorta los años.
 - `kioskCharts.ts`: desviación mensual en barras con signo (GRA-03); abanico de revisiones con la paleta `chart.series` y la vigente discontinua y más gruesa (GRA-06); demanda diaria frente al año anterior; barras diarias de un producto desde cero (GRA-07).
 
-Faltan componentes del inventario que llegan con su vista: `DataTable`, `AlertItem`, `Banner` y `Stepper`.
+Faltan componentes del inventario que llegan con su vista: `DataTable` y `Stepper`.
 
 ## Datos: un solo punto de acceso
 
@@ -80,6 +82,12 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 - **Ingreso:** `RequireRole` manda a `/ingresar?siguiente=<ruta>` y `LoginPage` vuelve ahí al ingresar con usuario local. El ingreso con Google siempre regresa a `/app` (backend), así que el destino se guarda antes en `sessionStorage` y `AppLayout` lo usa al cargar (`auth/returnTo.ts`). Solo se aceptan destinos `/app…`, para que un enlace no lleve a otro sitio.
 - **Pruebas de recorrido:** `e2e/app-shell.spec.ts` (Playwright) con la sesión simulada: el portal lleva a la app, sin sesión pasa por ingresar y vuelve, el producto queda en la URL, el menú del usuario y el menú plegable en tablet. `pnpm exec playwright test e2e/app-shell.spec.ts`.
 - **Capturas de la app:** `screenshots.spec.ts` responde `/api/v1/auth/me` con un usuario de ejemplo; no usa credenciales reales.
+
+## Tablero ejecutivo (T-09)
+
+- `zones/app/ExecutiveDashboard.tsx` es el inicio de la app (`/app`, ruta índice dentro de `AppLayout`). Los cálculos propios están en `zones/app/dashboardData.ts` (rango de años `?rango=5|10|todo`, estimado del año corrido) y los compartidos con el modo pantalla en `lib/insights.ts` (título con hallazgo, crecimiento promedio, desde qué mes está fuera de umbral).
+- Datos: `useObservedSeries`, `useRevisions`, `useRevisionValues` (vigente y dos anteriores), `useRevisionPerformance` y `useAlerts` (alertas de ejemplo; reglas pendientes, X-03 y X-10).
+- Acciones sin destino todavía (informe, alertas, monitor, desempeño): `Button` con `disabledReason`, que se muestra al pasar el cursor.
 
 ## Íconos locales
 

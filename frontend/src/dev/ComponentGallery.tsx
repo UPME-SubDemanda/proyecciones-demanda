@@ -4,7 +4,9 @@
  * No es una vista del producto: no lleva página en el inventario.
  */
 import { useEffect, useMemo, useState } from 'react';
+import { AlertItem } from '../components/AlertItem/AlertItem';
 import { Badge, IllustrativeBadge } from '../components/Badge/Badge';
+import { Banner } from '../components/Banner/Banner';
 import { Button } from '../components/Button/Button';
 import { ChartCard } from '../components/ChartCard/ChartCard';
 import { EmptyState } from '../components/EmptyState/EmptyState';
@@ -148,6 +150,19 @@ export function ComponentGallery() {
         ) : (
           <Skeleton height={420} label="Cargando gráfico" />
         )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h2">Banner y AlertItem</h2>
+        <Banner
+          title="La proyección vigente de energía eléctrica está fuera de umbral desde julio"
+          action={<Button size="sm">Ver alertas</Button>}
+        >
+          La demanda real va 1,8 % por debajo de lo proyectado en 2026.
+        </Banner>
+        <AlertItem severity="high" product="ee" title="PIB observado 1,8 % vs. supuesto 3,0 % (escenario medio)" meta="Exógena vs. supuesto · 14 oct 2026" action={<Button size="sm">Ver variable</Button>} />
+        <AlertItem severity="medium" product="gn" title="Probabilidad de El Niño 62 % para el próximo trimestre" meta="Evento climático · 10 oct 2026" action={<Button size="sm" disabledReason="En construcción">Ver monitor</Button>} />
+        <AlertItem severity="low" product="ee" title="Nueva serie de PIB publicada por el DANE" meta="Fuente actualizada · 2 oct 2026" />
       </section>
 
       <section className="flex flex-col gap-3">

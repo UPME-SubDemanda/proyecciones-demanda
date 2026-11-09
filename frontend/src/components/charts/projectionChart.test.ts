@@ -56,6 +56,15 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     expect(x.data[0]).toBe('2015');
     expect(x.data.at(-1)).toBe('2035');
   });
+  it('punto del año corrido con su rótulo', () => {
+    const s = projectionChartOption({ ...input, ytdPoint: { period: '2026', value: 84100, label: '2026 año corrido: 84,1 (−1,8 %)' } }).series as LineSeriesOption[];
+    const real = s.find((x) => x.name === 'Real')!;
+    expect(real.markPoint?.data).toEqual([{ name: 'Año corrido', coord: ['2026', 84.1] }]);
+  });
+  it('fuera del modo pantalla no pisa las etiquetas del eje del tema', () => {
+    const x = projectionChartOption(input).xAxis as Record<string, unknown>;
+    expect('axisLabel' in x).toBe(false);
+  });
   it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
   it('tema oscuro usa los roles oscuros', () => {
     const dark = projectionChartOption({ ...input, dark: true }).series as LineSeriesOption[];

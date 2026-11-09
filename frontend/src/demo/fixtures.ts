@@ -6,7 +6,7 @@
  */
 import type { ProductKey } from '../lib/product';
 import type {
-  Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario, SystemToday,
+  Accuracy, Alert, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario, SystemToday,
 } from '../data/types';
 
 const FIRST_YEAR = 2010;
@@ -167,6 +167,27 @@ export function demoSystemToday(): SystemToday {
     energyYearToDate: 64_120,
     weekendDrop: 12,
   };
+}
+
+/** Alertas abiertas de ejemplo, como en el mockup del tablero ejecutivo. No hay reglas reales todavía (X-03, X-10). */
+export function demoAlerts(): Alert[] {
+  return [
+    {
+      id: 'a-1', severity: 'high', product: 'ee', type: 'Exógena vs. supuesto', date: '2026-10-14',
+      title: 'PIB observado 1,8 % vs. supuesto 3,0 % (escenario medio)',
+      action: { label: 'Ver variable', target: '/app/exogenas' },
+    },
+    {
+      id: 'a-2', severity: 'high', product: 'ee', type: 'Desempeño', date: '2026-10-06',
+      title: 'Error año corrido −1,8 %, fuera de umbral ±1,5 % por 3 meses',
+      action: { label: 'Ver desempeño', target: '/app/proyecciones/vs-real' },
+    },
+    {
+      id: 'a-3', severity: 'medium', product: 'gn', type: 'Evento climático', date: '2026-10-10',
+      title: 'Probabilidad de El Niño 62 % para el próximo trimestre',
+      action: { label: 'Ver monitor', target: '/app/exogenas' },
+    },
+  ];
 }
 
 export function demoAccuracy(): Accuracy {
