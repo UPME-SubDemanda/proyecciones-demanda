@@ -94,6 +94,29 @@ Los commits van en inglés con Conventional Commits (FLU-06); la documentación 
 
 Con el hook activo (`git config core.hooksPath .githooks`, una vez), cada commit regenera las páginas de referencias y del inventario. Ver [Páginas generadas](index.md#paginas-generadas).
 
+## Trabajar con un asistente de IA
+
+Con un asistente (Claude, Cursor, Codex, Gemini) el ciclo es **el mismo**: issue, rama, definición de hecho y PR (IA-03). Lo que cambia es el reparto del trabajo. El asistente redacta y desarrolla; la persona crea el issue y el PR en GitHub, revisa y decide.
+
+| Paso | Asistente | Persona |
+| --- | --- | --- |
+| 1. Issue | Redacta el título y el cuerpo con la plantilla que corresponda, con una sección **Supuestos**. | Revisa el texto, crea el issue en GitHub y le pasa el número. |
+| 2. Rama | La crea desde `develop` actualizado, con el número del issue. | — |
+| 3. Desarrollo | Programa y documenta hasta cumplir la definición de hecho (FLU-07). | Responde las dudas. Si un supuesto cambia, actualiza el issue. |
+| 4. Entrega | Redacta el título y el cuerpo del PR con `Closes #<n>`, y recuerda qué revisar. | Revisa el desarrollo, hace las pruebas que considere y compara con el mockup aprobado. |
+| 5. Ajustes | Corrige **en la misma rama** y actualiza el cuerpo del PR. | Repite la revisión hasta que el cambio esté listo. |
+| 6. PR | — | Abre el PR, espera la CI en verde y lo une. El issue se cierra solo. |
+
+Por qué así:
+
+- **Los supuestos quedan escritos.** Un asistente suele llenar los vacíos de la ficha con decisiones propias: ruta, datos, qué hacer con un botón que depende de algo sin definir. En el issue se ven y se pueden corregir antes de programar. Si un supuesto cambia, el issue se actualiza para que siga describiendo lo que se construye.
+- **La revisión humana va antes del PR.** Mientras P-06 permita que el autor una su propio PR con la CI en verde, revisar la rama contra el mockup es la única revisión humana. Por eso los ajustes se hacen antes de abrir el PR, y el PR se abre una sola vez, ya listo.
+- **El PR cierra el issue.** Con `Closes #<n>` el issue se cierra al unir a `develop`, sin pasos manuales.
+
+Sin asistente vale lo mismo: quien desarrolla hace las dos columnas, y también revisa su rama contra el mockup antes de abrir el PR.
+
+Las instrucciones para el asistente están en `AGENTS.md` («Ciclo con un asistente»). La propuesta de llevar este ciclo a `upme-estandares` es el pendiente [X-20](../pendientes/x-20-ciclo-con-asistentes.md).
+
 ## Ejemplos
 
 ### 1. Corrección: el entorno local no levantaba (issue #1, PR #3)
@@ -156,4 +179,4 @@ Cuando `develop` tiene un conjunto de cambios listo para producción:
 | Líder del equipo | Crea o prioriza issues, aprueba diseños (FLU-03), une los PR y decide publicaciones. |
 | Quien desarrolla | Se asigna el issue, crea la rama, los commits, la documentación y el PR. |
 | CI | Verifica CHANGELOG, diseño, inventario, pruebas y documentación en cada PR. |
-| Asistentes de IA | Siguen las mismas reglas (IA-03); su trabajo pasa por el mismo PR y la misma CI. |
+| Asistentes de IA | Siguen las mismas reglas (IA-03); su trabajo pasa por el mismo PR y la misma CI. Redactan el issue y el PR, pero no los crean ni los unen (ver [Trabajar con un asistente de IA](#trabajar-con-un-asistente-de-ia)). |
