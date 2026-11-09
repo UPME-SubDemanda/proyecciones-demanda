@@ -14,6 +14,8 @@ Capturas congeladas de los diseños aprobados de cada vista (FLU-03). Son la ref
 | Capturas exportadas | 2026-11-08 |
 | Subidas al repositorio | 2026-11-08 |
 
+**Ampliación del 2026-11-08:** dos tableros más del modo pantalla (`modo-pantalla-comparar-proyecciones.png` y `modo-pantalla-el-sistema-hoy.png`), agregados y aprobados por David Bedoya al pedir su desarrollo en el issue #15. Se exportaron del mismo tablero de diseño.
+
 Todas las cifras de las capturas son **ilustrativas**: muestran formato, jerarquía y comportamiento, no datos oficiales. Si un mockup contradice `reglas/REGLAS-DISENO.md` o `reglas/MARCA-UPME.md`, manda el estándar (ver `docs/tecnica/diseno-app.md`).
 
 ## Capturas
@@ -25,7 +27,9 @@ Todas las cifras de las capturas son **ilustrativas**: muestran formato, jerarqu
 | `monitor-exogenas.png` | `monitor-exogenas` | app | 1 |
 | `portal-inicio-escritorio.png` | `portal-inicio` | portal | 1.1 |
 | `portal-inicio-movil.png` | `portal-inicio` | portal | 1.1 |
-| `modo-pantalla.png` | `modo-pantalla` | pantalla | 1.1 |
+| `modo-pantalla.png` | `modo-pantalla` (tablero de producto) | pantalla | 1.1 |
+| `modo-pantalla-comparar-proyecciones.png` | `modo-pantalla` (tablero «Comparar proyecciones») | pantalla | 1.1 |
+| `modo-pantalla-el-sistema-hoy.png` | `modo-pantalla` (tablero «El sistema hoy») | pantalla | 1.1 |
 | `ejecutar-proyeccion-supuestos.png` | `ejecutar-proyeccion` | app | 2 |
 | `registro-modelos.png` | `registro-modelos` | app | 2 |
 
@@ -59,7 +63,17 @@ La misma vista a 390 px: menú colapsado, indicadores apilados, gráfico con sel
 ### Modo pantalla — `modo-pantalla.png`
 ![Modo pantalla](modo-pantalla.png)
 
-Tableros rotativos para televisores (1920×1080, tema oscuro). Encabezado con producto, hora y fecha, intervalo de rotación, pausa y pantalla completa; filtros de revisión, rango de años y escenarios; indicadores de demanda, desvío, crecimiento y error; gráfico real frente a proyección con banda de escenarios, desviación mensual y demanda a 2030 por escenario. Navegación con flechas y puntos (1 de 5). En el tablero rota cada 20 s y cualquier interacción pausa la rotación 30 s.
+Tableros rotativos para televisores (1920×1080, tema oscuro). Encabezado con producto, hora y fecha, intervalo de rotación, pausa y pantalla completa; filtros de revisión, rango de años y escenarios; indicadores de demanda, desvío, crecimiento y error; gráfico real frente a proyección con banda de escenarios, desviación mensual y demanda a 2030 por escenario. Navegación con flechas y puntos (1 de 5). En el tablero rota cada 20 s y cualquier interacción pausa la rotación 30 s. El tablero de gas natural usa la misma estructura; el de variables exógenas (3 de 5) aún no tiene mockup.
+
+### Modo pantalla, comparar proyecciones — `modo-pantalla-comparar-proyecciones.png`
+![Modo pantalla, comparar proyecciones](modo-pantalla-comparar-proyecciones.png)
+
+Tablero 4 de 5. Cómo han cambiado las revisiones publicadas de energía eléctrica. Filtro de rango de años; indicadores de revisiones publicadas, revisión más acertada (menor MAPE a 12 meses), cambio de la proyección a 2030 entre la primera y la última revisión, y revisiones en pantalla. Gráfico «abanico» con el escenario medio de cada revisión sobre el dato real, la vigente discontinua (GRA-06). Chips de color para elegir qué revisiones comparar y barras de exactitud de cada revisión (MAPE, menos es mejor). Pie con fuente, fecha de corte de los datos y estado de la rotación.
+
+### Modo pantalla, el sistema hoy — `modo-pantalla-el-sistema-hoy.png`
+![Modo pantalla, el sistema hoy](modo-pantalla-el-sistema-hoy.png)
+
+Tablero 5 de 5. Demanda diaria reciente, sin filtros. Indicadores de demanda de energía del día anterior, demanda máxima de potencia y su hora, demanda de gas natural del día anterior y acumulado del año. Gráfico de la demanda diaria de energía de los últimos 30 días frente al mismo día del año anterior; barras de gas natural por día; y un bloque «Explore más datos» con un código QR al portal (marcador por completar: dirección y código, X-11).
 
 ### Ejecutar proyección, paso 3 — `ejecutar-proyeccion-supuestos.png`
 ![Ejecutar proyección, supuestos](ejecutar-proyeccion-supuestos.png)

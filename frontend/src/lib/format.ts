@@ -38,6 +38,13 @@ function parts(iso: string) {
   return { y, m, d };
 }
 
+const MONTH_NAMES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+/** Nombre completo del mes: «2026-09-30» → «septiembre». */
+export function monthName(iso: string): string {
+  return MONTH_NAMES[Number(iso.split('-')[1]) - 1];
+}
+
 /** Fecha en texto: «2026-10-15» → «15 oct 2026» (CON-05). */
 export function formatDate(iso: string): string {
   const { y, m, d } = parts(iso);

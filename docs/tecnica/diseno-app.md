@@ -20,7 +20,7 @@ Sigue `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`. Mockups aprobados: `do
 Selector global en el encabezado: **Energía eléctrica** (`ee`, amarillo) y **Gas natural** (`gn`, verde). Persiste en la URL (`?producto=ee`).
 
 ## Modo pantalla
-Tableros iniciales: Energía eléctrica · Gas natural · Variables exógenas · Comparar proyecciones · El sistema hoy.
+Tableros iniciales: Energía eléctrica · Gas natural · Variables exógenas · Comparar proyecciones · El sistema hoy. Construidos (T-07): todos menos Variables exógenas, que espera mockup (T-21). Claves en la URL: `ee`, `gn`, `comparar`, `sistema`.
 
 ## Excepciones aprobadas
 | Regla | Excepción | ADR |

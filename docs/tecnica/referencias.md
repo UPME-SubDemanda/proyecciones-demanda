@@ -34,8 +34,8 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [IA](#ia) | Asistentes de IA (Claude, Cursor, Codex, Gemini) | `reglas/REGLAS-FLUJO.md` | 5 |
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
-| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 20 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 14 |
+| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 21 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 17 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 17 |
 
@@ -1124,7 +1124,7 @@ Etapa: 1 y 1.1 · Depende de: T-04 · Issue: #8 · PR: #12
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-06 · En curso {#t-06}
+### T-06 · Hecho {#t-06}
 
 Portal público: inicio (escritorio y móvil)
 
@@ -1132,11 +1132,19 @@ Etapa: 1.1 · Depende de: T-05 · Issue: #13 · PR: #14
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-07 · Pendiente {#t-07}
+### T-07 · En curso {#t-07}
 
-Modo pantalla: tableros rotativos
+Modo pantalla: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy, con acceso desde el portal
 
-Etapa: 1.1 · Depende de: T-05 · Issue: — · PR: —
+Etapa: 1.1 · Depende de: T-05 · Issue: #15 · PR: #16
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-21 · Bloqueado (X-06, sin mockup) {#t-21}
+
+Modo pantalla: tablero de variables exógenas
+
+Etapa: 1.1 · Depende de: T-07 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1320,7 +1328,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-11 · Contenidos del portal {#x-11}
 
-El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME
+El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME. En el modo pantalla (tablero «El sistema hoy»): dirección pública del portal y su código QR
 
 Responsable: Líder · Estado: Planeado (1.1)
 
@@ -1342,9 +1350,33 @@ Responsable: Líder · Estado: Abierto (revisar al cerrar T-08)
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
-### X-14 · Datos del portal {#x-14}
+### X-14 · Datos del portal y del modo pantalla {#x-14}
 
-Antes de conectar datos reales al portal (T-18, T-19): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, y el texto de la licencia de los datos descargados (X-04)
+Antes de conectar datos reales al portal y al modo pantalla (T-18, T-19): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, el **error medio de la revisión** (MAPE a 12 meses), el **crecimiento promedio** del horizonte, la **desviación mensual** real vs. proyectado (la proyección es anual: cómo se reparte por mes), la **demanda diaria** del tablero «El sistema hoy» (fuente y frecuencia de XM y del Gestor del Mercado de Gas, demanda máxima de potencia), el umbral que se muestra (X-03) y el texto de la licencia de los datos descargados (X-04)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-15 · Modo pantalla sin conexión {#x-15}
+
+Hoy, si se pierde la conexión mientras corre, sigue mostrando los últimos datos (TV-07). Abrir `/pantalla` sin conexión desde cero requiere un service worker que guarde la aplicación: evaluar si se necesita en las pantallas de la UPME y cómo hacerlo sin tecnología nueva (TEC-05)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-16 · Acciones de los gráficos en el modo pantalla {#x-16}
+
+GRA-08 pide en todo gráfico acciones (datos, imagen, tabla, pantalla completa). En el modo pantalla, como en el mockup aprobado, no se muestran: en un televisor nadie descarga datos. Sí hay tabla equivalente para lectores de pantalla (A11-04) y pantalla completa general. Decidir si se registra como excepción con un ADR del proyecto (y en `docs/tecnica/diseno-app.md`) o se propone en `upme-estandares` que GRA-08 no aplique al modo pantalla
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-17 · Íconos locales al estándar {#x-17}
+
+El proyecto usa íconos que aún no están en `upme-estandares` (`frontend/src/iconos-locales/`): `fullScreen`, `chevron-lef` y `chevron-right`, tomados de la Librería de Iconos UPME, y `pause` y `play`, **creados en el proyecto** porque la librería no los tiene (excepción a UPME-ICO-01 aprobada por el líder, #15). Llevarlos al estándar con un PR a `upme-estandares` (MARCA-UPME, proceso para agregar un ícono) y pedir a Comunicaciones que revise `pause` y `play` o los reemplace por oficiales. [Detalle, insumos y prompt](../pendientes/x-17-iconos-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 

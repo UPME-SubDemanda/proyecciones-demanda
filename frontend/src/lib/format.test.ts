@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  formatDate, formatMonth, formatNumber, formatPercent, formatProvenance, formatValue, revisionLabel,
+  formatDate, formatMonth, monthName, formatNumber, formatPercent, formatProvenance, formatValue, revisionLabel,
 } from './format';
 
 describe('formatos es-CO (CON-04, CON-05, CON-06)', () => {
@@ -13,6 +13,7 @@ describe('formatos es-CO (CON-04, CON-05, CON-06)', () => {
   it('unidad con espacio que no se parte', () => expect(formatValue(85600, 'GWh')).toBe('85.600\u00A0GWh'));
   it('porcentaje con espacio antes del signo', () => expect(formatPercent(-1.8)).toBe('−1,8\u00A0%'));
   it('fecha en texto', () => expect(formatDate('2026-10-15')).toBe('15 oct 2026'));
+  it('nombre del mes', () => expect(monthName('2026-09-30')).toBe('septiembre'));
   it('mes y revisión', () => {
     expect(formatMonth('2026-09')).toBe('sep-2026');
     expect(revisionLabel('2026-07')).toBe('Revisión jul-2026');

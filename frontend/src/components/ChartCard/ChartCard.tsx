@@ -8,6 +8,7 @@ import { cn } from '../../lib/cn';
 import { downloadFile, fileName, toCsv, type DownloadMeta } from '../../lib/download';
 import { formatNumber } from '../../lib/format';
 import { icons } from '../../lib/icons';
+import { useFullscreen } from '../../lib/useFullscreen';
 
 export type ChartTable = { headers: string[]; rows: (string | number | null)[][] };
 
@@ -56,7 +57,7 @@ export function ChartCard({
     a.download = fileName(meta, 'png');
     a.click();
   };
-  const fullscreen = () => void cardRef.current?.requestFullscreen?.();
+  const [isFullscreen, toggleFullscreen] = useFullscreen(cardRef);
 
   return (
     <section
@@ -78,7 +79,9 @@ export function ChartCard({
             <Button variant="ghost" size={actionSize} onClick={() => setShowTable((v) => !v)}>
               {showTable ? 'Ver gráfico' : 'Ver como tabla'}
             </Button>
-            <Button variant="ghost" size={actionSize} onClick={fullscreen}>Pantalla completa</Button>
+            <Button variant="ghost" size={actionSize} onClick={toggleFullscreen}>
+              {isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            </Button>
           </div>
         </div>
       </header>

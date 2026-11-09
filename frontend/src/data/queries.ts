@@ -39,3 +39,35 @@ export function useExogenous() {
 export function useAccuracy() {
   return useQuery({ queryKey: ['accuracy'], queryFn: withOrigin(() => source.accuracy()) });
 }
+
+/** Desempeño de una revisión frente al dato real: desviación mensual, año corrido y error medio (X-14). */
+export function useRevisionPerformance(revisionId: number | undefined) {
+  return useQuery({
+    queryKey: ['revision-performance', revisionId],
+    queryFn: withOrigin(() => source.revisionPerformance(revisionId as number)),
+    enabled: revisionId !== undefined,
+  });
+}
+
+/** Demanda diaria reciente de energía y gas (tablero «El sistema hoy»). */
+export function useSystemToday() {
+  return useQuery({ queryKey: ['system-today'], queryFn: withOrigin(() => source.systemToday()) });
+}
+
+/** Desempeño de varias revisiones a la vez (p. ej. el MAPE de todas, para compararlas). */
+export function useRevisionsPerformance(revisionIds: number[]) {
+  return useQuery({
+    queryKey: ['revisions-performance', revisionIds],
+    queryFn: withOrigin(() => Promise.all(revisionIds.map((id) => source.revisionPerformance(id)))),
+    enabled: revisionIds.length > 0,
+  });
+}
+
+/** Valores de varias revisiones a la vez (abanico de revisiones). */
+export function useRevisionsValues(revisionIds: number[]) {
+  return useQuery({
+    queryKey: ['revisions-values', revisionIds],
+    queryFn: withOrigin(() => Promise.all(revisionIds.map((id) => source.revisionValues(id)))),
+    enabled: revisionIds.length > 0,
+  });
+}

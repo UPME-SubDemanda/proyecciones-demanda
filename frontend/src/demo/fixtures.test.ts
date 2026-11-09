@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { demoExogenous, demoObserved, demoRevisions, demoRevisionValues } from './fixtures';
+import {
+  demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
+} from './fixtures';
 import { ILLUSTRATIVE } from '../data/source';
 
 describe('cifras ilustrativas (CON-07)', () => {
@@ -30,6 +32,20 @@ describe('cifras ilustrativas (CON-07)', () => {
 
   it('los valores de una revisión de gas están en GBTUD', () =>
     expect(demoRevisionValues(demoRevisions('gn')[0].id).unit).toBe('GBTUD'));
+
+  it('desviación de 12 meses hasta la fecha de corte; energía eléctrica fuera de umbral como el mockup', () => {
+    const perf = demoRevisionPerformance(demoRevisions('ee').at(-1)!.id);
+    expect(perf.monthlyDeviation).toHaveLength(12);
+    expect(perf.monthlyDeviation.at(-1)?.period).toBe('2026-09');
+    expect(Math.abs(perf.yearToDate)).toBeGreaterThan(perf.threshold);
+  });
+
+  it('demanda diaria: 30 días y el año anterior por debajo, alineado por día de la semana', () => {
+    const t = demoSystemToday();
+    expect(t.energyDaily).toHaveLength(30);
+    t.energyDaily.forEach((p, i) => expect(t.energyPrevYear[i].value).toBeLessThan(p.value));
+    expect(t.lastDay).toBe('2026-09-30');
+  });
 
   it('variables exógenas con fuente y unidad', () =>
     demoExogenous().forEach((v) => expect(v.source && v.unit).toBeTruthy()));

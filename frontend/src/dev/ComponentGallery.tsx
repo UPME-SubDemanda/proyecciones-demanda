@@ -10,7 +10,10 @@ import { ChartCard } from '../components/ChartCard/ChartCard';
 import { EmptyState } from '../components/EmptyState/EmptyState';
 import { ErrorState } from '../components/ErrorState/ErrorState';
 import { KpiCard } from '../components/KpiCard/KpiCard';
+import { Chip } from '../components/Chip/Chip';
 import { ProductIcon } from '../components/ProductIcon/ProductIcon';
+import { RangeSlider } from '../components/RangeSlider/RangeSlider';
+import { VersionSelect } from '../components/VersionSelect/VersionSelect';
 import { PublicFooter } from '../components/PublicFooter/PublicFooter';
 import { PublicHeader } from '../components/PublicHeader/PublicHeader';
 import { SegmentedControl } from '../components/SegmentedControl/SegmentedControl';
@@ -23,6 +26,9 @@ import { PRODUCT_KEYS, PRODUCTS, useProduct } from '../lib/product';
 
 export function ComponentGallery() {
   const [dark, setDark] = useState(false);
+  const [version, setVersion] = useState('2026-07');
+  const [range, setRange] = useState<[number, number]>([2015, 2035]);
+  const [chips, setChips] = useState(['low', 'mid', 'high']);
   const [product, setProduct] = useProduct();
   const observed = useObservedSeries(product.key);
   const revisions = useRevisions(product.key);
@@ -140,6 +146,32 @@ export function ComponentGallery() {
         ) : (
           <Skeleton height={420} label="Cargando gráfico" />
         )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h2">Filtros: VersionSelect, RangeSlider y Chip</h2>
+        <div className="flex flex-wrap items-center gap-8">
+          <VersionSelect
+            label="Proyección"
+            value={version}
+            onChange={setVersion}
+            options={[
+              { value: '2026-07', label: 'Revisión jul-2026', current: true },
+              { value: '2026-01', label: 'Revisión ene-2026' },
+            ]}
+          />
+          <RangeSlider label="Rango" min={2010} max={2040} value={range} onChange={setRange} />
+          <div className="flex gap-2">
+            {[['low', 'Bajo'], ['mid', 'Medio'], ['high', 'Alto']].map(([k, label]) => (
+              <Chip key={k} active={chips.includes(k)} onToggle={() => setChips((c) => (c.includes(k) ? c.filter((x) => x !== k) : [...c, k]))}>
+                {label}
+              </Chip>
+            ))}
+          </div>
+        </div>
+        <p className="text-small text-ink-muted">
+          KioskShell ocupa toda la pantalla: se ve en <a className="text-primary underline" href="/pantalla">/pantalla</a>.
+        </p>
       </section>
 
       <section className="flex flex-col gap-3">

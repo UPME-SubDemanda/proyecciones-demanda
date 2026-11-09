@@ -15,6 +15,11 @@ describe('KpiCard', () => {
     expect(html).toContain('−1,8');
     expect(html).toContain('text-critical');
   });
+  it('cifra como texto con tono', () => {
+    const html = renderToStaticMarkup(<KpiCard label="Revisión más acertada" value={0} valueText="ene-2026" valueTone="good" unit="" />);
+    expect(html).toContain('ene-2026');
+    expect(html).toMatch(/text-kpi tabular text-success/);
+  });
   it('procedencia y marca de cifras ilustrativas (PRI-02, CON-07)', () => {
     const html = renderToStaticMarkup(
       <KpiCard label="x" value={1} unit="GWh" provenance="Revisión jul-2026 · EE-LP v3.2.0" illustrative />,

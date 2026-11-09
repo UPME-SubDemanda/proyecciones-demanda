@@ -5,7 +5,7 @@
  */
 import type { EChartsOption, LineSeriesOption } from 'echarts';
 import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
-import type { Point, RevisionValues } from '../../data/types';
+import { SCENARIO_LABEL, type Point, type RevisionValues, type Scenario } from '../../data/types';
 import { formatNumber, formatPercent } from '../../lib/format';
 import { PRODUCTS, type ProductKey } from '../../lib/product';
 
@@ -28,6 +28,13 @@ export type ProjectionChartInput = {
   scenarioLabels?: boolean;
   /** Pantallas angostas: márgenes y etiquetas más pequeños para dar espacio a la gráfica. */
   compact?: boolean;
+  /**
+   * Escenarios visibles (por defecto los tres). Con bajo y alto se dibuja la banda; con uno solo,
+   * su línea punteada fina (GRA-01). El medio es la proyección discontinua.
+   */
+  scenarios?: Scenario[];
+  /** Años visibles, ambos incluidos (filtro de rango, UX-01). */
+  range?: [number, number];
 };
 
 const DATA_DECIMALS = 1;
@@ -59,11 +66,16 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const { low, mid, high } = input.projection.scenarios;
   const [l, m, h] = [scale(low, divisor), scale(mid, divisor), scale(high, divisor)];
   const pastScaled = (input.past ?? []).map((r) => ({ label: r.label, values: scale(r.points, divisor) }));
-  const periods = [...new Set([...real.keys(), ...m.keys(), ...pastScaled.flatMap((r) => [...r.values.keys()])])].sort();
+  const inRange = (p: string) => !input.range || (Number(p) >= input.range[0] && Number(p) <= input.range[1]);
+  const periods = [...new Set([...real.keys(), ...m.keys(), ...pastScaled.flatMap((r) => [...r.values.keys()])])]
+    .sort()
+    .filter(inRange);
   const at = (map: Map<string, number>) => periods.map((p) => map.get(p) ?? null);
+  const visible = new Set<Scenario>(input.scenarios ?? ['low', 'mid', 'high']);
+  const band = visible.has('low') && visible.has('high');
 
   const endLabel = (text: string, color: string): LineSeriesOption['endLabel'] => ({
-    show: true, formatter: text, color, fontWeight: 700, fontSize: input.compact ? 11 : 12,
+    show: true, formatter: text, color, fontWeight: 700, fontSize: input.kiosk ? 18 : input.compact ? 11 : 12,
   });
 
   const series: LineSeriesOption[] = [
@@ -76,7 +88,24 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       emphasis: { disabled: true },
       z: 1,
     })),
-    {
+    ...(band ? bandSeries() : []),
+    ...(['low', 'high'] as const)
+      .filter((sc) => !band && visible.has(sc))
+      .map<LineSeriesOption>((sc) => ({
+        name: SCENARIO_LABEL[sc],
+        type: 'line',
+        data: at(sc === 'low' ? l : h),
+        lineStyle: { width: 1.5, type: dash.scenario, color: theme.scenario },
+        itemStyle: { color: theme.scenario },
+        endLabel: endLabel(SCENARIO_LABEL[sc], theme.scenario),
+        z: 2,
+      })),
+    ...(visible.has('mid') ? [projectionSeries()] : []),
+    realSeries(),
+  ];
+
+  function bandSeries(): LineSeriesOption[] {
+    return [{
       // Base transparente de la banda: el área visible va de «bajo» a «alto» (GRA-01).
       name: '_bandBase',
       type: 'line',
@@ -100,8 +129,11 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       endLabel: input.scenarioLabels ? endLabel('Alto', theme.scenario) : undefined,
       silent: true,
       z: 2,
-    },
-    {
+    }];
+  }
+
+  function projectionSeries(): LineSeriesOption {
+    return {
       name: input.projectionLabel,
       type: 'line',
       data: at(m),
@@ -109,8 +141,11 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       itemStyle: { color: productColors.line },
       endLabel: endLabel(input.projectionLabel, productColors.line),
       z: 3,
-    },
-    {
+    };
+  }
+
+  function realSeries(): LineSeriesOption {
+    return {
       name: 'Real',
       type: 'line',
       data: at(real),
@@ -126,16 +161,27 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
           }
         : undefined,
       z: 4,
-    },
-  ];
+    };
+  }
 
   return {
     animationDuration: 400, // ≤ 500 ms (GRA-11)
-    grid: input.compact ? { left: 40, right: 56, top: 72, bottom: 32 } : { left: 56, right: 120, top: 72, bottom: 32 },
+    grid: input.kiosk
+      ? { left: 64, right: 200, top: 96, bottom: 40 }
+      : input.compact
+        ? { left: 40, right: 56, top: 72, bottom: 32 }
+        : { left: 56, right: 120, top: 72, bottom: 32 },
+    textStyle: input.kiosk ? { fontSize: 16 } : undefined,
     legend: {
       top: 0,
       left: 0,
-      data: ['Real', input.projectionLabel, 'Escenarios bajo–alto', ...pastScaled.map((r) => r.label)],
+      textStyle: input.kiosk ? { fontSize: 16 } : undefined,
+      data: [
+        'Real',
+        ...(visible.has('mid') ? [input.projectionLabel] : []),
+        ...(band ? ['Escenarios bajo–alto'] : (['low', 'high'] as const).filter((sc) => visible.has(sc)).map((sc) => SCENARIO_LABEL[sc])),
+        ...pastScaled.map((r) => r.label),
+      ],
     },
     tooltip: {
       trigger: 'axis',
@@ -154,12 +200,13 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         return lines.join('<br/>');
       },
     },
-    xAxis: { type: 'category', data: periods, boundaryGap: false },
+    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: input.kiosk ? { fontSize: 16 } : undefined },
     yAxis: {
       type: 'value',
       name: input.unit,
       scale: true, // líneas ajustadas al rango visible (GRA-07)
-      axisLabel: { formatter: (v: number) => formatNumber(v) },
+      axisLabel: { formatter: (v: number) => formatNumber(v), fontSize: input.kiosk ? 16 : undefined },
+      nameTextStyle: input.kiosk ? { fontSize: 16 } : undefined,
     },
     aria: { enabled: true, label: { description: `${PRODUCTS[input.product].name}: real frente a ${input.projectionLabel}` } },
     series,

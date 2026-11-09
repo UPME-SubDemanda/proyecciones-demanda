@@ -10,6 +10,10 @@ type Props = {
   label: string;
   value: number;
   unit: string;
+  /** Cifra ya escrita como texto, cuando no es un número: «ene-2026». Reemplaza a `value`. */
+  valueText?: string;
+  /** Color de la cifra, solo si es buena o mala (como `changeTone`). */
+  valueTone?: KpiTone;
   decimals?: number;
   signed?: boolean; // muestra «+» en valores positivos (errores, variaciones)
   /** Variación o estado bajo la cifra: «+2,9 % frente a 2025», «Fuera de umbral ±1,5 %». */
@@ -31,14 +35,17 @@ const CHANGE_TONE: Record<KpiTone, string> = {
 
 /** Cifra clave: etiqueta · valor + unidad · variación · procedencia (CMP: KpiCard). */
 export function KpiCard({
-  label, value, unit, decimals = 0, signed = false, change, changeTone = 'neutral', provenance, illustrative, leading, className,
+  label, value, unit, valueText, valueTone = 'neutral', decimals = 0, signed = false, change, changeTone = 'neutral', provenance,
+  illustrative, leading, className,
 }: Props) {
   return (
     <article className={cn('flex flex-col gap-2 p-6 bg-surface-raised border border-line rounded-md', className)}>
       {leading}
       <h3 className="text-small text-ink-muted">{label}</h3>
       <p className="flex items-baseline gap-1">
-        <span className="text-kpi tabular">{formatNumber(value, { decimals, signed })}</span>
+        <span className={cn('text-kpi tabular', valueTone !== 'neutral' && CHANGE_TONE[valueTone])}>
+          {valueText ?? formatNumber(value, { decimals, signed })}
+        </span>
         <span className="text-body text-ink-muted">{unit}</span>
       </p>
       {change && <p className={cn('text-small font-bold', CHANGE_TONE[changeTone])}>{change}</p>}
