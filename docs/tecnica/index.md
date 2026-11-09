@@ -18,12 +18,13 @@ Las migraciones y la CLI se ejecutan **dentro del contenedor `api`**: ahí `DATA
 
 ## Páginas generadas
 
-Dos páginas se generan con scripts y la CI falla si no están al día:
+Tres páginas se generan con scripts y la CI falla si no están al día:
 
 | Página | Script | Se regenera cuando cambia |
 | --- | --- | --- |
 | `docs/tecnica/referencias.md` | `scripts/referencias.py` | Cualquier `.md` (reglas, pendientes, decisiones o una cita nueva) |
 | `docs/usuario/inventario/index.md` | `scripts/inventario.py` | Una página del inventario o las rutas del frontend |
+| `docs/diario/index.md` | `scripts/diario.py` | Una entrada del diario (su encabezado) |
 
 El hook `.githooks/pre-commit` las regenera y las agrega al mismo commit, sin hacer nada a mano. Se activa una vez por copia del repositorio con `git config core.hooksPath .githooks`. Sin el hook, hay que correr los scripts antes del commit; si se olvida, la CI lo avisa.
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 # Regenera las páginas generadas antes de cada commit y las agrega al mismo commit,
 # para que la CI no falle por olvidarlo (DOC-02, T-20).
+#   docs/diario/index.md               <- scripts/diario.py      (si cambia una entrada del diario)
 #   docs/tecnica/referencias.md        <- scripts/referencias.py (si cambia cualquier .md)
 #   docs/usuario/inventario/index.md   <- scripts/inventario.py  (si cambia el inventario o las rutas)
 # Se activa una vez por copia del repositorio:  git config core.hooksPath .githooks
@@ -13,6 +14,12 @@ if [ -z "$PY" ]; then
 fi
 
 changed=$(git diff --cached --name-only --diff-filter=ACMRD)
+
+# El índice del diario va primero: referencias.py también lee docs/diario/index.md.
+if echo "$changed" | grep -qE '^docs/diario/|^scripts/diario\.py$'; then
+  "$PY" scripts/diario.py >/dev/null
+  git add docs/diario/index.md
+fi
 
 if echo "$changed" | grep -qE '\.md$|^scripts/referencias\.py$'; then
   "$PY" scripts/referencias.py >/dev/null

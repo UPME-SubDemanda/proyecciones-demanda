@@ -33,7 +33,7 @@ frontend/     React: src/zones/{app,portal,pantalla}, src/components, src/estand
 pipelines/    Flujos de Prefect (flows/), lógica pura (lib/), horarios (deployments.py)
 reglas/       Copia de las reglas de upme-estandares (no editar)
 docs/         usuario/ (pública) · tecnica/ (privada) · diario/ · decisiones/ · producto/
-scripts/      lint_design.py · check_changelog.py · inventario.py · referencias.py · reporte.py
+scripts/      lint_design.py · check_changelog.py · inventario.py · referencias.py · diario.py · reporte.py
 ```
 
 ## Comandos
@@ -56,4 +56,4 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 5. **Base de datos**: cambios solo con migraciones de Alembic; esquemas raw/staging/core/publicacion/auth (BD-03, BD-04).
 6. **Si una regla no encaja o falta una**: detente y pregunta. Propón un ADR (en el proyecto si es propio de esta app, o en `upme-estandares` si es general). Anota lo no resuelto en `docs/pendientes.md`.
 7. Interfaz y documentación en español de Colombia; código en inglés.
-8. **Páginas generadas**: `docs/tecnica/referencias.md` y `docs/usuario/inventario/index.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/referencias.py` e `scripts/inventario.py` antes de cada commit que toque Markdown o rutas.
+8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md` y `docs/diario/index.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py` e `scripts/inventario.py` antes de cada commit que toque Markdown o rutas.

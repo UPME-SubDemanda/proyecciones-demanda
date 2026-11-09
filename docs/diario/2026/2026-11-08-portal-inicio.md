@@ -32,4 +32,5 @@ El portal y el modo pantalla son clave para presentar el proyecto (etapa 1.1). C
 - ECharts por módulos (`echarts/core`); `ChartCard` con barra de acciones y tamaño táctil; modo `compact` del gráfico en teléfonos.
 - Nuevo indicador ilustrativo `useAccuracy` en la capa de datos.
 - Capturas de Playwright en escritorio y móvil; `BASE_URL` para capturar contra otro servidor.
+- Índice del diario: `scripts/diario.py` genera la lista de entradas en `docs/diario/index.md` (hook y CI, como el inventario y las referencias). Se corrigen el PR de la entrada de referencias (#11) y el de la entrada de arranque (no tuvo PR).
 - Pendientes: X-11 (logo de GOV.CO, datos de contacto, enlaces legales y redes) y nuevo X-14 (definición del acierto, cifras principales y licencia de los datos).
