@@ -71,7 +71,7 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 
 ## Íconos locales
 
-`src/iconos-locales/` guarda íconos de la Librería de Iconos UPME que el proyecto necesitó antes de que estén en el estándar (pantalla completa, chevrones y, provisionalmente, `Stop` y `send` para detener y reanudar la rotación). Se usan solo a través de `lib/icons.ts`; su origen está en `iconos.json`. Llevarlos al estándar y pedir los íconos de pausa y reproducir: X-17.
+`src/iconos-locales/` guarda íconos que el proyecto necesitó antes de que estén en el estándar: pantalla completa y chevrones (de la Librería de Iconos UPME) y pausa y reproducir (**creados en el proyecto**, con el estilo de la librería, porque no existen en ella; excepción a UPME-ICO-01 aprobada por el líder en #15). Se usan solo a través de `lib/icons.ts`; el detalle está en `src/iconos-locales/LEEME.md` y el origen en `iconos.json`. Llevarlos al estándar: X-17.
 
 ## Salir de cada vista
 

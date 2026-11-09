@@ -19,8 +19,8 @@ import Check from '../estandares/iconos/check.svg?react';
 import Energia from '../estandares/iconos/Energia.svg?react';
 import GasNatural from '../estandares/iconos/gasNatural.svg?react';
 // Locales, pendientes de pasar al estándar (src/iconos-locales/LEEME.md, X-17).
-import Stop from '../iconos-locales/Stop.svg?react';
-import Send from '../iconos-locales/send.svg?react';
+import Pause from '../iconos-locales/pause.svg?react';
+import Play from '../iconos-locales/play.svg?react';
 import FullScreen from '../iconos-locales/fullScreen.svg?react';
 import ChevronLeft from '../iconos-locales/chevron-lef.svg?react';
 import ChevronRight from '../iconos-locales/chevron-right.svg?react';
@@ -42,8 +42,8 @@ export const icons = {
   ok: Check,
   ee: Energia,
   gn: GasNatural,
-  pauseRotation: Stop, // provisional: la librería no tiene «pausa» (X-17)
-  resumeRotation: Send, // provisional: la librería no tiene «reproducir» (X-17)
+  pauseRotation: Pause, // creado en el proyecto: la librería no tiene «pausa» (X-17)
+  resumeRotation: Play, // creado en el proyecto: la librería no tiene «reproducir» (X-17)
   fullscreen: FullScreen,
   previous: ChevronLeft,
   next: ChevronRight,

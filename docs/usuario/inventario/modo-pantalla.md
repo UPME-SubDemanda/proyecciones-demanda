@@ -73,7 +73,7 @@ Los controles del encabezado son íconos; al dejar el cursor encima, cada uno di
 | Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, 2015–2035. |
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
-| Ícono de mano / triángulo (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
+| Ícono de pausa / reproducir (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
 | Ícono de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
 | Ícono de casa (Volver al inicio) | Sale del modo pantalla y vuelve al inicio del portal. |
 
