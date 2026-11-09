@@ -25,6 +25,7 @@ const views: View[] = [
   { id: 'modo-pantalla-comparar-proyecciones', path: '/pantalla?tableros=comparar&intervalo=60', viewport: { width: 1920, height: 1080 } },
   { id: 'modo-pantalla-el-sistema-hoy', path: '/pantalla?tableros=sistema&intervalo=60', viewport: { width: 1920, height: 1080 } },
   { id: 'tablero-ejecutivo', path: '/app', session: true, tablet: true, viewport: { width: 1280, height: 800 } },
+  { id: 'historico-revisiones', path: '/app/proyecciones/historico?revision=2023-07', session: true, viewport: { width: 1280, height: 800 } },
 ];
 
 async function open(page: Page, v: View) {

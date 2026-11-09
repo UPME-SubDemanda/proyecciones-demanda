@@ -4,10 +4,11 @@ Una entrada por PR unido a `develop` (DOC-05), en `AAAA/AAAA-MM-DD-<slug>.md`. R
 
 Lista generada por `scripts/diario.py` desde el encabezado de cada entrada. No editar a mano.
 
-## Entradas (11)
+## Entradas (12)
 
 | Fecha | Entrada | Tipo | Vistas | Features | Issue | PR |
 | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-09 | [Historico revisiones](2026/2026-11-09-historico-revisiones.md) | agrega | historico-revisiones | historico-revisiones | [#21](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/21) | [#22](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/22) |
 | 2026-11-09 | [Tablero ejecutivo](2026/2026-11-09-tablero-ejecutivo.md) | agrega | tablero-ejecutivo, app-inicio | tablero-ejecutivo | [#19](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/19) | [#20](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/20) |
 | 2026-11-08 | [App interna](2026/2026-11-08-app-interna.md) | agrega | app-inicio, portal-inicio | app-interna | [#17](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/17) | [#18](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/18) |
 | 2026-11-08 | [Modo pantalla](2026/2026-11-08-modo-pantalla.md) | agrega | modo-pantalla, portal-inicio | modo-pantalla | [#15](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/15) | [#16](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/16) |

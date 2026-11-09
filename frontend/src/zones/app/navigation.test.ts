@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeItem, NAVIGATION, visibleNavigation, type NavGroup } from './navigation';
+import { activeItem, activeLocation, NAVIGATION, visibleNavigation, type NavGroup } from './navigation';
 
 const user = (roles: string[]) => ({ id: 1, email: 'a@upme.gov.co', name: 'A', roles });
 
@@ -16,9 +16,13 @@ const groups: NavGroup[] = [
 ];
 
 describe('menú lateral (LAY-06, UX-08)', () => {
-  it('hoy solo muestra Inicio', () => {
+  it('hoy muestra Inicio y el histórico de revisiones', () => {
     const visible = visibleNavigation(user(['viewer']));
-    expect(visible.flatMap((g) => g.items).map((i) => i.label)).toEqual(['Inicio']);
+    expect(visible.flatMap((g) => g.items).map((i) => i.label)).toEqual(['Inicio', 'Histórico de revisiones']);
+  });
+  it('ubicación con grupo para el encabezado', () => {
+    expect(activeLocation('/app/proyecciones/historico', groups)).toBe('Proyecciones / Histórico');
+    expect(activeLocation('/app', groups)).toBe('Inicio');
   });
   it('oculta lo no construido y los grupos vacíos', () => {
     const v = visibleNavigation(user(['viewer']), groups);

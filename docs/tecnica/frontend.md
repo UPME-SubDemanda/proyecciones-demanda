@@ -37,6 +37,7 @@ frontend/
 | `AppShell` | LAY-01, LAY-03, LAY-04, LAY-08 | Esqueleto de la app: `SideNav` de 240 px en `surface-sunken`, encabezado con ubicación y controles y franja `brand` de 4 px; bajo 1024 px el menú se abre con «Menú» como panel (Esc o tocar fuera lo cierra) |
 | `Banner` | CMP, UX-05, A11-05 | Aviso de alerta alta: ícono + título con cifra + detalle + acción; máximo uno por vista; `role="alert"` |
 | `AlertItem` | CMP, PRI-04, A11-05 | Fila de alerta: barra de severidad (alta `critical`, media `warning`, baja `info`) con la severidad también en texto, título con cifra, producto, tipo y fecha, acción hacia la causa |
+| `DataTable` | CMP, CON-04 | Encabezado `surface-sunken`, cifras a la derecha tabulares, fila vigente `primary-soft`, fila elegida enmarcada, orden por columna (`aria-sort`, vacíos al final), paginación de 25; columnas con `render`, `sortValue`, `numeric` y `rowHeader` |
 | `UserMenu` | A11-03 | Nombre, correo y roles; «Ir al portal público» y «Cerrar sesión»; `aria-expanded`, se cierra con Esc o al tocar fuera |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
@@ -47,7 +48,7 @@ Gráficos reutilizables en `components/charts/`:
 - `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. `ytdPoint` marca el año corrido con su cifra (marca hueca sobre la línea real). Las claves de tamaño del modo pantalla se agregan solo con `kiosk`: pasar `axisLabel: undefined` borra las etiquetas que pone el tema. Con `compact` reduce márgenes en teléfonos; con `kiosk`, líneas de 3,5 px y textos grandes. `scenarios` elige los escenarios visibles (bajo y alto juntos = banda; uno solo = línea punteada fina) y `range` recorta los años.
 - `kioskCharts.ts`: desviación mensual en barras con signo (GRA-03); abanico de revisiones con la paleta `chart.series` y la vigente discontinua y más gruesa (GRA-06); demanda diaria frente al año anterior; barras diarias de un producto desde cero (GRA-07).
 
-Faltan componentes del inventario que llegan con su vista: `DataTable` y `Stepper`.
+Falta del inventario: `Stepper` (asistentes, fase 2).
 
 ## Datos: un solo punto de acceso
 
@@ -88,6 +89,14 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 - `zones/app/ExecutiveDashboard.tsx` es el inicio de la app (`/app`, ruta índice dentro de `AppLayout`). Los cálculos propios están en `zones/app/dashboardData.ts` (rango de años `?rango=5|10|todo`, estimado del año corrido) y los compartidos con el modo pantalla en `lib/insights.ts` (título con hallazgo, crecimiento promedio, desde qué mes está fuera de umbral).
 - Datos: `useObservedSeries`, `useRevisions`, `useRevisionValues` (vigente y dos anteriores), `useRevisionPerformance` y `useAlerts` (alertas de ejemplo; reglas pendientes, X-03 y X-10).
 - Acciones sin destino todavía (informe, alertas, monitor, desempeño): `Button` con `disabledReason`, que se muestra al pasar el cursor.
+
+## Histórico de revisiones (T-10)
+
+- `zones/app/RevisionHistory.tsx` en `/app/proyecciones/historico` (ruta hija de `/app`). Escenario (`?escenario=`) y revisión resaltada (`?revision=`) en la URL.
+- `components/charts/historyChart.ts`: abanico de revisiones con la vigente discontinua, la seleccionada en `primary` y las demás finas; tooltip con proyectado, real y error con signo; `historyTitle()` arma el hallazgo con el error a 12 meses de cada revisión.
+- `lib/cssVar.ts` lee un token CSS (p. ej. `--primary`) para los colores que el tema de ECharts no trae, sin escribir valores en el código (TOK-02).
+- El encabezado muestra «Grupo / Vista» (`activeLocation()` en `navigation.ts`).
+- Datos: `useRevisionsValues` y `useRevisionsPerformance` (error a 12 meses `error12` y MAPE por revisión).
 
 ## Íconos locales
 

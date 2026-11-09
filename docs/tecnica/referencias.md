@@ -1156,7 +1156,7 @@ Etapa: 1 · Depende de: T-05 · Issue: #17 · PR: #18
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-09 · En curso {#t-09}
+### T-09 · Hecho {#t-09}
 
 Tablero ejecutivo
 
@@ -1164,11 +1164,11 @@ Etapa: 1 · Depende de: T-08 · Issue: #19 · PR: #20
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-10 · Pendiente {#t-10}
+### T-10 · En curso {#t-10}
 
 Histórico de revisiones
 
-Etapa: 1 · Depende de: T-08 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #21 · PR: #22
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 

@@ -65,6 +65,8 @@ export type RevisionPerformance = {
   yearToDate: number; // % real vs. proyectado en el año corrido
   threshold: number; // ± % aceptable (X-03)
   mape12: number; // error medio absoluto a 12 meses, %
+  /** Error con signo de los 12 meses siguientes a la publicación, % (positivo = sobreestimó). `null` si aún no hay 12 meses. */
+  error12: number | null;
 };
 
 /**

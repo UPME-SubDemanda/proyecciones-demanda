@@ -7,7 +7,7 @@ import { SegmentedControl } from '../../components/SegmentedControl/SegmentedCon
 import { UserMenu } from '../../components/UserMenu/UserMenu';
 import { icons } from '../../lib/icons';
 import { PRODUCT_KEYS, PRODUCT_PARAM, PRODUCTS, useProduct } from '../../lib/product';
-import { activeItem, visibleNavigation } from './navigation';
+import { activeItem, activeLocation, visibleNavigation } from './navigation';
 
 export const APP_NAME = 'Proyecciones de demanda';
 
@@ -38,7 +38,7 @@ export function AppLayout() {
       groups={groups}
       activePath={active?.path}
       search={`?${PRODUCT_PARAM}=${product.key}`}
-      location={active?.label ?? 'Inicio'}
+      location={activeLocation(location.pathname, groups)}
       controls={
         <>
           <SegmentedControl

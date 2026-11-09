@@ -61,6 +61,11 @@ const MAPE: Record<ProductKey, number[]> = {
   ee: [2.3, 1.9, 1.6, 1.7, 1.4, 2.1],
   gn: [2.0, 1.8, 1.5, 1.6, 1.2, 1.4],
 };
+/** Error con signo a 12 meses (positivo = sobreestimó); la vigente aún no tiene 12 meses. Como el mockup. */
+const ERROR12: Record<ProductKey, (number | null)[]> = {
+  ee: [1.8, 1.0, 0.8, 1.2, -0.9, null],
+  gn: [1.2, 0.9, -0.4, 0.6, 0.3, null],
+};
 
 function revisionId(product: ProductKey, index: number): number {
   return (product === 'ee' ? 100 : 200) + index;
@@ -132,6 +137,7 @@ export function demoRevisionPerformance(id: number): RevisionPerformance {
     yearToDate: round(ytd.reduce((s, p) => s + p.value, 0) / ytd.length, 1),
     threshold: product === 'ee' ? 1.5 : 2,
     mape12: MAPE[product][id % 100],
+    error12: ERROR12[product][id % 100],
   };
 }
 

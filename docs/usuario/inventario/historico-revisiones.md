@@ -2,27 +2,58 @@
 id: historico-revisiones
 titulo: Histórico de revisiones
 zona: app
-ruta: /app/proyecciones/revisiones
+ruta: /app/proyecciones/historico
 roles: [viewer, modeler, approver, admin]
-estado: diseno
-version_desde: —
+estado: desarrollo
+version_desde: 0.1.0
 diseno: docs/tecnica/mockups/historico-revisiones.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/historico-revisiones.png]
-actualizado: 2026-11-08
+actualizado: 2026-11-09
 ---
 
 # Histórico de revisiones
 
-> Etapa 1 · Diseño aprobado el 2026-11-08. La página se completa al desarrollar la vista.
+!!! warning "Cifras ilustrativas"
+    Mientras se cargan las revisiones oficiales, las cifras son de ejemplo y lo dicen junto al gráfico.
+
+![Histórico de revisiones](../capturas/historico-revisiones.png)
 
 ## Para qué sirve
-Todas las revisiones publicadas: abanico frente al dato real, tabla con fecha de corte, modelo y error.
+Muestra **todas las revisiones publicadas** de un producto, cómo cambiaron con el tiempo y **qué tan acertada fue cada una** frente al dato real. Sirve para explicar la evolución de las proyecciones y para descargar cualquier revisión.
 
 ## Cómo llegar
-`/app/proyecciones/revisiones`
+Menú lateral: **Proyecciones › Histórico de revisiones**, o `/app/proyecciones/historico`.
 
 ## Qué muestra
+- **Gráfico:** el dato real (línea negra), cada revisión publicada en línea fina gris, la vigente discontinua y la revisión que usted elija resaltada en azul. El título resume qué tan acertadas fueron.
+- **Tabla de revisiones publicadas:** revisión, versión del modelo, estado (Vigente o Histórica), horizonte, fecha de corte de los datos, error en los 12 meses siguientes a su publicación (positivo: sobreestimó), error medio (MAPE) y archivos. La vigente aparece resaltada; aún no tiene 12 meses para medir su error.
+- **Aviso:** las revisiones publicadas no se editan; se corrigen con una revisión nueva.
+
 ## Cómo se usa (paso a paso)
+1. Elija el producto en el encabezado y el escenario (**Bajo**, **Medio** o **Alto**) sobre el gráfico.
+2. Toque una fila de la tabla para resaltar esa revisión en el gráfico; tóquela otra vez para quitarla.
+3. Pase el cursor sobre el gráfico: para cada año ve lo proyectado, lo real y el error de la revisión resaltada (o de la vigente).
+4. Busque por revisión («jul-2023») o por versión del modelo («v3.2»).
+5. Toque el título de una columna para ordenar la tabla.
+6. Descargue una revisión con **Datos**, o todas con **Descargar todas**.
+
 ## Filtros y opciones
+| Opción | Qué hace |
+| --- | --- |
+| Bajo / Medio / Alto | Escenario de todas las revisiones en el gráfico (`?escenario=high`). |
+| Fila de la tabla | Resalta la revisión en el gráfico (`?revision=2023-07`). |
+| Buscar | Filtra la tabla por revisión o modelo. |
+| Descargar todas | CSV con todas las revisiones y escenarios. |
+| Datos | CSV con los tres escenarios de esa revisión. |
+| Comparar seleccionadas | **En construcción** (vista Comparar revisiones); las casillas ya permiten elegir. |
+| Documento | **Por cargar**: el documento oficial de cada revisión. |
+
 ## Preguntas frecuentes
+**¿Qué significa «Error 12 meses»?** Cuánto se alejó la revisión de la demanda real en el año siguiente a su publicación. Positivo: proyectó más de lo que pasó (sobreestimó).
+
+**¿Qué es el MAPE?** El error medio absoluto en porcentaje: cuánto se equivocó en promedio, sin importar el signo. Menos es mejor.
+
+**¿Puedo corregir una revisión?** No se editan. Una corrección se publica como una revisión nueva, que queda en este historial.
+
 ## Historial
+- 2026-11-09: primera versión con cifras ilustrativas (diario técnico: `2026-11-09-historico-revisiones`).
