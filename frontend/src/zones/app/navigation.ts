@@ -34,7 +34,7 @@ export const NAVIGATION: NavGroup[] = [
   },
   {
     label: 'Variables',
-    items: [{ label: 'Monitor de exógenas', path: '/app/exogenas', icon: 'exogenous', built: false, step: 'T-11' }],
+    items: [{ label: 'Monitor de exógenas', path: '/app/variables/exogenas', icon: 'exogenous', built: true, step: 'T-11' }],
   },
   {
     label: 'Modelos',
@@ -59,6 +59,12 @@ export function visibleNavigation(user: User | null, groups: NavGroup[] = NAVIGA
   return groups
     .map((g) => ({ ...g, items: g.items.filter((i) => i.built && hasRole(user, i.role ?? 'viewer')) }))
     .filter((g) => g.items.length > 0);
+}
+
+/** La vista de una ruta (con o sin consulta) ya existe: sirve para habilitar enlaces hacia ella, como los de las alertas. */
+export function isBuilt(target: string, groups: NavGroup[] = NAVIGATION): boolean {
+  const path = target.split('?')[0];
+  return groups.some((g) => g.items.some((i) => i.built && i.path === path));
 }
 
 /** Ítem activo para una ruta: el de la ruta más larga que la contiene. */

@@ -25,7 +25,7 @@ frontend/
 | `Button` | CMP, CON-02, CMP-03, A11-07 | `primary` (máx. 1 por vista), `secondary`, `ghost`, `danger`; `sm` de 32 px, `touch` de 44 px para portal y modo pantalla; `href` lo vuelve enlace; `disabledReason` lo deshabilita con explicación |
 | `Badge`, `IllustrativeBadge` | CMP, A11-05, CON-07 | Estados y productos; `IllustrativeBadge` marca las cifras de ejemplo |
 | `ProductIcon` | CMP, UPME-ICO-02 | Círculo con el relleno del producto; `decorative` si el nombre ya está al lado |
-| `KpiCard` | CMP, PRI-02, CON-04 | Etiqueta, cifra con unidad (o `valueText` para una cifra en texto, como «ene-2026», con `valueTone`), variación con tono (`good`/`bad` solo si subir o bajar es bueno o malo), procedencia y «Cifras ilustrativas» |
+| `KpiCard` | CMP, PRI-02, CON-04 | Etiqueta, cifra con unidad (o `valueText` para una cifra en texto, como «ene-2026», con `valueTone`), variación con tono (`good`/`bad` solo si subir o bajar es bueno o malo; `warning` para lo que está en vigilancia), procedencia y «Cifras ilustrativas» |
 | `ChartCard` | CMP, GRA-02, GRA-08, UX-07 | Título con hallazgo, subtítulo, controles, acciones (datos CSV, imagen PNG, tabla, pantalla completa) y fuente; la tabla equivalente siempre está para lectores de pantalla |
 | `SegmentedControl` | CMP, A11-03, A11-07 | `aria-pressed`; `size="touch"` (44 px) en portal y modo pantalla |
 | `PublicHeader`, `GovcoBar` | CMP, UPME-LEG-01, LAY-04 | Barra GOV.CO de 48 px, logo, menú superior (solo vistas que existen) y franja `brand`; en móvil, botón «Menú». El logo oficial de GOV.CO está pendiente (X-11) |
@@ -38,6 +38,7 @@ frontend/
 | `Banner` | CMP, UX-05, A11-05 | Aviso de alerta alta: ícono + título con cifra + detalle + acción; máximo uno por vista; `role="alert"` |
 | `AlertItem` | CMP, PRI-04, A11-05 | Fila de alerta: barra de severidad (alta `critical`, media `warning`, baja `info`) con la severidad también en texto, título con cifra, producto, tipo y fecha, acción hacia la causa |
 | `DataTable` | CMP, CON-04 | Encabezado `surface-sunken`, cifras a la derecha tabulares, fila vigente `primary-soft`, fila elegida enmarcada, orden por columna (`aria-sort`, vacíos al final), paginación de 25; columnas con `render`, `sortValue`, `numeric` y `rowHeader` |
+| `Sparkline` | CMP, GRA-00, GRA-01, A11-04 | Tendencia en una celda de tabla con ECharts: observado sólido (`roles.real`) frente a una referencia punteada (`roles.scenario`), sin ejes ni tooltip; nombre accesible con las cifras. Se usa en el monitor de exógenas |
 | `UserMenu` | A11-03 | Nombre, correo y roles; «Ir al portal público» y «Cerrar sesión»; `aria-expanded`, se cierra con Esc o al tocar fuera |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
@@ -88,7 +89,7 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 
 - `zones/app/ExecutiveDashboard.tsx` es el inicio de la app (`/app`, ruta índice dentro de `AppLayout`). Los cálculos propios están en `zones/app/dashboardData.ts` (rango de años `?rango=5|10|todo`, estimado del año corrido) y los compartidos con el modo pantalla en `lib/insights.ts` (título con hallazgo, crecimiento promedio, desde qué mes está fuera de umbral).
 - Datos: `useObservedSeries`, `useRevisions`, `useRevisionValues` (vigente y dos anteriores), `useRevisionPerformance` y `useAlerts` (alertas de ejemplo; reglas pendientes, X-03 y X-10).
-- Acciones sin destino todavía (informe, alertas, monitor, desempeño): `Button` con `disabledReason`, que se muestra al pasar el cursor.
+- Acciones sin destino todavía (informe, alertas, desempeño): `Button` con `disabledReason`, que se muestra al pasar el cursor.
 
 ## Histórico de revisiones (T-10)
 
@@ -97,6 +98,15 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 - `lib/cssVar.ts` lee un token CSS (p. ej. `--primary`) para los colores que el tema de ECharts no trae, sin escribir valores en el código (TOK-02).
 - El encabezado muestra «Grupo / Vista» (`activeLocation()` en `navigation.ts`).
 - Datos: `useRevisionsValues` y `useRevisionsPerformance` (error a 12 meses `error12` y MAPE por revisión).
+
+## Monitor de variables exógenas (T-11)
+
+- `zones/app/ExogenousMonitor.tsx` en `/app/variables/exogenas`. Escenario (`?escenario=`) y variable del gráfico (`?variable=`) en la URL.
+- `zones/app/exogenousData.ts`: desvío frente al supuesto, estado según los umbrales (ilustrativos, X-03), cifras de los indicadores, variable por defecto y títulos con hallazgo (`monitorTitle()`, `correlationTitle()`). No calcula impactos ni correlaciones: llegan con los datos (etapa 1).
+- `components/charts/exogenousCharts.ts`: tendencia de la tabla (`Sparkline`), correlación móvil con banda del intervalo (`roles.products.<producto>.band`) y quiebre como `markArea` en `surface-sunken`, e importancia en barras horizontales ordenadas desde cero.
+- Datos: `useExogenousMonitor(product)` → `ExogenousMonitor` (tipos en `data/types.ts`). Campos que pidió la vista, para T-16: supuesto por escenario, observado del año corrido, impacto por escenario, correlación del periodo de estimación, umbrales de vigilancia y fuera de rango, tendencia, correlación móvil con intervalo, mes del quiebre e importancia SHAP del modelo.
+- Las unidades largas van en la línea de la fuente (`unitInCell()`), para que la tabla quepa a 1280 px.
+- Las acciones de las alertas del tablero ejecutivo se habilitan cuando su vista existe (`isBuilt()` en `navigation.ts`) y llevan el producto de la alerta.
 
 ## Íconos locales
 

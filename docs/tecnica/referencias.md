@@ -1164,7 +1164,7 @@ Etapa: 1 · Depende de: T-08 · Issue: #19 · PR: #20
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-10 · En curso {#t-10}
+### T-10 · Hecho {#t-10}
 
 Histórico de revisiones
 
@@ -1172,11 +1172,11 @@ Etapa: 1 · Depende de: T-08 · Issue: #21 · PR: #22
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-11 · Pendiente {#t-11}
+### T-11 · En curso {#t-11}
 
 Monitor de variables exógenas
 
-Etapa: 1 · Depende de: T-08 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #25 · PR: #26
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeItem, activeLocation, NAVIGATION, visibleNavigation, type NavGroup } from './navigation';
+import { activeItem, activeLocation, isBuilt, NAVIGATION, visibleNavigation, type NavGroup } from './navigation';
 
 const user = (roles: string[]) => ({ id: 1, email: 'a@upme.gov.co', name: 'A', roles });
 
@@ -16,9 +16,9 @@ const groups: NavGroup[] = [
 ];
 
 describe('menú lateral (LAY-06, UX-08)', () => {
-  it('hoy muestra Inicio y el histórico de revisiones', () => {
+  it('hoy muestra Inicio, el histórico de revisiones y el monitor de exógenas', () => {
     const visible = visibleNavigation(user(['viewer']));
-    expect(visible.flatMap((g) => g.items).map((i) => i.label)).toEqual(['Inicio', 'Histórico de revisiones']);
+    expect(visible.flatMap((g) => g.items).map((i) => i.label)).toEqual(['Inicio', 'Histórico de revisiones', 'Monitor de exógenas']);
   });
   it('ubicación con grupo para el encabezado', () => {
     expect(activeLocation('/app/proyecciones/historico', groups)).toBe('Proyecciones / Histórico');
@@ -39,4 +39,10 @@ describe('menú lateral (LAY-06, UX-08)', () => {
     expect(NAVIGATION.map((g) => g.label ?? g.items[0].label)).toEqual([
       'Inicio', 'Proyecciones', 'Variables', 'Modelos', 'Operación', 'Datos y documentación', 'Administración',
     ]));
+
+  it('vista construida con o sin consulta en la ruta (enlaces de las alertas)', () => {
+    expect(isBuilt('/app/variables/exogenas?variable=gdp')).toBe(true);
+    expect(isBuilt('/app/proyecciones/vs-real')).toBe(false);
+    expect(isBuilt('/app/no-existe')).toBe(false);
+  });
 });

@@ -11,7 +11,7 @@ Generado por `scripts/inventario.py`. No editar a mano.
 | [Histórico de revisiones](historico-revisiones.md) | app | `/app/proyecciones/historico` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-09 |
 | [Ingresar](ingresar.md) | portal | `/ingresar` | [publico] | desarrollo | 2026-11-07 |
 | [Modo pantalla](modo-pantalla.md) | pantalla | `/pantalla` | [publico] | desarrollo | 2026-11-08 |
-| [Monitor de variables exógenas](monitor-exogenas.md) | app | `/app/variables/exogenas` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |
+| [Monitor de variables exógenas](monitor-exogenas.md) | app | `/app/variables/exogenas` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-09 |
 | [Inicio del portal](portal-inicio.md) | portal | `/` | [publico] | desarrollo | 2026-11-08 |
 | [Proyección vs. real](proyeccion-vs-real.md) | app | `/app/proyecciones` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |
 | [Registro de modelos](registro-modelos.md) | app | `/app/modelos` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |

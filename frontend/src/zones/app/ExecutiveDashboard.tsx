@@ -18,6 +18,7 @@ import { icons } from '../../lib/icons';
 import { deviationTitle, outOfThresholdSince, sinceText } from '../../lib/insights';
 import { PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
 import { AppPage } from './AppPage';
+import { isBuilt } from './navigation';
 import { parseRange, RANGE_LABEL, RANGES, rangeYears, yearToDateEstimate, type RangeKey } from './dashboardData';
 
 const IN_PROGRESS = 'En construcción';
@@ -229,7 +230,15 @@ export function ExecutiveDashboard() {
                   product={a.product}
                   title={a.title}
                   meta={`${a.type} · ${formatDate(a.date)}`}
-                  action={<Button size="sm" disabledReason={`${a.action.label}: la vista está en construcción`}>{a.action.label}</Button>}
+                  action={
+                    <Button
+                      size="sm"
+                      href={`${a.action.target}${a.action.target.includes('?') ? '&' : '?'}producto=${a.product}`}
+                      disabledReason={isBuilt(a.action.target) ? undefined : `${a.action.label}: la vista está en construcción`}
+                    >
+                      {a.action.label}
+                    </Button>
+                  }
                 />
               </li>
             ))}

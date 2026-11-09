@@ -3,8 +3,8 @@ import { ILLUSTRATIVE_LABEL } from '../Badge/Badge';
 import { cn } from '../../lib/cn';
 import { formatNumber } from '../../lib/format';
 
-/** `good`/`bad` solo cuando subir o bajar es bueno o malo (CMP: KpiCard). */
-export type KpiTone = 'neutral' | 'good' | 'bad';
+/** `good`/`bad` solo cuando subir o bajar es bueno o malo; `warning` para lo que está en vigilancia (CMP: KpiCard). */
+export type KpiTone = 'neutral' | 'good' | 'warning' | 'bad';
 
 type Props = {
   label: string;
@@ -30,6 +30,7 @@ type Props = {
 const CHANGE_TONE: Record<KpiTone, string> = {
   neutral: 'text-ink-muted',
   good: 'text-success',
+  warning: 'text-warning',
   bad: 'text-critical',
 };
 

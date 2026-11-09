@@ -6,7 +6,7 @@
  */
 import type { ProductKey } from '../lib/product';
 import type {
-  Accuracy, Alert, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario, SystemToday,
+  Accuracy, Alert, ExogenousMonitor, ExogenousMonitorVariable, ExogenousVariable, Frequency, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario, SystemToday,
 } from '../data/types';
 
 const FIRST_YEAR = 2010;
@@ -181,7 +181,7 @@ export function demoAlerts(): Alert[] {
     {
       id: 'a-1', severity: 'high', product: 'ee', type: 'Exógena vs. supuesto', date: '2026-10-14',
       title: 'PIB observado 1,8 % vs. supuesto 3,0 % (escenario medio)',
-      action: { label: 'Ver variable', target: '/app/exogenas' },
+      action: { label: 'Ver variable', target: '/app/variables/exogenas?variable=gdp' },
     },
     {
       id: 'a-2', severity: 'high', product: 'ee', type: 'Desempeño', date: '2026-10-06',
@@ -191,7 +191,7 @@ export function demoAlerts(): Alert[] {
     {
       id: 'a-3', severity: 'medium', product: 'gn', type: 'Evento climático', date: '2026-10-10',
       title: 'Probabilidad de El Niño 62 % para el próximo trimestre',
-      action: { label: 'Ver monitor', target: '/app/exogenas' },
+      action: { label: 'Ver monitor', target: '/app/variables/exogenas?variable=oni' },
     },
   ];
 }
@@ -225,4 +225,136 @@ export function demoExogenous(): ExogenousVariable[] {
       points: years.map((y) => ({ period: String(y), value: round(wobble(y * 2.3, 1.4), 1) })),
     },
   ];
+}
+
+type MonitorSpec = {
+  code: string;
+  name: string;
+  source: string;
+  frequency: Frequency;
+  unit: string;
+  deviationUnit: string;
+  assumption: [number, number, number]; // bajo, medio, alto
+  observed: number;
+  /** % de demanda por unidad de desvío: el impacto ilustrativo es desvío × elasticidad. */
+  elasticity: number;
+  correlation: number;
+  threshold: [number, number]; // vigilancia, fuera de rango
+  /** Mes desde el que la correlación móvil cae (quiebre ilustrativo) y cuánto cae. */
+  drop?: { from: string; by: number };
+};
+
+/**
+ * Monitor de exógenas como el mockup aprobado: en energía eléctrica, 14 variables; el PIB fuera de rango,
+ * ONI, temperatura y autogeneración solar en vigilancia, y un impacto total de −0,3 % en el escenario medio.
+ */
+const MONITOR: Record<ProductKey, MonitorSpec[]> = {
+  ee: [
+    { code: 'gdp', name: 'PIB total', source: 'DANE', frequency: 'trimestral', unit: '%', deviationUnit: 'pp', assumption: [2.2, 3.0, 3.8], observed: 1.8, elasticity: 0.58, correlation: 0.82, threshold: [0.5, 1.0], drop: { from: '2025-01', by: 0.17 } },
+    { code: 'oni', name: 'Índice ONI (ENSO)', source: 'NOAA', frequency: 'mensual', unit: '', deviationUnit: '', assumption: [0.0, 0.3, 0.6], observed: 0.6, elasticity: 1.33, correlation: 0.41, threshold: [0.2, 0.5] },
+    { code: 'temperature', name: 'Temperatura media', source: 'IDEAM', frequency: 'mensual', unit: '°C', deviationUnit: '°C', assumption: [23.9, 24.1, 24.3], observed: 24.4, elasticity: 1.0, correlation: 0.57, threshold: [0.2, 0.5] },
+    { code: 'industry', name: 'Producción industrial', source: 'DANE', frequency: 'mensual', unit: '%', deviationUnit: 'pp', assumption: [1.8, 2.5, 3.2], observed: 2.3, elasticity: 0.5, correlation: 0.64, threshold: [0.5, 1.0] },
+    { code: 'population', name: 'Población', source: 'DANE', frequency: 'anual', unit: '%', deviationUnit: 'pp', assumption: [1.0, 1.1, 1.2], observed: 1.1, elasticity: 0.9, correlation: 0.93, threshold: [0.1, 0.2] },
+    { code: 'solar', name: 'Autogeneración solar', source: 'UPME', frequency: 'mensual', unit: 'MW', deviationUnit: 'MW', assumption: [380, 420, 470], observed: 510, elasticity: -0.0022, correlation: -0.38, threshold: [50, 150] },
+    { code: 'cpi', name: 'Inflación (IPC)', source: 'DANE', frequency: 'mensual', unit: '%', deviationUnit: 'pp', assumption: [4.5, 4.0, 3.5], observed: 4.2, elasticity: 0.5, correlation: 0.12, threshold: [0.5, 1.0] },
+    { code: 'fx', name: 'Tasa de cambio (TRM)', source: 'Banco de la República', frequency: 'diaria', unit: 'COP/USD', deviationUnit: 'COP/USD', assumption: [4300, 4100, 3900], observed: 4020, elasticity: 0.00125, correlation: -0.21, threshold: [150, 300] },
+    { code: 'rainfall', name: 'Lluvias frente a lo normal', source: 'IDEAM', frequency: 'mensual', unit: '%', deviationUnit: 'pp', assumption: [95, 100, 105], observed: 102, elasticity: 0.01, correlation: -0.33, threshold: [10, 20] },
+    { code: 'ev', name: 'Vehículos eléctricos', source: 'RUNT', frequency: 'mensual', unit: 'mil', deviationUnit: 'mil', assumption: [9, 10, 11], observed: 11.2, elasticity: 0.08, correlation: 0.29, threshold: [2, 4] },
+    { code: 'households', name: 'Usuarios residenciales', source: 'SUI', frequency: 'mensual', unit: 'millones', deviationUnit: 'millones', assumption: [15.1, 15.2, 15.3], observed: 15.2, elasticity: 2, correlation: 0.88, threshold: [0.2, 0.4] },
+    { code: 'workdays', name: 'Festivos y días hábiles', source: 'Calendario oficial', frequency: 'anual', unit: 'días', deviationUnit: 'días', assumption: [247, 247, 247], observed: 247, elasticity: 0.1, correlation: 0.71, threshold: [1, 2] },
+    { code: 'brent', name: 'Precio del petróleo (Brent)', source: 'EIA', frequency: 'diaria', unit: 'USD/bbl', deviationUnit: 'USD/bbl', assumption: [65, 75, 85], observed: 68, elasticity: 0.015, correlation: 0.18, threshold: [10, 20] },
+    { code: 'retail', name: 'Comercio minorista', source: 'DANE', frequency: 'mensual', unit: '%', deviationUnit: 'pp', assumption: [2.0, 2.8, 3.5], observed: 2.6, elasticity: 0.1, correlation: 0.66, threshold: [0.5, 1.0] },
+  ],
+  gn: [
+    { code: 'thermal', name: 'Generación térmica a gas', source: 'XM', frequency: 'mensual', unit: 'GBTUD', deviationUnit: 'GBTUD', assumption: [250, 280, 310], observed: 365, elasticity: 0.009, correlation: 0.76, threshold: [30, 60], drop: { from: '2025-07', by: -0.1 } },
+    { code: 'oni', name: 'Índice ONI (ENSO)', source: 'NOAA', frequency: 'mensual', unit: '', deviationUnit: '', assumption: [0.0, 0.3, 0.6], observed: 0.6, elasticity: 0.67, correlation: 0.52, threshold: [0.2, 0.5] },
+    { code: 'gdp', name: 'PIB total', source: 'DANE', frequency: 'trimestral', unit: '%', deviationUnit: 'pp', assumption: [2.2, 3.0, 3.8], observed: 1.8, elasticity: 0.25, correlation: 0.61, threshold: [0.5, 1.0] },
+    { code: 'industry', name: 'Producción industrial', source: 'DANE', frequency: 'mensual', unit: '%', deviationUnit: 'pp', assumption: [1.8, 2.5, 3.2], observed: 2.3, elasticity: 0.5, correlation: 0.58, threshold: [0.5, 1.0] },
+    { code: 'households', name: 'Usuarios residenciales', source: 'SUI', frequency: 'mensual', unit: 'millones', deviationUnit: 'millones', assumption: [11.3, 11.4, 11.5], observed: 11.4, elasticity: 1.5, correlation: 0.84, threshold: [0.2, 0.4] },
+    { code: 'henryhub', name: 'Precio Henry Hub', source: 'EIA', frequency: 'diaria', unit: 'USD/MBTU', deviationUnit: 'USD/MBTU', assumption: [2.8, 3.4, 4.0], observed: 3.6, elasticity: -0.5, correlation: -0.27, threshold: [0.5, 1.0] },
+    { code: 'cng', name: 'Vehículos a gas (GNV)', source: 'RUNT', frequency: 'mensual', unit: 'mil', deviationUnit: 'mil', assumption: [640, 650, 660], observed: 647, elasticity: 0.01, correlation: 0.35, threshold: [10, 20] },
+    { code: 'temperature', name: 'Temperatura media', source: 'IDEAM', frequency: 'mensual', unit: '°C', deviationUnit: '°C', assumption: [23.9, 24.1, 24.3], observed: 24.4, elasticity: 0.3, correlation: 0.22, threshold: [0.2, 0.5] },
+    { code: 'fx', name: 'Tasa de cambio (TRM)', source: 'Banco de la República', frequency: 'diaria', unit: 'COP/USD', deviationUnit: 'COP/USD', assumption: [4300, 4100, 3900], observed: 4020, elasticity: 0.00125, correlation: -0.19, threshold: [150, 300] },
+    { code: 'population', name: 'Población', source: 'DANE', frequency: 'anual', unit: '%', deviationUnit: 'pp', assumption: [1.0, 1.1, 1.2], observed: 1.1, elasticity: 0.6, correlation: 0.9, threshold: [0.1, 0.2] },
+  ],
+};
+
+/** Importancia relativa (SHAP) del modelo de la revisión vigente, como el mockup. */
+const IMPORTANCE: Record<ProductKey, { name: string; share: number }[]> = {
+  ee: [
+    { name: 'Población', share: 31 }, { name: 'PIB total', share: 27 }, { name: 'Producción industrial', share: 16 },
+    { name: 'Temperatura media', share: 12 }, { name: 'Festivos y días hábiles', share: 8 }, { name: 'Índice ONI', share: 6 },
+  ],
+  gn: [
+    { name: 'Generación térmica a gas', share: 34 }, { name: 'PIB total', share: 22 }, { name: 'Usuarios residenciales', share: 18 },
+    { name: 'Índice ONI', share: 12 }, { name: 'Producción industrial', share: 9 }, { name: 'Precio Henry Hub', share: 5 },
+  ],
+};
+
+const SCENARIO_ORDER: Scenario[] = ['low', 'mid', 'high'];
+const MONTHS = Array.from({ length: 69 }, (_, i) => `${2021 + Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, '0')}`); // 2021-01 a 2026-09
+
+/** Redondea sin dejar «−0». */
+function r(value: number, decimals: number): number {
+  return round(value, decimals) + 0;
+}
+
+/** Últimos seis periodos en la frecuencia de la variable. */
+function trendPeriods(frequency: Frequency): string[] {
+  if (frequency === 'anual') return ['2021', '2022', '2023', '2024', '2025', '2026'];
+  if (frequency === 'trimestral') return ['2025-T2', '2025-T3', '2025-T4', '2026-T1', '2026-T2', '2026-T3'];
+  return MONTHS.slice(-6);
+}
+
+function monitorVariable(spec: MonitorSpec, index: number): ExogenousMonitorVariable {
+  const decimals = Math.abs(spec.observed) >= 100 ? 0 : 1;
+  const assumption = Object.fromEntries(SCENARIO_ORDER.map((s, i) => [s, spec.assumption[i]])) as Record<Scenario, number>;
+  const periods = trendPeriods(spec.frequency);
+  const start = assumption.mid;
+  const observedTrend = periods.map((period, k) => ({
+    period,
+    value: k === periods.length - 1
+      ? spec.observed
+      : r(start + (spec.observed - start) * (k / (periods.length - 1)) + wobble(k + index, spec.threshold[0] * 0.15), decimals),
+  }));
+  const breakIndex = spec.drop ? MONTHS.indexOf(spec.drop.from) : -1;
+  const rolling = MONTHS.map((period, i) => {
+    const base = Math.max(-0.95, Math.min(0.95, spec.correlation + Math.sin((i + index * 7) / 5) * 0.03));
+    const fall = spec.drop && i >= breakIndex ? spec.drop.by * ((i - breakIndex) / (MONTHS.length - 1 - breakIndex)) : 0;
+    const value = r(base - fall, 2);
+    const half = 0.06 + (spec.drop && i >= breakIndex ? 0.03 : 0);
+    return { period, value, low: r(Math.max(-1, value - half), 2), high: r(Math.min(1, value + half), 2) };
+  });
+  return {
+    code: spec.code,
+    name: spec.name,
+    source: spec.source,
+    frequency: spec.frequency,
+    unit: spec.unit,
+    deviationUnit: spec.deviationUnit,
+    assumption,
+    observed: spec.observed,
+    impact: Object.fromEntries(SCENARIO_ORDER.map((s) => [s, r((spec.observed - assumption[s]) * spec.elasticity, 1)])) as Record<Scenario, number>,
+    correlation: spec.correlation,
+    threshold: { watch: spec.threshold[0], out: spec.threshold[1] },
+    trend: {
+      observed: observedTrend,
+      assumption: Object.fromEntries(SCENARIO_ORDER.map((s) => [s, periods.map((period) => ({ period, value: assumption[s] }))])) as Record<Scenario, Point[]>,
+    },
+    rolling,
+    breakFrom: spec.drop?.from ?? null,
+  };
+}
+
+export function demoExogenousMonitor(product: ProductKey): ExogenousMonitor {
+  return {
+    product,
+    revisionCode: REVISION_CODES.at(-1)!,
+    model: MODEL[product].at(-1)!,
+    period: '2026',
+    cutoff: '2026-09',
+    demandSource: product === 'ee' ? 'XM' : 'Gestor del Mercado de Gas',
+    variables: MONITOR[product].map(monitorVariable),
+    importance: IMPORTANCE[product],
+  };
 }

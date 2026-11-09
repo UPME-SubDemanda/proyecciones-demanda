@@ -35,6 +35,11 @@ export function useExogenous() {
   return useQuery({ queryKey: ['exogenous'], queryFn: withOrigin(() => source.exogenous()) });
 }
 
+/** Monitor de exógenas del producto: supuestos de la revisión vigente frente a lo observado (T-11). */
+export function useExogenousMonitor(product: ProductKey) {
+  return useQuery({ queryKey: ['exogenous-monitor', product], queryFn: withOrigin(() => source.exogenousMonitor(product)) });
+}
+
 /** Acierto de las proyecciones publicadas (definición pendiente, X-14). */
 export function useAccuracy() {
   return useQuery({ queryKey: ['accuracy'], queryFn: withOrigin(() => source.accuracy()) });
