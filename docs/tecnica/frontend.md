@@ -32,7 +32,7 @@ frontend/
 | `Chip` | CMP, A11-03 | Filtros combinables; activo con `brand-soft` y borde `brand`; `size="touch"` |
 | `VersionSelect` | CMP, CMP-03 | `<select>` nativo con etiqueta; la vigente lleva «(vigente)» |
 | `RangeSlider` | CMP, CMP-03 | Dos `<input type="range">` con sus valores visibles; «desde» nunca supera «hasta» |
-| `KioskShell` | CMP, TV-01 a TV-08 | Escenario de 1920 × 1080 escalado, tema oscuro, rotación con barra de progreso, flechas, puntos, arrastre de 80 px, pausa por interacción de 30 s, reinicio de filtros a los 5 min, reloj, intervalo y pantalla completa. La lógica está en `rotation.ts`, sin React, con pruebas |
+| `KioskShell` | CMP, TV-01 a TV-08 | Escenario de 1920 × 1080 escalado, tema oscuro, rotación con barra de progreso, flechas, puntos, arrastre de 80 px, pausa por interacción de 30 s, reinicio de filtros a los 5 min, reloj, intervalo, pantalla completa (entrar y salir) y «Volver al inicio» (`exitHref`). La lógica está en `rotation.ts`, sin React, con pruebas |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
 
@@ -66,6 +66,12 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 | `lib/download.ts` | Nombre de archivo `{contexto}_{version}_{contenido}`, CSV con encabezado de fuente, versión, corte y licencia (UX-07). La licencia queda «por definir» hasta X-04 |
 | `lib/icons.ts` | Íconos de la marca por concepto (UPME-ICO-03) |
 | `lib/product.ts` | Producto activo en la URL (`?producto=ee`, LAY-07) con `useProduct()` |
+| `lib/useFullscreen.ts` | Entrar y salir de pantalla completa con el mismo botón («Pantalla completa» / «Salir de pantalla completa»); `exitFullscreen()` antes de navegar |
+| `lib/useMediaQuery.ts` | Media queries en React (`PHONE`, quiebres de LAY-08) |
+
+## Salir de cada vista
+
+Toda vista ofrece una salida clara: el modo pantalla tiene «Volver al inicio» (que también sale de la pantalla completa), y todo botón de pantalla completa cambia a «Salir de pantalla completa» mientras está activa. La tecla Esc del navegador también sale.
 
 ## Galería de componentes (solo desarrollo)
 

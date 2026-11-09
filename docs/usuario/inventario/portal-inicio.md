@@ -48,7 +48,7 @@ Es la página principal del sitio: `/`. También se llega desde cualquier págin
 | Descargar datos | Descarga un CSV con el dato real y los tres escenarios, con fuente, versión, fecha de corte y licencia. |
 | Descargar imagen | Descarga el gráfico como imagen PNG. |
 | Ver como tabla | Muestra los datos del gráfico en una tabla. |
-| Pantalla completa | Amplía el gráfico. |
+| Pantalla completa | Amplía el gráfico; el mismo botón dice **Salir de pantalla completa** para volver (también con la tecla Esc). |
 | Ver en modo pantalla → | Abre los tableros para televisores ([Modo pantalla](modo-pantalla.md)). Solo en pantallas de computador. |
 
 En el teléfono, el menú se abre con el botón **Menú**.

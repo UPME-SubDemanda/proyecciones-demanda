@@ -2,6 +2,7 @@ import { Fragment, useEffect, useId, useLayoutEffect, useRef, useState, type Rea
 import logoDarkUrl from '../../estandares/logos/upme-horizontal-blanco.svg';
 import { ILLUSTRATIVE_LABEL } from '../Badge/Badge';
 import { cn } from '../../lib/cn';
+import { exitFullscreen, useFullscreen } from '../../lib/useFullscreen';
 import {
   goTo, initialRotation, interact, INTERVALS, pauseSecondsLeft, progress, swipeDirection, tick, togglePause,
 } from './rotation';
@@ -24,6 +25,8 @@ type Props = {
   onIntervalChange: (seconds: number) => void;
   /** Estado de los datos: «Actualizado hace 2 h» o «Sin conexión · …» (TV-07). */
   status: string;
+  /** A dónde lleva «Volver al inicio»: toda vista ofrece una salida clara. */
+  exitHref?: string;
 };
 
 const STAGE_W = 1920;
@@ -58,7 +61,7 @@ function capitalize(text: string) {
  * Contenedor del modo pantalla (CMP: KioskShell, TV-01 a TV-08): tema oscuro, escenario de 1920 × 1080,
  * rotación con barra de progreso, flechas, puntos, arrastre, pausa, pantalla completa, reloj y pie.
  */
-export function KioskShell({ boards, intervalSeconds, onIntervalChange, status }: Props) {
+export function KioskShell({ boards, intervalSeconds, onIntervalChange, status, exitHref = '/' }: Props) {
   const scale = useStageScale();
   const now = useNow(250);
   const [rot, setRot] = useState(() => initialRotation(Date.now()));
@@ -84,7 +87,7 @@ export function KioskShell({ boards, intervalSeconds, onIntervalChange, status }
   const pct = progress(rot, now, intervalMs) * 100;
   const clock = new Intl.DateTimeFormat('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
   const date = capitalize(new Intl.DateTimeFormat('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }).format(now));
-  const fullscreen = () => void document.documentElement.requestFullscreen?.();
+  const [isFullscreen, toggleFullscreen] = useFullscreen();
 
   const stateText = rot.userPaused
     ? 'Rotación en pausa'
@@ -140,9 +143,21 @@ export function KioskShell({ boards, intervalSeconds, onIntervalChange, status }
             >
               {rot.userPaused ? 'Reanudar' : 'Pausar'}
             </button>
-            <button type="button" onClick={fullscreen} className="h-11 px-4 rounded-pill border border-line-strong text-body font-bold">
-              Pantalla completa
+            <button
+              type="button"
+              aria-pressed={isFullscreen}
+              onClick={toggleFullscreen}
+              className="h-11 px-4 rounded-pill border border-line-strong text-body font-bold"
+            >
+              {isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             </button>
+            <a
+              href={exitHref}
+              onClick={exitFullscreen}
+              className="h-11 px-4 inline-flex items-center rounded-pill border border-line-strong text-body font-bold"
+            >
+              Volver al inicio
+            </a>
           </header>
 
           <main className="flex-1 min-h-0 relative">

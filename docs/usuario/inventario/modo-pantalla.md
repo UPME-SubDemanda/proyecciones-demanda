@@ -48,6 +48,7 @@ Un tablero por producto: **energía eléctrica** y **gas natural**. Cada tablero
 3. Para ver otro tablero, toque los **puntos** del pie, las **flechas** laterales o **arrastre** la pantalla hacia un lado.
 4. Al tocar cualquier cosa, la rotación se detiene 30 segundos («Pausa por interacción · continúa en N s»).
 5. Si nadie toca la pantalla por 5 minutos, los filtros vuelven a sus valores iniciales.
+6. Para salir, toque **Salir de pantalla completa** (o la tecla Esc) y luego **Volver al inicio**, que lleva a la página de inicio del portal. «Volver al inicio» también sale de la pantalla completa.
 
 ## Filtros y opciones
 | Opción | Qué hace |
@@ -57,7 +58,8 @@ Un tablero por producto: **energía eléctrica** y **gas natural**. Cada tablero
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
 | Pausar / Reanudar | Detiene la rotación hasta volver a tocar el botón. |
-| Pantalla completa | Ocupa toda la pantalla del televisor. |
+| Pantalla completa / Salir de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
+| Volver al inicio | Sale del modo pantalla y vuelve al inicio del portal. |
 
 **Configuración por dirección**, para dejar una pantalla lista sin tocarla:
 
