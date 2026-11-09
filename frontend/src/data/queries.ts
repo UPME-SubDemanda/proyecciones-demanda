@@ -71,3 +71,8 @@ export function useRevisionsValues(revisionIds: number[]) {
     enabled: revisionIds.length > 0,
   });
 }
+
+/** Alertas abiertas (ejemplo hasta definir las reglas, X-03 y X-10). */
+export function useAlerts() {
+  return useQuery({ queryKey: ['alerts'], queryFn: withOrigin(() => source.alerts()) });
+}

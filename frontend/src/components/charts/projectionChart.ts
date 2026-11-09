@@ -35,6 +35,8 @@ export type ProjectionChartInput = {
   scenarios?: Scenario[];
   /** Años visibles, ambos incluidos (filtro de rango, UX-01). */
   range?: [number, number];
+  /** Punto del año corrido (en las unidades de los datos, antes del divisor) con su rótulo. */
+  ytdPoint?: { period: string; value: number; label: string };
 };
 
 const DATA_DECIMALS = 1;
@@ -73,6 +75,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const at = (map: Map<string, number>) => periods.map((p) => map.get(p) ?? null);
   const visible = new Set<Scenario>(input.scenarios ?? ['low', 'mid', 'high']);
   const band = visible.has('low') && visible.has('high');
+  const ytd = input.ytdPoint && periods.includes(input.ytdPoint.period) ? input.ytdPoint : undefined;
 
   const endLabel = (text: string, color: string): LineSeriesOption['endLabel'] => ({
     show: true, formatter: text, color, fontWeight: 700, fontSize: input.kiosk ? 18 : input.compact ? 11 : 12,
@@ -160,6 +163,17 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
             data: [{ xAxis: input.cutoff.period }],
           }
         : undefined,
+      // Punto del año corrido: marca hueca con su cifra, sobre el eje de categorías (no altera el eje).
+      markPoint: ytd
+        ? {
+            silent: true,
+            symbol: 'circle',
+            symbolSize: 14,
+            itemStyle: { color: 'transparent', borderColor: theme.real, borderWidth: 3 },
+            label: { show: true, position: 'right', formatter: ytd.label, color: theme.real, fontSize: input.kiosk ? 18 : 13 },
+            data: [{ name: 'Año corrido', coord: [ytd.period, Math.round((ytd.value / divisor) * 10) / 10] }],
+          }
+        : undefined,
       z: 4,
     };
   }
@@ -171,11 +185,11 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       : input.compact
         ? { left: 40, right: 56, top: 72, bottom: 32 }
         : { left: 56, right: 120, top: 72, bottom: 32 },
-    textStyle: input.kiosk ? { fontSize: 16 } : undefined,
+    ...(input.kiosk ? { textStyle: { fontSize: 16 } } : {}),
     legend: {
       top: 0,
       left: 0,
-      textStyle: input.kiosk ? { fontSize: 16 } : undefined,
+      ...(input.kiosk ? { textStyle: { fontSize: 16 } } : {}),
       data: [
         'Real',
         ...(visible.has('mid') ? [input.projectionLabel] : []),
@@ -200,13 +214,14 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         return lines.join('<br/>');
       },
     },
-    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: input.kiosk ? { fontSize: 16 } : undefined },
+    // Las claves de tamaño solo se agregan en modo pantalla: `axisLabel: undefined` borraría las del tema.
+    xAxis: { type: 'category', data: periods, boundaryGap: false, ...(input.kiosk ? { axisLabel: { fontSize: 16 } } : {}) },
     yAxis: {
       type: 'value',
       name: input.unit,
       scale: true, // líneas ajustadas al rango visible (GRA-07)
       axisLabel: { formatter: (v: number) => formatNumber(v), fontSize: input.kiosk ? 16 : undefined },
-      nameTextStyle: input.kiosk ? { fontSize: 16 } : undefined,
+      ...(input.kiosk ? { nameTextStyle: { fontSize: 16 } } : {}),
     },
     aria: { enabled: true, label: { description: `${PRODUCTS[input.product].name}: real frente a ${input.projectionLabel}` } },
     series,

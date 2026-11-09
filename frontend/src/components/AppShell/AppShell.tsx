@@ -37,7 +37,9 @@ export function AppShell({ appName, groups, activePath, search, location, contro
     <div className="min-h-screen bg-surface lg:grid lg:grid-cols-[240px_1fr]">
       <a href="#contenido" className="sr-only focus:not-sr-only focus:p-4">Saltar al contenido</a>
 
-      <div className="hidden lg:block sticky top-0 h-screen">{nav()}</div>
+      <div className="hidden lg:block bg-surface-sunken border-r border-line">
+        <div className="sticky top-0 h-screen">{nav()}</div>
+      </div>
 
       {navOpen && (
         <div className="lg:hidden fixed inset-0 z-40" role="dialog" aria-modal="true" aria-label="Menú de la aplicación">

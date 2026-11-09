@@ -35,7 +35,7 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 21 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 17 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 19 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 17 |
 
@@ -1148,7 +1148,7 @@ Etapa: 1.1 · Depende de: T-07 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-08 · En curso {#t-08}
+### T-08 · Hecho {#t-08}
 
 App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07), con acceso desde el portal
 
@@ -1156,11 +1156,11 @@ Etapa: 1 · Depende de: T-05 · Issue: #17 · PR: #18
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-09 · Pendiente {#t-09}
+### T-09 · En curso {#t-09}
 
 Tablero ejecutivo
 
-Etapa: 1 · Depende de: T-08 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #19 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1377,6 +1377,22 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 ### X-17 · Íconos locales al estándar {#x-17}
 
 El proyecto usa íconos que aún no están en `upme-estandares` (`frontend/src/iconos-locales/`): `fullScreen`, `chevron-lef` y `chevron-right`, tomados de la Librería de Iconos UPME, y `pause` y `play`, **creados en el proyecto** porque la librería no los tiene (excepción a UPME-ICO-01 aprobada por el líder, #15). Llevarlos al estándar con un PR a `upme-estandares` (MARCA-UPME, proceso para agregar un ícono) y pedir a Comunicaciones que revise `pause` y `play` o los reemplace por oficiales. [Detalle, insumos y prompt](../pendientes/x-17-iconos-al-estandar.md)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-18 · Revisión extraordinaria {#x-18}
+
+El mockup del tablero ejecutivo tiene «Abrir revisión extraordinaria» y el plan completo dice que «una alerta grave puede abrir una revisión extraordinaria, que vuelve al paso 4» (experimentación). Falta definir: qué alertas la disparan (X-03), quién la abre, cómo se aprueba (X-05), cómo se nombra frente a las semestrales y en qué se diferencia de una corrección (X-09). Ejecutarla es fase 2; el botón queda fuera del tablero (T-09, #19)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-19 · Informe del tablero ejecutivo {#x-19}
+
+«Descargar informe» está en el tablero ejecutivo, deshabilitado («En construcción»). Definir qué contiene (cifras, gráficos, alertas, periodo), formato (PDF, Excel), para quién es y si se genera en el navegador o en el servidor (posible tecnología nueva, TEC-05)
 
 Responsable: Líder · Estado: Abierto
 
