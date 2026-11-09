@@ -16,3 +16,4 @@ test-results/
 
 # Archivos fuente locales (no se versionan)
 data/raw/
+*.tsbuildinfo

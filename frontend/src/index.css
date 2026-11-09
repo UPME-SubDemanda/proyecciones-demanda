@@ -1,6 +1,18 @@
+@import "./fonts.css";
 @import "./estandares/tokens.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body { font-family: var(--font-sans); background: var(--surface); color: var(--ink); margin: 0; }
+
+/* Foco visible en todo control (A11-02): 2 px `focus` con 2 px de separación. */
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Animaciones desactivadas si el usuario lo pide (A11-06, GRA-11). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Tarjeta de gráfico en pantalla completa (GRA-08). */
+[data-chart-card]:fullscreen { background: var(--surface-raised); padding: var(--space-6); overflow: auto; }

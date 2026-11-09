@@ -12,6 +12,7 @@ nav:
       - tecnica/flujo-de-trabajo-equipo.md
       - tecnica/referencias.md
       - tecnica/arquitectura.md
+      - tecnica/frontend.md
       - tecnica/diseno-app.md
       - tecnica/modelo-de-datos.md
       - tecnica/api.md
@@ -22,4 +23,6 @@ nav:
   - Guía de usuario: usuario/index.md
   - Diario: diario/index.md
   - Decisiones: decisiones/index.md
-  - Pendientes: pendientes.md
+  - Pendientes:
+      - pendientes.md
+      - pendientes/x-13-componentes-compartidos.md

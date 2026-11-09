@@ -128,8 +128,14 @@ def table_rows(text, header_start):
     return rows
 
 
+def from_docs_root(text):
+    """Los enlaces relativos de docs/pendientes.md se escriben desde docs/; la página de
+    referencias está en docs/tecnica/, así que se les antepone «../»."""
+    return re.sub(r"\]\((?!https?:|#|\.\./)([^)]+)\)", r"](../\1)", text)
+
+
 def parse_pending():
-    text = PENDING.read_text(encoding="utf-8")
+    text = from_docs_root(PENDING.read_text(encoding="utf-8"))
     steps = table_rows(text, "| ID | Paso |")
     decisions = table_rows(text, "| ID | Tema |")
     return steps, decisions
