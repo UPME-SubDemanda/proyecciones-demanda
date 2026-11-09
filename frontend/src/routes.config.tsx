@@ -3,6 +3,7 @@ import { PortalHome } from './zones/portal/PortalHome';
 import { KioskPage } from './zones/pantalla/KioskPage';
 import { ExecutiveDashboard } from './zones/app/ExecutiveDashboard';
 import { RevisionHistory } from './zones/app/RevisionHistory';
+import { ExogenousMonitor } from './zones/app/ExogenousMonitor';
 import { AppLayout } from './zones/app/AppLayout';
 import { LoginPage } from './auth/LoginPage';
 import { RequireRole } from './auth/RequireRole';
@@ -15,5 +16,6 @@ export const routes: RouteObject[] = [
   { path: '/app', element: <RequireRole role="viewer"><AppLayout /></RequireRole>, children: [
     { index: true, element: <ExecutiveDashboard /> },
     { path: '/app/proyecciones/historico', element: <RevisionHistory /> },
+    { path: '/app/variables/exogenas', element: <ExogenousMonitor /> },
   ] },
 ];

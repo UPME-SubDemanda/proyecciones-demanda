@@ -55,6 +55,56 @@ export type ExogenousVariable = {
   points: Point[];
 };
 
+/** Frecuencia con la que la fuente publica una variable exógena. */
+export type Frequency = 'diaria' | 'mensual' | 'trimestral' | 'anual';
+
+/**
+ * Una variable del monitor de exógenas (T-11): supuesto de la revisión vigente por escenario frente a lo observado
+ * en el año corrido. `assumption`, `observed` y `deviation` van en `unit`; si `deviationUnit` es `pp`, el supuesto y
+ * lo observado son tasas (%) y el desvío va en puntos porcentuales.
+ *
+ * Impacto, correlación, correlación móvil y quiebre llegan **ya calculados** con la revisión o con una carga (T-17):
+ * la app no los calcula (etapa 1). Los umbrales son ilustrativos hasta definir X-03.
+ */
+export type ExogenousMonitorVariable = {
+  code: string; // `gdp`
+  name: string;
+  source: string;
+  frequency: Frequency;
+  unit: string; // `%`, `°C`, `MW`
+  deviationUnit: string; // `pp`, `°C`, `MW`
+  assumption: Record<Scenario, number>;
+  observed: number;
+  /** Efecto estimado del desvío en la demanda del año, % (elasticidad del modelo × desvío), por escenario. */
+  impact: Record<Scenario, number>;
+  /** Correlación con la demanda en el periodo de estimación del modelo, −1 a 1. */
+  correlation: number;
+  /** Desvío absoluto desde el que la variable pasa a «En vigilancia» y a «Fuera de rango» (ilustrativos, X-03). */
+  threshold: { watch: number; out: number };
+  /** Tendencia reciente: observado y supuesto por escenario, en la frecuencia de la variable. */
+  trend: { observed: Point[]; assumption: Record<Scenario, Point[]> };
+  /** Correlación móvil de 24 meses con la demanda, con intervalo del 95 % (`period` = `2026-09`). */
+  rolling: { period: string; value: number; low: number; high: number }[];
+  /** Quiebre estructural detectado en la correlación (CUSUM), desde ese mes; `null` si no hay. */
+  breakFrom: string | null;
+};
+
+/** Importancia relativa de una variable en el modelo (SHAP), en % del total. */
+export type VariableImportance = { name: string; share: number };
+
+/** Monitor de exógenas de un producto frente a su revisión vigente (T-11). */
+export type ExogenousMonitor = {
+  product: ProductKey;
+  revisionCode: string; // `2026-07`
+  model: string; // `EE-LP v3.2.0`
+  period: string; // año corrido, `2026`
+  cutoff: string; // último mes con dato observado, `2026-09`
+  demandSource: string; // fuente de la demanda con la que se correlaciona, `XM`
+  variables: ExogenousMonitorVariable[];
+  /** `null` si el modelo de la revisión no tiene importancia calculada. */
+  importance: VariableImportance[] | null;
+};
+
 /**
  * Desempeño de una revisión frente al dato real (definiciones pendientes, X-14 y X-03).
  * `monthlyDeviation`: diferencia mensual real vs. proyectado, en %, últimos 12 meses (`period` = `2026-09`).

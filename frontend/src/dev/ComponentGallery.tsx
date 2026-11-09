@@ -23,6 +23,7 @@ import { PublicFooter } from '../components/PublicFooter/PublicFooter';
 import { PublicHeader } from '../components/PublicHeader/PublicHeader';
 import { SegmentedControl } from '../components/SegmentedControl/SegmentedControl';
 import { Skeleton } from '../components/Skeleton/Skeleton';
+import { Sparkline } from '../components/Sparkline/Sparkline';
 import { projectionChartOption, projectionTable } from '../components/charts/projectionChart';
 import { useObservedSeries, useRevisions, useRevisionValues } from '../data/queries';
 import { formatMonth, formatProvenance, revisionLabel } from '../lib/format';
@@ -132,6 +133,24 @@ export function ComponentGallery() {
             provenance={formatProvenance({ cutoff: '2026-09', source: 'GMG' })} illustrative={illustrative} />
           <KpiCard leading={<ProductIcon product={product.key} decorative />} label={`${product.name} 2026`} value={isEE ? 85600 : 1042}
             unit={product.unit} change="+2,9 % frente a 2025" illustrative={illustrative} />
+          <KpiCard label="En vigilancia" value={3} unit="variables" valueTone="warning" illustrative={illustrative} />
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h2">Sparkline · tendencia en una tabla</h2>
+        <div className="flex flex-wrap items-center gap-8 p-6 bg-surface-raised border border-line rounded-md">
+          <Sparkline
+            ariaLabel="Observado baja de 3,0 % a 1,8 % frente a un supuesto de 3,0 %"
+            observed={['T1', 'T2', 'T3', 'T4', 'T5', 'T6'].map((period, i) => ({ period, value: [3.0, 2.8, 2.5, 2.3, 2.0, 1.8][i] }))}
+            reference={['T1', 'T2', 'T3', 'T4', 'T5', 'T6'].map((period) => ({ period, value: 3.0 }))}
+          />
+          <Sparkline
+            ariaLabel="Observado sube de 0,0 a 0,6 frente a un supuesto de 0,3"
+            observed={['T1', 'T2', 'T3', 'T4', 'T5', 'T6'].map((period, i) => ({ period, value: [0, 0.2, 0.3, 0.35, 0.45, 0.6][i] }))}
+            reference={['T1', 'T2', 'T3', 'T4', 'T5', 'T6'].map((period) => ({ period, value: 0.3 }))}
+          />
+          <p className="text-small text-ink-muted">Observado: línea sólida. Supuesto o referencia: punteada.</p>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
+  demoExogenous, demoExogenousMonitor, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
 } from './fixtures';
 import { ILLUSTRATIVE } from '../data/source';
 
@@ -49,4 +49,23 @@ describe('cifras ilustrativas (CON-07)', () => {
 
   it('variables exógenas con fuente y unidad', () =>
     demoExogenous().forEach((v) => expect(v.source && v.unit).toBeTruthy()));
+
+  it('monitor de exógenas: correlación móvil dentro de su intervalo y entre −1 y 1; importancia suma 100 %', () => {
+    for (const product of ['ee', 'gn'] as const) {
+      const m = demoExogenousMonitor(product);
+      expect(m.revisionCode).toBe('2026-07');
+      m.variables.forEach((v) => {
+        expect(v.rolling).toHaveLength(69);
+        v.rolling.forEach((p) => {
+          expect(p.low).toBeLessThanOrEqual(p.value);
+          expect(p.high).toBeGreaterThanOrEqual(p.value);
+          expect(p.low).toBeGreaterThanOrEqual(-1);
+          expect(p.high).toBeLessThanOrEqual(1);
+        });
+        expect(v.trend.observed.at(-1)!.value).toBe(v.observed);
+        expect(Object.is(v.impact.mid, -0)).toBe(false);
+      });
+      expect(m.importance!.reduce((s, i) => s + i.share, 0)).toBe(100);
+    }
+  });
 });
