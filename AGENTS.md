@@ -58,3 +58,12 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 6. **Si una regla no encaja o falta una**: detente y pregunta. Propón un ADR (en el proyecto si es propio de esta app, o en `upme-estandares` si es general). Anota lo no resuelto en `docs/pendientes.md`.
 7. Interfaz y documentación en español de Colombia; código en inglés.
 8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md` y `docs/diario/index.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py` e `scripts/inventario.py` antes de cada commit que toque Markdown o rutas.
+
+## Ciclo con un asistente
+Así se trabaja cada paso del plan (T-xx) o cada corrección con un asistente. Explicación para personas: `docs/tecnica/flujo-de-trabajo-equipo.md` (sección «Trabajar con un asistente de IA»). Propuesta al estándar: X-20.
+
+1. **Issue:** redacta el título y el cuerpo con la plantilla que corresponda (`.github/ISSUE_TEMPLATE/`) e incluye una sección **Supuestos**, con el aviso de que si un supuesto cambia, el issue se actualiza antes de seguir. No crees el issue: lo crea la persona y te pasa el número.
+2. **Rama:** desde `develop` actualizado (`git switch develop && git pull`), con el número del issue (FLU-04). Commits con `Refs: #<n>` (FLU-06).
+3. **Desarrollo:** cumple la definición de hecho (FLU-07). Si un supuesto del issue resulta falso, detente, explícalo y propone el texto nuevo del issue.
+4. **Entrega:** redacta el título y el cuerpo del PR con `.github/pull_request_template.md`, con `Closes #<n>` en el campo *Issue*. Recuérdale a la persona que revise el desarrollo, haga las pruebas que considere y compare con el mockup aprobado (`docs/tecnica/mockups/`).
+5. **Ajustes:** todo cambio o feedback se hace **en la misma rama, antes de abrir el PR**, y actualizas el cuerpo del PR hasta que la persona diga que está listo. No abras ni unas el PR: lo hace la persona.

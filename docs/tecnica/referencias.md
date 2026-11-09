@@ -35,9 +35,9 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 21 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 19 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 20 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
-| [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 17 |
+| [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 18 |
 
 ## UPME-LOG · Logos (UPME-LOG) {#upme-log}
 
@@ -1398,6 +1398,14 @@ Responsable: Líder · Estado: Abierto
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
+### X-20 · Ciclo de trabajo con asistentes en el estándar {#x-20}
+
+El proyecto adoptó un ciclo para trabajar con asistentes de IA: el asistente redacta el issue con sus supuestos, la persona lo crea, el asistente desarrolla en la rama y entrega el texto del PR, y la persona revisa contra el mockup **antes** de abrir el PR (en `AGENTS.md` y en la guía del flujo de trabajo, #23). Proponerlo en `upme-estandares` como regla IA (las reglas no se editan aquí, FLU-09). [Detalle y prompt](../pendientes/x-20-ciclo-con-asistentes.md)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
 ## P-0000 · Decisiones del proyecto (ADR) {#p-0000}
 
 ### P-0001 · Alcance de la etapa 1 sin modelos {#p-0001}
@@ -1428,12 +1436,13 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | ADR-0015 | Almacenamiento de objetos  MinIO  —  Retirada (ADR-0015)  — | `reglas/REGLAS-TECNICAS.md` |
 | ADR-0016 | Plantilla de proyectos  Copier  —  Retirada (ADR-0016): se usa un proyecto de referencia  copier | `reglas/REGLAS-TECNICAS.md` |
 | CMP-04 | …cs/pendientes/) para evaluar componentes compartidos entre proyectos y proponer CMP-04 al estándar (issue #8, PR #12). | `CHANGELOG.md`, `docs/diario/2026/2026-11-08-estructura-base-frontend.md`, `docs/pendientes.md` y 1 más |
+| IA-06 | 1. Una regla nueva en REGLAS-FLUJO.md, sección «Asistentes de IA». Se propone IA-06 (DEBERÍA), con el ciclo de seis pasos, los supuestos en el issue y la revisi… | `docs/pendientes/x-20-ciclo-con-asistentes.md` |
 | P-01 | …os diarios y prueba de restauración trimestral (responsable por definir con TI, P-01). | `docs/tecnica/despliegue.md`, `reglas/REGLAS-TECNICAS.md` |
 | P-02 | Identidad centralizada  Keycloak  —  En evaluación (piloto, P-02)  keycloak | `reglas/REGLAS-TECNICAS.md` |
 | P-03 | Versionado de datos  DVC  —  Aplazada (P-03)  dvc | `reglas/REGLAS-TECNICAS.md` |
 | P-04 | Orquestación de tareas  Prefect  3  Provisional (evaluar Dagster, P-04)  prefect | `reglas/REGLAS-TECNICAS.md` |
 | P-05 | Notificaciones  Google Chat (webhooks)  —  Planeada (etapa 1.1, P-05)  google-chat | `docs/producto/index.md`, `reglas/REGLAS-TECNICAS.md` |
-| P-06 | …ista de verificación, capturas). Aprobación por una segunda persona: pendiente (P-06); por ahora el autor puede unir con CI en verde. | `docs/tecnica/flujo-de-trabajo-equipo.md`, `reglas/REGLAS-FLUJO.md` |
+| P-06 | …ista de verificación, capturas). Aprobación por una segunda persona: pendiente (P-06); por ahora el autor puede unir con CI en verde. | `docs/diario/2026/2026-11-09-ciclo-con-asistentes.md`, `docs/pendientes/x-20-ciclo-con-asistentes.md`, `docs/tecnica/flujo-de-trabajo-equipo.md` y 1 más |
 | P-07 | Estado: documentada, no programada todavía (pendiente P-07). | `reglas/REGLAS-FLUJO.md` |
 | P-08 | Guía de usuario  Sí  mkdocs.usuario.yml (solo docs/usuario/)  Pendiente P-08. Con GitHub Free, GitHub Pages solo publica desde repositorios públicos. Opciones:… | `reglas/REGLAS-FLUJO.md` |
 | P-09 | …nica  No  mkdocs.tecnica.yml (técnica, diario, decisiones, producto)  Pendiente P-09. Mientras tanto se lee en GitHub (el Markdown se ve formateado) o con mkdoc… | `reglas/REGLAS-FLUJO.md` |
