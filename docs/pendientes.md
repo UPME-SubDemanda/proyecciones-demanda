@@ -25,7 +25,7 @@ Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloque
 | ID | Paso | Etapa | Depende de | Issue | PR | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
 | T-05 | Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos | 1 y 1.1 | T-04 | #8 | #12 | Hecho |
-| T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | #13 | — | En curso |
+| T-06 | Portal público: inicio (escritorio y móvil) | 1.1 | T-05 | #13 | #14 | En curso |
 | T-07 | Modo pantalla: tableros rotativos | 1.1 | T-05 | — | — | Pendiente |
 | T-08 | App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07) | 1 | T-05 | — | — | Pendiente |
 | T-09 | Tablero ejecutivo | 1 | T-08 | — | — | Pendiente |

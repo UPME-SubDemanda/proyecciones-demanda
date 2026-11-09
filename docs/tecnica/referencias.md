@@ -1128,7 +1128,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Portal público: inicio (escritorio y móvil)
 
-Etapa: 1.1 · Depende de: T-05 · Issue: #13 · PR: —
+Etapa: 1.1 · Depende de: T-05 · Issue: #13 · PR: #14
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
