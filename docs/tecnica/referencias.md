@@ -1172,7 +1172,7 @@ Etapa: 1 · Depende de: T-08 · Issue: #21 · PR: #22
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-11 · En curso {#t-11}
+### T-11 · Hecho {#t-11}
 
 Monitor de variables exógenas
 
@@ -1444,8 +1444,8 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | P-05 | Notificaciones  Google Chat (webhooks)  —  Planeada (etapa 1.1, P-05)  google-chat | `docs/producto/index.md`, `reglas/REGLAS-TECNICAS.md` |
 | P-06 | …ista de verificación, capturas). Aprobación por una segunda persona: pendiente (P-06); por ahora el autor puede unir con CI en verde. | `docs/diario/2026/2026-11-09-ciclo-con-asistentes.md`, `docs/pendientes/x-20-ciclo-con-asistentes.md`, `docs/tecnica/flujo-de-trabajo-equipo.md` y 1 más |
 | P-07 | Estado: documentada, no programada todavía (pendiente P-07). | `reglas/REGLAS-FLUJO.md` |
-| P-08 | Guía de usuario  Sí  mkdocs.usuario.yml (solo docs/usuario/)  Pendiente P-08. Con GitHub Free, GitHub Pages solo publica desde repositorios públicos. Opciones:… | `reglas/REGLAS-FLUJO.md` |
-| P-09 | …nica  No  mkdocs.tecnica.yml (técnica, diario, decisiones, producto)  Pendiente P-09. Mientras tanto se lee en GitHub (el Markdown se ve formateado) o con mkdoc… | `reglas/REGLAS-FLUJO.md` |
+| P-08 | Guía de usuario  Sí  mkdocs.usuario.yml (solo docs/usuario/)  Pendiente P-08. Con GitHub Free, GitHub Pages solo publica desde repositorios públicos. Opciones:… | `docs/tecnica/herramientas/mkdocs.md`, `reglas/REGLAS-FLUJO.md` |
+| P-09 | …nica  No  mkdocs.tecnica.yml (técnica, diario, decisiones, producto)  Pendiente P-09. Mientras tanto se lee en GitHub (el Markdown se ve formateado) o con mkdoc… | `docs/tecnica/herramientas/mkdocs.md`, `reglas/REGLAS-FLUJO.md` |
 | P-10 | Experimentos y modelos  MLflow  —  Planeada (fase 2, P-10)  mlflow | `reglas/REGLAS-TECNICAS.md` |
 | P-11 | …tras esa base no exista, se cargan en raw del producto con su fuente (pendiente P-11). | `reglas/REGLAS-TECNICAS.md` |
 | P-12 | Observabilidad  Grafana + Prometheus  —  Planeada (P-12)  grafana | `reglas/REGLAS-TECNICAS.md` |

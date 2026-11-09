@@ -2,40 +2,66 @@
 
 ¿Nuevo en el equipo? Empiece por el [flujo de trabajo del equipo](flujo-de-trabajo-equipo.md): issues, ramas, Pull Requests y publicación, con ejemplos. Para saber qué significa un ID como `DOC-04`, `T-05` o `X-04`, búsquelo en el buscador o en [Referencias](referencias.md).
 
-## Levantar el proyecto
+## Levantar el proyecto (primera vez)
+
+**Necesita:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) abierto y git. Nada más: Python, uv, Node y pnpm corren dentro de los contenedores.
 
 ```bash
-git config core.hooksPath .githooks   # una vez por copia: activa el hook de páginas generadas
-cp .env.example .env          # cambiar SESSION_SECRET y poner DEV_ADMIN_PASSWORD (valores aleatorios, ver abajo)
-docker compose up -d --build
-docker compose exec api uv run alembic upgrade head
-docker compose exec api sh -c 'uv run python -m app.auth.cli create-user admin@local --role admin --password "$DEV_ADMIN_PASSWORD"'
+git clone git@github.com:UPME-SubDemanda/proyecciones-demanda.git
+cd proyecciones-demanda
+./scripts/dev-setup.sh
 ```
 
-API: http://localhost:8000/docs · Web: http://localhost:5173 · Prefect: http://localhost:4200
+El script hace todo y se puede repetir sin problema:
+
+1. revisa que Docker esté corriendo;
+2. activa el hook de git que regenera las páginas generadas;
+3. crea `.env` desde `.env.example` con `SESSION_SECRET` y `DEV_ADMIN_PASSWORD` aleatorios (no los muestra);
+4. levanta todo con `docker compose up -d --build`;
+5. espera a la API y muestra las direcciones.
+
+Al arrancar, la API **aplica las migraciones y crea `admin@local`** si falta (`backend/dev-start.sh`), así que no hay pasos manuales. La primera vez tarda unos minutos mientras descarga las imágenes.
+
+## Direcciones
+
+| Qué | Dirección | Se actualiza al guardar |
+| --- | --- | --- |
+| App: portal, modo pantalla (`/pantalla`) y app interna (`/app`) | http://localhost:5173 | Sí |
+| API y su documentación | http://localhost:8000/docs | Sí |
+| Guía de usuario | http://localhost:8002 | Sí |
+| Documentación técnica (esta) | http://localhost:8001 | Sí |
+| Prefect | http://localhost:4200 | — |
+| Galería de componentes (solo desarrollo) | http://localhost:5173/dev/componentes | Sí |
+
+El código de `frontend/` y `backend/` y la carpeta `docs/` están montados en los contenedores: los cambios se ven sin reconstruir.
+
+## Día a día
+
+```bash
+docker compose up -d          # encender (después de reiniciar el computador)
+docker compose stop           # apagar (los datos se conservan)
+docker compose logs -f api    # ver qué pasa en un servicio (api, web, docs-tecnica…)
+```
+
+**Reconstruir** (`docker compose up -d --build`) solo cuando cambian las dependencias (`frontend/package.json`, `backend/pyproject.toml`) o un `Dockerfile`. Tras un `git pull` con migraciones nuevas basta reiniciar la API: `docker compose restart api`.
+
+**Empezar de cero** (borra la base local): `docker compose down -v` y luego `./scripts/dev-setup.sh`.
 
 Las migraciones y la CLI se ejecutan **dentro del contenedor `api`**: ahí `DATABASE_URL` apunta al servicio `db` (nombre que solo existe en la red de Docker). La configuración lee `.env` desde la carpeta donde se ejecuta el comando; si se corren desde `backend/` en el equipo, no lo encuentran y usan SQLite (`local.db`) sin avisar.
 
 ## Usuario administrador local
 
-Para entrar a la app interna en desarrollo (`/app`, o **Ingresar** en el portal → «Ingresar con usuario local»):
+Para entrar a la app interna en desarrollo (http://localhost:5173 → **Ingresar** → «Ingresar con usuario local»):
 
 | Dato | Dónde está |
 | --- | --- |
 | Usuario | `admin@local` |
 | Contraseña | En **`.env`**, variable `DEV_ADMIN_PASSWORD` |
 
-- `.env` está ignorado por git: la contraseña existe solo en el computador de cada persona y **no se comparte** por chat, correo ni en el repositorio. Cada quien genera la suya.
-- La app no lee `DEV_ADMIN_PASSWORD`: solo sirve para crear el usuario y para recordarla. El contenedor `api` recibe las variables de `.env`, por eso el comando de creación la toma de ahí sin escribirla en la terminal.
+- `dev-setup.sh` genera la contraseña y la API crea el usuario al arrancar.
+- `.env` está ignorado por git: la contraseña existe solo en el computador de cada persona y **no se comparte** por chat, correo ni en el repositorio.
+- La app no lee `DEV_ADMIN_PASSWORD`: solo sirve para crear el usuario y para recordarla.
 - Solo para desarrollo local. En pruebas y producción los usuarios entran con la cuenta institucional de Google y sus roles los asigna un administrador.
-
-**Primera vez:**
-
-```bash
-python3 -c "import secrets; print(secrets.token_urlsafe(18))"   # copie el valor en DEV_ADMIN_PASSWORD de .env
-docker compose up -d api                                         # el contenedor relee .env al recrearse
-docker compose exec api sh -c 'uv run python -m app.auth.cli create-user admin@local --role admin --password "$DEV_ADMIN_PASSWORD"'
-```
 
 **Otro usuario con su propia contraseña** (el comando la pide sin mostrarla):
 
@@ -44,6 +70,16 @@ docker compose exec api uv run python -m app.auth.cli create-user su.correo@upme
 ```
 
 **Si se olvidó la contraseña:** está en `.env`. Si `.env` se perdió, cree otro usuario con el comando anterior; la CLI todavía no tiene un comando para cambiar contraseñas.
+
+## Si algo falla
+
+| Síntoma | Qué hacer |
+| --- | --- |
+| «Docker no está corriendo» | Abra Docker Desktop y repita `./scripts/dev-setup.sh`. |
+| Un puerto está ocupado (5173, 8000, 8001, 8002, 4200, 5432) | Cierre el programa que lo usa, o detenga el otro proyecto con Docker. |
+| La API no arranca | `docker compose logs api`: normalmente es una migración o `.env` incompleto. |
+| La app no muestra un cambio | Recargue el navegador; si cambió `package.json`, `docker compose up -d --build web`. |
+| No puedo ingresar | Revise `DEV_ADMIN_PASSWORD` en `.env`; `docker compose logs api` dice si se creó `admin@local`. |
 
 ## Páginas generadas
 
@@ -60,9 +96,11 @@ El hook `.githooks/pre-commit` las regenera y las agrega al mismo commit, sin ha
 ## Pruebas
 
 ```bash
-cd backend && uv run pytest              # usa SQLite en backend/test.db (no versionado)
-docker compose exec web pnpm test       # o, con pnpm 9 instalado: cd frontend && pnpm test
+docker compose exec api uv run pytest   # backend (SQLite en backend/test.db, no versionado)
+docker compose exec web pnpm test       # frontend (Vitest)
 ```
+
+Con uv y pnpm 9 instalados también se pueden correr en el equipo: `cd backend && uv run pytest` y `cd frontend && pnpm test`. Las capturas y los recorridos de Playwright sí se corren en el equipo (`docs/tecnica/frontend.md`, «Capturas»).
 
 `pnpm test` corre Vitest una vez (CI y verificación); `pnpm test:watch` lo deja en modo observación.
 

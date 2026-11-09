@@ -1,0 +1,6 @@
+# La imagen instala sus propias dependencias (Linux): no copiar las del equipo.
+node_modules
+dist
+test-results
+playwright-report
+*.tsbuildinfo

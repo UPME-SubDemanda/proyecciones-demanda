@@ -4,15 +4,43 @@ services:
     environment: {POSTGRES_USER: app, POSTGRES_PASSWORD: app, POSTGRES_DB: proyecciones_demanda}
     ports: ["5432:5432"]
     volumes: [db-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d proyecciones_demanda"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
   api:
     build: ./backend
     env_file: .env
-    depends_on: [db]
+    depends_on:
+      db: {condition: service_healthy}
     ports: ["8000:8000"]
+    # Desarrollo: migra, crea admin@local si falta y recarga al guardar (backend/dev-start.sh).
+    command: ["sh", "dev-start.sh"]
+    volumes:
+      - ./backend:/app        # el código del equipo, siempre al día
+      - api-venv:/app/.venv   # dependencias de la imagen (Linux), no las del equipo
   web:
     build: ./frontend
     depends_on: [api]
     ports: ["5173:5173"]
+    environment:
+      API_PROXY_TARGET: http://api:8000   # la API dentro de la red de Docker
+      VITE_USE_POLLING: "true"            # ver cambios del código montado
+    volumes:
+      - ./frontend:/web                    # el código del equipo, siempre al día
+      - web-node-modules:/web/node_modules # dependencias de la imagen (Linux), no las del equipo
+  # Documentación con recarga al guardar (Material for MkDocs, imagen oficial con versión fija).
+  docs-usuario:
+    image: squidfunk/mkdocs-material:9.8.1
+    command: serve --dev-addr=0.0.0.0:8000 -f mkdocs.usuario.yml
+    ports: ["8002:8000"]
+    volumes: [".:/docs"]
+  docs-tecnica:
+    image: squidfunk/mkdocs-material:9.8.1
+    command: serve --dev-addr=0.0.0.0:8000 -f mkdocs.tecnica.yml
+    ports: ["8001:8000"]
+    volumes: [".:/docs"]
   prefect-server:
     image: prefecthq/prefect:3-latest
     command: prefect server start --host 0.0.0.0
@@ -28,6 +56,8 @@ services:
     env_file: .env
     depends_on:
       prefect-server: {condition: service_healthy}
-      db: {condition: service_started}
+      db: {condition: service_healthy}
 volumes:
   db-data:
+  web-node-modules:
+  api-venv:
