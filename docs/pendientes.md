@@ -2,6 +2,8 @@
 
 Dos partes: el **plan de trabajo** (qué se construye y en qué orden) y los **pendientes de decisión** (preguntas abiertas que no son tareas de código).
 
+Un paso o pendiente que necesita más explicación (contexto, alternativas, plan) tiene su página en `docs/pendientes/<id>-<tema>.md`, enlazada desde la tabla con «Detalle». Cada página corresponde a una tarea, como lo será en Notion (X-12).
+
 ## Plan de trabajo
 
 Orden acordado el 2026-11-08. Cada paso de código nace de un issue y entra por un PR (FLU-01, FLU-05); al cerrarlo se anotan aquí el issue, el PR y el estado. Las vistas usan **cifras ilustrativas** hasta que se conecten los datos reales (ver *Datos ilustrativos* abajo).
@@ -70,3 +72,4 @@ Los pendientes generales (servidores, Keycloak, DVC, Prefect vs. Dagster, Google
 | X-10 | Vistas del menú sin inventario | Los mockups aprobados muestran en el menú **Alertas** y **Datos y documentación**, sin página en `docs/usuario/inventario/`; «Datos y documentación» tampoco está en el menú de `docs/tecnica/diseno-app.md`. Decidir si son vistas, crear su ficha (FLU-01) y su página (DOC-01) | Líder | Abierto |
 | X-11 | Contenidos del portal | El mockup aprobado del portal tiene marcadores por completar: logo oficial desde el CDN de GOV.CO, dirección, teléfono y horario de atención, correo de notificaciones judiciales y redes sociales de la UPME | Líder | Planeado (1.1) |
 | X-12 | Documentación en Notion | Llevar la documentación y los pendientes a Notion. Las reglas (DOC, FLU-09) dicen que la documentación vive en el repositorio junto al código: decidir si Notion es un espejo de solo lectura o la fuente de algunos contenidos (pendientes, plan de trabajo); en el segundo caso, ADR en `upme-estandares` | Líder | Abierto |
+| X-13 | Componentes compartidos entre proyectos | Los componentes de React y su galería (`/dev/componentes`) viven solo en este proyecto; `upme-estandares` no entrega componentes. Evaluar cómo compartirlos (copia en `dist/`, paquete versionado o catálogo publicado) y proponer CMP-04. [Detalle](pendientes/x-13-componentes-compartidos.md) | Líder | Abierto (revisar al cerrar T-08) |

@@ -35,9 +35,9 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 20 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 12 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 13 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
-| [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 16 |
+| [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 17 |
 
 ## UPME-LOG · Logos (UPME-LOG) {#upme-log}
 
@@ -1334,6 +1334,14 @@ Responsable: Líder · Estado: Abierto
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
+### X-13 · Componentes compartidos entre proyectos {#x-13}
+
+Los componentes de React y su galería (`/dev/componentes`) viven solo en este proyecto; `upme-estandares` no entrega componentes. Evaluar cómo compartirlos (copia en `dist/`, paquete versionado o catálogo publicado) y proponer CMP-04. [Detalle](../pendientes/x-13-componentes-compartidos.md)
+
+Responsable: Líder · Estado: Abierto (revisar al cerrar T-08)
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
 ## P-0000 · Decisiones del proyecto (ADR) {#p-0000}
 
 ### P-0001 · Alcance de la etapa 1 sin modelos {#p-0001}
@@ -1363,6 +1371,7 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | ADR-0010 | …arte de una base de datos ya ordenada. DVC es obligatorio al iniciar la fase 2 (ADR-0010 del estándar). | `docs/decisiones/0001-alcance-etapa-1.md` |
 | ADR-0015 | Almacenamiento de objetos  MinIO  —  Retirada (ADR-0015)  — | `reglas/REGLAS-TECNICAS.md` |
 | ADR-0016 | Plantilla de proyectos  Copier  —  Retirada (ADR-0016): se usa un proyecto de referencia  copier | `reglas/REGLAS-TECNICAS.md` |
+| CMP-04 | …cs/pendientes/) para evaluar componentes compartidos entre proyectos y proponer CMP-04 al estándar (issue #8). | `CHANGELOG.md`, `docs/diario/2026/2026-11-08-estructura-base-frontend.md`, `docs/pendientes.md` y 1 más |
 | P-01 | …os diarios y prueba de restauración trimestral (responsable por definir con TI, P-01). | `docs/tecnica/despliegue.md`, `reglas/REGLAS-TECNICAS.md` |
 | P-02 | Identidad centralizada  Keycloak  —  En evaluación (piloto, P-02)  keycloak | `reglas/REGLAS-TECNICAS.md` |
 | P-03 | Versionado de datos  DVC  —  Aplazada (P-03)  dvc | `reglas/REGLAS-TECNICAS.md` |

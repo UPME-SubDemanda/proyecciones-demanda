@@ -64,6 +64,11 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 
 Con `pnpm dev`, la ruta `/dev/componentes` muestra todos los componentes base con cifras ilustrativas, en energía eléctrica o gas natural y en tema claro u oscuro. Se carga aparte y **no entra al build de producción**, por eso no tiene página en el inventario.
 
+!!! note "Convención del proyecto"
+    **Todo componente nuevo se agrega a la galería en el mismo PR que lo crea**, con sus variantes y en ambos temas. Antes de crear un componente, se revisa en la galería si ya existe (CMP-01).
+
+    Es una convención de este proyecto, no una regla del estándar. Se propondrá a `upme-estandares` junto con la evaluación de un paquete de componentes compartido entre proyectos: ver [X-13](../pendientes/x-13-componentes-compartidos.md).
+
 ## Pruebas
 
 Las pruebas de componentes renderizan a HTML con `react-dom/server` (sin librerías adicionales) y verifican estructura, tokens, accesibilidad y formatos. La interacción se revisa en la galería y, más adelante, con Playwright.

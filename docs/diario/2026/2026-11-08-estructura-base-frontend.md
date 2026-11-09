@@ -31,4 +31,6 @@ Es la base común de todas las vistas (T-05). Construirla primero evita repetir 
 - Galería `/dev/componentes` cargada aparte: no entra al build de producción ni al inventario.
 - Pruebas con `react-dom/server`, sin librerías nuevas (55 pruebas).
 - La licencia de los datos descargados queda «por definir» hasta resolver X-04.
+- Convención del proyecto: todo componente nuevo se agrega a la galería en el mismo PR (`docs/tecnica/frontend.md`, `AGENTS.md`).
+- Nuevo pendiente X-13, con página de detalle `docs/pendientes/x-13-componentes-compartidos.md`: evaluar cómo compartir componentes y galería entre proyectos de la UPME y proponer la regla CMP-04 a `upme-estandares`. Desde ahora, un pendiente que necesita contexto tiene su página en `docs/pendientes/`.
 - Pendiente conocido: ECharts se importa completo (≈ 1 MB); reducirlo cuando las vistas lo usen.
