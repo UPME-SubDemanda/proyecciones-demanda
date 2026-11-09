@@ -33,6 +33,9 @@ frontend/
 | `VersionSelect` | CMP, CMP-03 | `<select>` nativo con etiqueta; la vigente lleva «(vigente)» |
 | `RangeSlider` | CMP, CMP-03 | Dos `<input type="range">` con sus valores visibles; «desde» nunca supera «hasta» |
 | `KioskShell` | CMP, TV-01 a TV-08 | Escenario de 1920 × 1080 escalado, tema oscuro, rotación con barra de progreso, flechas, puntos, arrastre de 80 px, pausa por interacción de 30 s, reinicio de filtros a los 5 min, reloj, intervalo, pantalla completa (entrar y salir) y «Volver al inicio» (`exitHref`). La lógica está en `rotation.ts`, sin React, con pruebas: el tiempo se acumula solo mientras corre, así que en una pausa la barra de progreso se congela (atenuada) y al reanudar continúa. Controles de solo ícono de 44 px con nombre accesible |
+| `SideNav` | CMP, LAY-04, LAY-06, A11-03 | Menú de la app: logo, grupos, ícono de 20 px + texto, ítem activo con barra de 3 px `brand` y `aria-current`, contadores en `critical`; conserva `?producto=` al navegar |
+| `AppShell` | LAY-01, LAY-03, LAY-04, LAY-08 | Esqueleto de la app: `SideNav` de 240 px en `surface-sunken`, encabezado con ubicación y controles y franja `brand` de 4 px; bajo 1024 px el menú se abre con «Menú» como panel (Esc o tocar fuera lo cierra) |
+| `UserMenu` | A11-03 | Nombre, correo y roles; «Ir al portal público» y «Cerrar sesión»; `aria-expanded`, se cierra con Esc o al tocar fuera |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
 
@@ -42,7 +45,7 @@ Gráficos reutilizables en `components/charts/`:
 - `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. Con `compact` reduce márgenes en teléfonos; con `kiosk`, líneas de 3,5 px y textos grandes. `scenarios` elige los escenarios visibles (bajo y alto juntos = banda; uno solo = línea punteada fina) y `range` recorta los años.
 - `kioskCharts.ts`: desviación mensual en barras con signo (GRA-03); abanico de revisiones con la paleta `chart.series` y la vigente discontinua y más gruesa (GRA-06); demanda diaria frente al año anterior; barras diarias de un producto desde cero (GRA-07).
 
-Faltan componentes del inventario que llegan con su vista: `SideNav` (T-08), `DataTable`, `AlertItem`, `Banner` y `Stepper`.
+Faltan componentes del inventario que llegan con su vista: `DataTable`, `AlertItem`, `Banner` y `Stepper`.
 
 ## Datos: un solo punto de acceso
 
@@ -68,6 +71,15 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 | `lib/product.ts` | Producto activo en la URL (`?producto=ee`, LAY-07) con `useProduct()` |
 | `lib/useFullscreen.ts` | Entrar y salir de pantalla completa con el mismo botón («Pantalla completa» / «Salir de pantalla completa»); `exitFullscreen()` antes de navegar |
 | `lib/useMediaQuery.ts` | Media queries en React (`PHONE`, quiebres de LAY-08) |
+
+## App interna (T-08)
+
+- `zones/app/AppLayout.tsx` envuelve todas las rutas `/app/*` (ruta con hijos en `routes.config.tsx`): arma el `AppShell` con el menú visible para el usuario, el selector de producto y el `UserMenu`. Cada vista se dibuja en el `<Outlet />`.
+- `zones/app/navigation.ts`: el menú (LAY-06) con todos los ítems planeados; `visibleNavigation()` deja solo los construidos y permitidos al rol.
+- `zones/app/AppPage.tsx`: estructura de una vista interna (LAY-05): `h1`, subtítulo con procedencia y acciones; pone el título del documento.
+- **Ingreso:** `RequireRole` manda a `/ingresar?siguiente=<ruta>` y `LoginPage` vuelve ahí al ingresar con usuario local. El ingreso con Google siempre regresa a `/app` (backend), así que el destino se guarda antes en `sessionStorage` y `AppLayout` lo usa al cargar (`auth/returnTo.ts`). Solo se aceptan destinos `/app…`, para que un enlace no lleve a otro sitio.
+- **Pruebas de recorrido:** `e2e/app-shell.spec.ts` (Playwright) con la sesión simulada: el portal lleva a la app, sin sesión pasa por ingresar y vuelve, el producto queda en la URL, el menú del usuario y el menú plegable en tablet. `pnpm exec playwright test e2e/app-shell.spec.ts`.
+- **Capturas de la app:** `screenshots.spec.ts` responde `/api/v1/auth/me` con un usuario de ejemplo; no usa credenciales reales.
 
 ## Íconos locales
 

@@ -21,5 +21,12 @@ describe('PublicHeader (UPME-LEG-01, LAY-04)', () => {
     expect(html).toContain('aria-expanded="false"');
     expect(html).toMatch(/<button[^>]*h-11/);
   });
+  it('enlace discreto de ingreso a la app', () => {
+    const withAction = renderToStaticMarkup(
+      <PublicHeader siteName="x" items={[]} action={{ label: 'Ingresar', href: '/app', icon: 'user' }} />,
+    );
+    expect(withAction).toContain('href="/app"');
+    expect(withAction).toContain('Ingresar');
+  });
   it('logo de la UPME con texto alternativo', () => expect(html).toContain('alt="UPME"'));
 });

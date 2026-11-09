@@ -160,7 +160,8 @@ export function PortalHome() {
   return (
     <div className="min-h-screen flex flex-col bg-surface">
       <a href="#contenido" className="sr-only focus:not-sr-only focus:p-4">Saltar al contenido</a>
-      <PublicHeader siteName={SITE_NAME} items={NAV} />
+      {/* «Ingresar» lleva a la app interna; sin sesión pasa por /ingresar (T-08, #17). */}
+      <PublicHeader siteName={SITE_NAME} items={NAV} action={{ label: 'Ingresar', href: '/app', icon: 'user' }} />
 
       <main id="contenido" className="flex-1 w-full max-w-[1200px] mx-auto px-6 py-12 flex flex-col gap-12">
         <section className="flex flex-col gap-4 max-w-[760px]">

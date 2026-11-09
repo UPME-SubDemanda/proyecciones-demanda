@@ -1132,7 +1132,7 @@ Etapa: 1.1 · Depende de: T-05 · Issue: #13 · PR: #14
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-07 · En curso {#t-07}
+### T-07 · Hecho {#t-07}
 
 Modo pantalla: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy, con acceso desde el portal
 
@@ -1148,11 +1148,11 @@ Etapa: 1.1 · Depende de: T-07 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-08 · Pendiente {#t-08}
+### T-08 · En curso {#t-08}
 
-App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07)
+App interna: encabezado, selector de producto y menú lateral (LAY-06, LAY-07), con acceso desde el portal
 
-Etapa: 1 · Depende de: T-05 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-05 · Issue: #17 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
