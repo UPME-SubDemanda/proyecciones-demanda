@@ -38,6 +38,10 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     expect(byName('Vigente jul-2026').endLabel?.show).toBe(true);
     expect((projectionChartOption(input).yAxis as { name: string }).name).toBe('TWh/año');
   });
+  it('modo compacto reduce el margen derecho', () => {
+    const grid = projectionChartOption({ ...input, compact: true }).grid as { right: number };
+    expect(grid.right).toBeLessThan(120);
+  });
   it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
   it('tema oscuro usa los roles oscuros', () => {
     const dark = projectionChartOption({ ...input, dark: true }).series as LineSeriesOption[];

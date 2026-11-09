@@ -18,4 +18,5 @@ describe('Button', () => {
     expect(html).toContain('title="Necesita el rol modeler"');
   });
   it('tamaño pequeño de 32 px', () => expect(renderToStaticMarkup(<Button size="sm">Datos</Button>)).toContain('h-8'));
+  it('tamaño táctil de 44 px (A11-07)', () => expect(renderToStaticMarkup(<Button size="touch">Datos</Button>)).toContain('h-11'));
 });

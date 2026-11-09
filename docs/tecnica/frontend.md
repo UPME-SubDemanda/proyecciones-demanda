@@ -22,20 +22,22 @@ frontend/
 
 | Componente | Reglas | Notas |
 | --- | --- | --- |
-| `Button` | CMP, CON-02, CMP-03 | `primary` (máx. 1 por vista), `secondary`, `ghost`, `danger`; `sm` de 32 px; `href` lo vuelve enlace; `disabledReason` lo deshabilita con explicación |
+| `Button` | CMP, CON-02, CMP-03, A11-07 | `primary` (máx. 1 por vista), `secondary`, `ghost`, `danger`; `sm` de 32 px, `touch` de 44 px para portal y modo pantalla; `href` lo vuelve enlace; `disabledReason` lo deshabilita con explicación |
 | `Badge`, `IllustrativeBadge` | CMP, A11-05, CON-07 | Estados y productos; `IllustrativeBadge` marca las cifras de ejemplo |
 | `ProductIcon` | CMP, UPME-ICO-02 | Círculo con el relleno del producto; `decorative` si el nombre ya está al lado |
 | `KpiCard` | CMP, PRI-02, CON-04 | Etiqueta, cifra con unidad, variación con tono (`good`/`bad` solo si subir o bajar es bueno o malo), procedencia y «Cifras ilustrativas» |
 | `ChartCard` | CMP, GRA-02, GRA-08, UX-07 | Título con hallazgo, subtítulo, controles, acciones (datos CSV, imagen PNG, tabla, pantalla completa) y fuente; la tabla equivalente siempre está para lectores de pantalla |
 | `SegmentedControl` | CMP, A11-03, A11-07 | `aria-pressed`; `size="touch"` (44 px) en portal y modo pantalla |
+| `PublicHeader`, `GovcoBar` | CMP, UPME-LEG-01, LAY-04 | Barra GOV.CO de 48 px, logo, menú superior (solo vistas que existen) y franja `brand`; en móvil, botón «Menú». El logo oficial de GOV.CO está pendiente (X-11) |
+| `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
 
 Gráficos reutilizables en `components/charts/`:
 
-- `EChart`: único envoltorio de ECharts. Registra el tema claro y oscuro, se redimensiona, lleva `aria-label` y desactiva la animación con `prefers-reduced-motion` (GRA-11).
-- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV.
+- `EChart`: único envoltorio de ECharts. Importa solo los módulos que se usan (`echarts/core`: líneas, barras, ejes, tooltip, leyenda, marcas, zoom, aria); si un gráfico necesita otro, se agrega ahí. Registra el tema claro y oscuro, se redimensiona, lleva `aria-label` y desactiva la animación con `prefers-reduced-motion` (GRA-11).
+- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. Con `compact` reduce márgenes en teléfonos.
 
-Faltan componentes del inventario que llegan con su vista: `PublicHeader` (T-06), `KioskShell` (T-07), `SideNav` (T-08), `DataTable`, `VersionSelect`, `RangeSlider`, `Chip`, `AlertItem`, `Banner` y `Stepper`.
+Faltan componentes del inventario que llegan con su vista: `KioskShell` (T-07), `SideNav` (T-08), `DataTable`, `VersionSelect`, `RangeSlider`, `Chip`, `AlertItem`, `Banner` y `Stepper`.
 
 ## Datos: un solo punto de acceso
 
@@ -73,6 +75,13 @@ Con `pnpm dev`, la ruta `/dev/componentes` muestra todos los componentes base co
 
 Las pruebas de componentes renderizan a HTML con `react-dom/server` (sin librerías adicionales) y verifican estructura, tokens, accesibilidad y formatos. La interacción se revisa en la galería y, más adelante, con Playwright.
 
-## Pendiente conocido
+## Capturas (DOC-03)
 
-ECharts se importa completo (≈ 1 MB). Cuando las vistas de T-06 a T-09 lo usen, conviene importar solo los módulos necesarios (`echarts/core`) para reducir la carga del portal.
+`e2e/screenshots.spec.ts` captura cada vista del inventario en `docs/usuario/capturas/<id>.png`; las del portal también en móvil (`<id>-movil.png`, 390 px). La primera vez hay que instalar el navegador: `pnpm exec playwright install chromium`.
+
+```bash
+cd frontend && pnpm screenshots                                  # contra http://localhost:5173
+BASE_URL=http://localhost:5174 pnpm screenshots                  # contra otro servidor de desarrollo
+```
+
+El contenedor `web` de Docker (5173) corre la imagen construida; si el código cambió, reconstruirlo (`docker compose up -d --build web`) o capturar contra `pnpm dev` en otro puerto.

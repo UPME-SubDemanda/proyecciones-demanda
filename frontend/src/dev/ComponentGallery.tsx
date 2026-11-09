@@ -11,6 +11,8 @@ import { EmptyState } from '../components/EmptyState/EmptyState';
 import { ErrorState } from '../components/ErrorState/ErrorState';
 import { KpiCard } from '../components/KpiCard/KpiCard';
 import { ProductIcon } from '../components/ProductIcon/ProductIcon';
+import { PublicFooter } from '../components/PublicFooter/PublicFooter';
+import { PublicHeader } from '../components/PublicHeader/PublicHeader';
 import { SegmentedControl } from '../components/SegmentedControl/SegmentedControl';
 import { Skeleton } from '../components/Skeleton/Skeleton';
 import { projectionChartOption, projectionTable } from '../components/charts/projectionChart';
@@ -81,6 +83,7 @@ export function ComponentGallery() {
           <Button variant="ghost">Ver alertas</Button>
           <Button variant="danger">Retirar modelo</Button>
           <Button size="sm">Datos</Button>
+          <Button size="touch">Descargar datos (táctil, 44 px)</Button>
           <Button disabledReason="Necesita el rol modeler">Ejecutar proyección</Button>
         </div>
       </section>
@@ -137,6 +140,17 @@ export function ComponentGallery() {
         ) : (
           <Skeleton height={420} label="Cargando gráfico" />
         )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h2">PublicHeader y PublicFooter (portal, siempre tema claro)</h2>
+        <div className="border border-line rounded-md overflow-hidden">
+          <PublicHeader
+            siteName="Proyecciones de demanda de energía"
+            items={[{ label: 'Inicio', href: '#', active: true }, { label: 'Proyecciones', href: '#proyecciones' }]}
+          />
+          <PublicFooter />
+        </div>
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">

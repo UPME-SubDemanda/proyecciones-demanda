@@ -5,7 +5,7 @@
  * Este módulo se elimina en T-18, cuando las vistas lean la API.
  */
 import type { ProductKey } from '../lib/product';
-import type { ExogenousVariable, ObservedSeries, Point, Revision, RevisionValues, Scenario } from '../data/types';
+import type { Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionValues, Scenario } from '../data/types';
 
 const FIRST_YEAR = 2010;
 const LAST_OBSERVED_YEAR = 2025;
@@ -102,6 +102,10 @@ export function demoRevisionValues(id: number): RevisionValues {
     unit: product === 'ee' ? 'GWh' : 'GBTUD',
     scenarios,
   };
+}
+
+export function demoAccuracy(): Accuracy {
+  return { value: 98.4, meanAbsError: 1.6, horizonMonths: 12 };
 }
 
 export function demoExogenous(): ExogenousVariable[] {

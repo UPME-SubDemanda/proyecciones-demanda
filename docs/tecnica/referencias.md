@@ -35,7 +35,7 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 20 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 13 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 14 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 17 |
 
@@ -1116,19 +1116,19 @@ Etapa: — · Depende de: T-04 · Issue: #9 · PR: #11
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-05 · En curso {#t-05}
+### T-05 · Hecho {#t-05}
 
 Estructura base del frontend: componentes base (tarjeta, indicador, contenedor de gráfico con el tema de ECharts, aviso «Cifras ilustrativas», selector de producto) y módulo de datos ilustrativos
 
-Etapa: 1 y 1.1 · Depende de: T-04 · Issue: #8 · PR: —
+Etapa: 1 y 1.1 · Depende de: T-04 · Issue: #8 · PR: #12
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-06 · Pendiente {#t-06}
+### T-06 · En curso {#t-06}
 
 Portal público: inicio (escritorio y móvil)
 
-Etapa: 1.1 · Depende de: T-05 · Issue: — · PR: —
+Etapa: 1.1 · Depende de: T-05 · Issue: #13 · PR: #14
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1342,6 +1342,14 @@ Responsable: Líder · Estado: Abierto (revisar al cerrar T-08)
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
+### X-14 · Datos del portal {#x-14}
+
+Antes de conectar datos reales al portal (T-18, T-19): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, y el texto de la licencia de los datos descargados (X-04)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
 ## P-0000 · Decisiones del proyecto (ADR) {#p-0000}
 
 ### P-0001 · Alcance de la etapa 1 sin modelos {#p-0001}
@@ -1371,7 +1379,7 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | ADR-0010 | …arte de una base de datos ya ordenada. DVC es obligatorio al iniciar la fase 2 (ADR-0010 del estándar). | `docs/decisiones/0001-alcance-etapa-1.md` |
 | ADR-0015 | Almacenamiento de objetos  MinIO  —  Retirada (ADR-0015)  — | `reglas/REGLAS-TECNICAS.md` |
 | ADR-0016 | Plantilla de proyectos  Copier  —  Retirada (ADR-0016): se usa un proyecto de referencia  copier | `reglas/REGLAS-TECNICAS.md` |
-| CMP-04 | …cs/pendientes/) para evaluar componentes compartidos entre proyectos y proponer CMP-04 al estándar (issue #8). | `CHANGELOG.md`, `docs/diario/2026/2026-11-08-estructura-base-frontend.md`, `docs/pendientes.md` y 1 más |
+| CMP-04 | …cs/pendientes/) para evaluar componentes compartidos entre proyectos y proponer CMP-04 al estándar (issue #8, PR #12). | `CHANGELOG.md`, `docs/diario/2026/2026-11-08-estructura-base-frontend.md`, `docs/pendientes.md` y 1 más |
 | P-01 | …os diarios y prueba de restauración trimestral (responsable por definir con TI, P-01). | `docs/tecnica/despliegue.md`, `reglas/REGLAS-TECNICAS.md` |
 | P-02 | Identidad centralizada  Keycloak  —  En evaluación (piloto, P-02)  keycloak | `reglas/REGLAS-TECNICAS.md` |
 | P-03 | Versionado de datos  DVC  —  Aplazada (P-03)  dvc | `reglas/REGLAS-TECNICAS.md` |

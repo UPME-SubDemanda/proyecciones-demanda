@@ -55,5 +55,15 @@ export type ExogenousVariable = {
   points: Point[];
 };
 
+/**
+ * Acierto de las proyecciones publicadas. La definición del indicador está pendiente (X-14):
+ * hoy se muestra como 100 % menos el error medio absoluto a `horizonMonths` meses.
+ */
+export type Accuracy = {
+  value: number; // %
+  meanAbsError: number; // %
+  horizonMonths: number;
+};
+
 /** Datos de ejemplo o reales: las vistas muestran «Cifras ilustrativas» si es `true` (CON-07). */
 export type WithOrigin<T> = { data: T; illustrative: boolean };
