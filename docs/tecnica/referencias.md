@@ -1376,7 +1376,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-17 · Íconos locales al estándar {#x-17}
 
-El proyecto usa íconos que aún no están en `upme-estandares` (`frontend/src/iconos-locales/`): `fullScreen`, `chevron-lef` y `chevron-right`, tomados de la Librería de Iconos UPME, y `pause` y `play`, **creados en el proyecto** porque la librería no los tiene (excepción a UPME-ICO-01 aprobada por el líder, #15). Llevarlos al estándar con un PR a `upme-estandares` (MARCA-UPME, proceso para agregar un ícono) y pedir a Comunicaciones que revise `pause` y `play` o los reemplace por oficiales
+El proyecto usa íconos que aún no están en `upme-estandares` (`frontend/src/iconos-locales/`): `fullScreen`, `chevron-lef` y `chevron-right`, tomados de la Librería de Iconos UPME, y `pause` y `play`, **creados en el proyecto** porque la librería no los tiene (excepción a UPME-ICO-01 aprobada por el líder, #15). Llevarlos al estándar con un PR a `upme-estandares` (MARCA-UPME, proceso para agregar un ícono) y pedir a Comunicaciones que revise `pause` y `play` o los reemplace por oficiales. [Detalle, insumos y prompt](../pendientes/x-17-iconos-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 

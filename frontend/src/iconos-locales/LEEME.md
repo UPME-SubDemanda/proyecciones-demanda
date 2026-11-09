@@ -1,6 +1,6 @@
 # Íconos locales (pendientes de pasar al estándar)
 
-Íconos que el proyecto necesitó y que todavía no están en `upme-estandares`. Se usan solo a través de `src/lib/icons.ts`; el origen de cada uno está en `iconos.json`. Cuando el estándar los incluya, se borran de aquí y se toman de `src/estandares/iconos/` cambiando solo `src/lib/icons.ts`. Pasarlos al estándar: pendiente X-17.
+Íconos que el proyecto necesitó y que todavía no están en `upme-estandares`. Se usan solo a través de `src/lib/icons.ts`; el origen de cada uno está en `iconos.json`. Cuando el estándar los incluya, se borran de aquí y se toman de `src/estandares/iconos/` cambiando solo `src/lib/icons.ts`. Pasarlos al estándar: pendiente X-17 (`docs/pendientes/x-17-iconos-al-estandar.md`, con los insumos y el prompt).
 
 | Archivo | Uso | Origen |
 | --- | --- | --- |
