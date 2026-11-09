@@ -1176,7 +1176,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Monitor de variables exógenas
 
-Etapa: 1 · Depende de: T-08 · Issue: #25 · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #25 · PR: #26
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 

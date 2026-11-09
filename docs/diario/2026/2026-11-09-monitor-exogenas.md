@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-09
 autor: David Bedoya
-pr: ?
+pr: 26
 issue: 25
 tipo: agrega
 vistas: [monitor-exogenas, tablero-ejecutivo]
