@@ -13,6 +13,8 @@ import { KpiCard } from '../components/KpiCard/KpiCard';
 import { Chip } from '../components/Chip/Chip';
 import { ProductIcon } from '../components/ProductIcon/ProductIcon';
 import { RangeSlider } from '../components/RangeSlider/RangeSlider';
+import { SideNav } from '../components/SideNav/SideNav';
+import { UserMenu } from '../components/UserMenu/UserMenu';
 import { VersionSelect } from '../components/VersionSelect/VersionSelect';
 import { PublicFooter } from '../components/PublicFooter/PublicFooter';
 import { PublicHeader } from '../components/PublicHeader/PublicHeader';
@@ -175,11 +177,33 @@ export function ComponentGallery() {
       </section>
 
       <section className="flex flex-col gap-3">
+        <h2 className="text-h2">SideNav y UserMenu (app interna)</h2>
+        <div className="flex flex-wrap items-start gap-8">
+          <div className="h-[420px] border border-line rounded-md overflow-hidden">
+            <SideNav
+              appName="Proyecciones de demanda"
+              activePath="/app"
+              groups={[
+                { items: [{ label: 'Inicio', path: '/app', icon: 'home' }] },
+                { label: 'Proyecciones', items: [{ label: 'Histórico de revisiones', path: '/app/proyecciones/historico', icon: 'history' }] },
+                { label: 'Operación', items: [{ label: 'Alertas', path: '/app/alertas', icon: 'alerts', count: 3 }] },
+              ]}
+            />
+          </div>
+          <UserMenu name="Subdirección de Demanda" email="demanda@upme.gov.co" roles={['viewer', 'modeler']} onLogout={() => {}} />
+        </div>
+        <p className="text-small text-ink-muted">
+          AppShell (menú lateral + encabezado) ocupa toda la pantalla: se ve en <a className="text-primary underline" href="/app">/app</a> con sesión.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3">
         <h2 className="text-h2">PublicHeader y PublicFooter (portal, siempre tema claro)</h2>
         <div className="border border-line rounded-md overflow-hidden">
           <PublicHeader
             siteName="Proyecciones de demanda de energía"
             items={[{ label: 'Inicio', href: '#', active: true }, { label: 'Proyecciones', href: '#proyecciones' }]}
+            action={{ label: 'Ingresar', href: '#ingresar', icon: 'user' }}
           />
           <PublicFooter />
         </div>

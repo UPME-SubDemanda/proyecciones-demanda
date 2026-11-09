@@ -1,14 +1,18 @@
 import { useId, useState } from 'react';
 import logoUrl from '../../estandares/logos/upme-horizontal-amarillo.svg';
 import { cn } from '../../lib/cn';
+import { icons } from '../../lib/icons';
 
 export type PublicNavItem = { label: string; href: string; active?: boolean };
+/** Enlace discreto a la derecha del menú, p. ej. «Ingresar» a la app interna. */
+export type PublicHeaderAction = { label: string; href: string; icon?: 'user' };
 
 type Props = {
   /** Nombre del sitio junto al logo. */
   siteName: string;
   /** Ítems del menú superior. Solo vistas que existen: se agregan a medida que salen. */
   items: PublicNavItem[];
+  action?: PublicHeaderAction;
   className?: string;
 };
 
@@ -35,7 +39,7 @@ export function GovcoBar({ className }: { className?: string }) {
  * Encabezado del portal (CMP: PublicHeader): barra GOV.CO + logo + menú superior + franja `brand` de 4 px.
  * Ítem activo con subrayado de 3 px `brand` (LAY-04). En móvil, el menú se abre con un botón (A11-07).
  */
-export function PublicHeader({ siteName, items, className }: Props) {
+export function PublicHeader({ siteName, items, action, className }: Props) {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   return (
@@ -58,17 +62,31 @@ export function PublicHeader({ siteName, items, className }: Props) {
             {open ? 'Cerrar' : 'Menú'}
           </button>
 
-          <nav aria-label="Menú principal" className="hidden lg:block">
-            <NavList items={items} />
-          </nav>
+          <div className="hidden lg:flex items-center gap-8">
+            <nav aria-label="Menú principal">
+              <NavList items={items} />
+            </nav>
+            {action && <ActionLink action={action} />}
+          </div>
         </div>
         {open && (
           <nav id={menuId} aria-label="Menú principal" className="lg:hidden border-t border-line">
             <NavList items={items} vertical />
+            {action && <div className="px-6 pb-4"><ActionLink action={action} /></div>}
           </nav>
         )}
       </div>
     </header>
+  );
+}
+
+function ActionLink({ action }: { action: PublicHeaderAction }) {
+  const Icon = action.icon ? icons[action.icon] : null;
+  return (
+    <a href={action.href} className="inline-flex items-center gap-2 min-h-11 pl-6 lg:border-l border-line text-body text-ink-muted hover:text-ink">
+      {Icon && <Icon width={20} height={20} aria-hidden="true" />}
+      {action.label}
+    </a>
   );
 }
 

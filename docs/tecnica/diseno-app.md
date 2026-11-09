@@ -8,6 +8,9 @@ Sigue `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`. Mockups aprobados: `do
 - **Modo pantalla** `/pantalla` (etapa 1.1)
 
 ## Menú lateral (LAY-06)
+
+Definido en código en `frontend/src/zones/app/navigation.ts`, en este mismo orden. Solo se muestran las vistas construidas (`built: true`) y permitidas al rol (UX-08); cada vista nueva activa su ítem en el PR que la construye.
+
 1. **Inicio** — tablero ejecutivo (`home`)
 2. **Proyecciones** — Proyección vs. real (`OfertaDemanda`) · Histórico de revisiones (`time`) · Comparar revisiones
 3. **Variables** — Monitor de exógenas (`clima`) · Explorador · Correlaciones

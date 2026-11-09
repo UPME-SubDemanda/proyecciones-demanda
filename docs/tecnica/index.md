@@ -6,15 +6,44 @@
 
 ```bash
 git config core.hooksPath .githooks   # una vez por copia: activa el hook de páginas generadas
-cp .env.example .env          # cambiar SESSION_SECRET por un valor aleatorio
+cp .env.example .env          # cambiar SESSION_SECRET y poner DEV_ADMIN_PASSWORD (valores aleatorios, ver abajo)
 docker compose up -d --build
 docker compose exec api uv run alembic upgrade head
-docker compose exec api uv run python -m app.auth.cli create-user admin@local --role admin
+docker compose exec api sh -c 'uv run python -m app.auth.cli create-user admin@local --role admin --password "$DEV_ADMIN_PASSWORD"'
 ```
 
 API: http://localhost:8000/docs · Web: http://localhost:5173 · Prefect: http://localhost:4200
 
 Las migraciones y la CLI se ejecutan **dentro del contenedor `api`**: ahí `DATABASE_URL` apunta al servicio `db` (nombre que solo existe en la red de Docker). La configuración lee `.env` desde la carpeta donde se ejecuta el comando; si se corren desde `backend/` en el equipo, no lo encuentran y usan SQLite (`local.db`) sin avisar.
+
+## Usuario administrador local
+
+Para entrar a la app interna en desarrollo (`/app`, o **Ingresar** en el portal → «Ingresar con usuario local»):
+
+| Dato | Dónde está |
+| --- | --- |
+| Usuario | `admin@local` |
+| Contraseña | En **`.env`**, variable `DEV_ADMIN_PASSWORD` |
+
+- `.env` está ignorado por git: la contraseña existe solo en el computador de cada persona y **no se comparte** por chat, correo ni en el repositorio. Cada quien genera la suya.
+- La app no lee `DEV_ADMIN_PASSWORD`: solo sirve para crear el usuario y para recordarla. El contenedor `api` recibe las variables de `.env`, por eso el comando de creación la toma de ahí sin escribirla en la terminal.
+- Solo para desarrollo local. En pruebas y producción los usuarios entran con la cuenta institucional de Google y sus roles los asigna un administrador.
+
+**Primera vez:**
+
+```bash
+python3 -c "import secrets; print(secrets.token_urlsafe(18))"   # copie el valor en DEV_ADMIN_PASSWORD de .env
+docker compose up -d api                                         # el contenedor relee .env al recrearse
+docker compose exec api sh -c 'uv run python -m app.auth.cli create-user admin@local --role admin --password "$DEV_ADMIN_PASSWORD"'
+```
+
+**Otro usuario con su propia contraseña** (el comando la pide sin mostrarla):
+
+```bash
+docker compose exec api uv run python -m app.auth.cli create-user su.correo@upme.gov.co --role admin
+```
+
+**Si se olvidó la contraseña:** está en `.env`. Si `.env` se perdió, cree otro usuario con el comando anterior; la CLI todavía no tiene un comando para cambiar contraseñas.
 
 ## Páginas generadas
 
