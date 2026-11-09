@@ -42,6 +42,20 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     const grid = projectionChartOption({ ...input, compact: true }).grid as { right: number };
     expect(grid.right).toBeLessThan(120);
   });
+  it('sin bajo o alto no hay banda: el que quede va como línea punteada fina', () => {
+    const s = projectionChartOption({ ...input, scenarios: ['mid', 'high'] }).series as LineSeriesOption[];
+    expect(s.find((x) => x.name === 'Escenarios bajo–alto')).toBeUndefined();
+    expect(s.find((x) => x.name === 'Alto')?.lineStyle?.type).toEqual(dash.scenario);
+  });
+  it('sin el medio no se dibuja la proyección', () => {
+    const s = projectionChartOption({ ...input, scenarios: ['low', 'high'] }).series as LineSeriesOption[];
+    expect(s.find((x) => x.name === 'Vigente jul-2026')).toBeUndefined();
+  });
+  it('el rango de años recorta el eje', () => {
+    const x = projectionChartOption({ ...input, range: [2015, 2035] }).xAxis as { data: string[] };
+    expect(x.data[0]).toBe('2015');
+    expect(x.data.at(-1)).toBe('2035');
+  });
   it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
   it('tema oscuro usa los roles oscuros', () => {
     const dark = projectionChartOption({ ...input, dark: true }).series as LineSeriesOption[];

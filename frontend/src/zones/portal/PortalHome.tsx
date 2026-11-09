@@ -17,6 +17,7 @@ import { PHONE, useMediaQuery } from '../../lib/useMediaQuery';
 import { change, growthTitle, lastObserved, valueAt } from './portalData';
 
 const SITE_NAME = 'Proyecciones de demanda de energía';
+const KIOSK_URL = '/pantalla';
 /** Menú superior: solo las vistas que existen; se agregan a medida que salen (T-06). */
 const NAV = [{ label: 'Inicio', href: '/', active: true }];
 
@@ -128,13 +129,19 @@ function ProjectionSection() {
         cutoff: observed.data.data.cutoff,
       }}
       controls={
-        <SegmentedControl
-          ariaLabel="Producto del gráfico"
-          size="touch"
-          value={product.key}
-          onChange={setProduct}
-          options={PRODUCT_KEYS.map((k) => ({ value: k, label: PRODUCTS[k].name }))}
-        />
+        <>
+          <SegmentedControl
+            ariaLabel="Producto del gráfico"
+            size="touch"
+            value={product.key}
+            onChange={setProduct}
+            options={PRODUCT_KEYS.map((k) => ({ value: k, label: PRODUCTS[k].name }))}
+          />
+          {/* Acceso discreto al modo pantalla; en teléfonos no se muestra (T-07, #15). */}
+          <a href={KIOSK_URL} className="hidden lg:inline-flex items-center h-11 px-2 text-body font-bold text-primary hover:underline">
+            Ver en modo pantalla →
+          </a>
+        </>
       }
       actionSize="touch"
       height={phone ? 300 : 360}

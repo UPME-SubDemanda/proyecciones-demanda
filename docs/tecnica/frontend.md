@@ -29,15 +29,20 @@ frontend/
 | `ChartCard` | CMP, GRA-02, GRA-08, UX-07 | Título con hallazgo, subtítulo, controles, acciones (datos CSV, imagen PNG, tabla, pantalla completa) y fuente; la tabla equivalente siempre está para lectores de pantalla |
 | `SegmentedControl` | CMP, A11-03, A11-07 | `aria-pressed`; `size="touch"` (44 px) en portal y modo pantalla |
 | `PublicHeader`, `GovcoBar` | CMP, UPME-LEG-01, LAY-04 | Barra GOV.CO de 48 px, logo, menú superior (solo vistas que existen) y franja `brand`; en móvil, botón «Menú». El logo oficial de GOV.CO está pendiente (X-11) |
+| `Chip` | CMP, A11-03 | Filtros combinables; activo con `brand-soft` y borde `brand`; `size="touch"` |
+| `VersionSelect` | CMP, CMP-03 | `<select>` nativo con etiqueta; la vigente lleva «(vigente)» |
+| `RangeSlider` | CMP, CMP-03 | Dos `<input type="range">` con sus valores visibles; «desde» nunca supera «hasta» |
+| `KioskShell` | CMP, TV-01 a TV-08 | Escenario de 1920 × 1080 escalado, tema oscuro, rotación con barra de progreso, flechas, puntos, arrastre de 80 px, pausa por interacción de 30 s, reinicio de filtros a los 5 min, reloj, intervalo y pantalla completa. La lógica está en `rotation.ts`, sin React, con pruebas |
 | `PublicFooter` | UPME-LEG-02 | Datos de la entidad, enlaces legales y barra inferior GOV.CO; lo que falta se muestra entre corchetes (X-11) |
 | `EmptyState`, `ErrorState`, `Skeleton` | UX-06 | Vacío con qué hacer, error con detalle técnico plegado, carga sin spinner |
 
 Gráficos reutilizables en `components/charts/`:
 
 - `EChart`: único envoltorio de ECharts. Importa solo los módulos que se usan (`echarts/core`: líneas, barras, ejes, tooltip, leyenda, marcas, zoom, aria); si un gráfico necesita otro, se agrega ahí. Registra el tema claro y oscuro, se redimensiona, lleva `aria-label` y desactiva la animación con `prefers-reduced-motion` (GRA-11).
-- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. Con `compact` reduce márgenes en teléfonos.
+- `projectionChart.ts`: real + proyección vigente + banda bajo–alto + revisiones anteriores + línea de corte, con la codificación fija de GRA-01, etiquetas al final (GRA-04), unidad en el eje (GRA-07) y tooltip con diferencia en % (GRA-05). `projectionTable` da la tabla equivalente y la base del CSV. Con `compact` reduce márgenes en teléfonos; con `kiosk`, líneas de 3,5 px y textos grandes. `scenarios` elige los escenarios visibles (bajo y alto juntos = banda; uno solo = línea punteada fina) y `range` recorta los años.
+- `kioskCharts.ts`: desviación mensual en barras con signo, en el color negativo las que salen del umbral, con líneas de umbral (GRA-03).
 
-Faltan componentes del inventario que llegan con su vista: `KioskShell` (T-07), `SideNav` (T-08), `DataTable`, `VersionSelect`, `RangeSlider`, `Chip`, `AlertItem`, `Banner` y `Stepper`.
+Faltan componentes del inventario que llegan con su vista: `SideNav` (T-08), `DataTable`, `AlertItem`, `Banner` y `Stepper`.
 
 ## Datos: un solo punto de acceso
 

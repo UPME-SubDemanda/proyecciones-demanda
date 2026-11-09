@@ -23,6 +23,7 @@ export function PublicFooter({ className }: { className?: string }) {
             <li>Política de tratamiento de datos [enlace por definir]</li>
             <li>Términos de uso y licencia de datos [enlace por definir]</li>
             <li>Accesibilidad [enlace por definir]</li>
+            <li><a href="/pantalla" className="text-primary underline">Modo pantalla para televisores</a></li>
           </ul>
         </div>
         <div className="flex flex-col gap-2">

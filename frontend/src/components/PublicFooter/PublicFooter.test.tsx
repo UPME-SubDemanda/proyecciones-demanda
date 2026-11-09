@@ -12,6 +12,7 @@ describe('PublicFooter (UPME-LEG-02)', () => {
     }
   });
   it('datos por completar visibles como marcadores (X-11)', () => expect(html).toContain('[Correo de notificaciones judiciales]'));
+  it('enlace al modo pantalla', () => expect(html).toContain('href="/pantalla"'));
   it('barra inferior GOV.CO', () => {
     expect(html).toContain('bg-govco');
     expect(html).toContain('Conoce a GOV.CO');

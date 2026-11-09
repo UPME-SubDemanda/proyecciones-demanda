@@ -39,3 +39,12 @@ export function useExogenous() {
 export function useAccuracy() {
   return useQuery({ queryKey: ['accuracy'], queryFn: withOrigin(() => source.accuracy()) });
 }
+
+/** Desempeño de una revisión frente al dato real: desviación mensual, año corrido y error medio (X-14). */
+export function useRevisionPerformance(revisionId: number | undefined) {
+  return useQuery({
+    queryKey: ['revision-performance', revisionId],
+    queryFn: withOrigin(() => source.revisionPerformance(revisionId as number)),
+    enabled: revisionId !== undefined,
+  });
+}

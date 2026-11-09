@@ -56,6 +56,18 @@ export type ExogenousVariable = {
 };
 
 /**
+ * Desempeño de una revisión frente al dato real (definiciones pendientes, X-14 y X-03).
+ * `monthlyDeviation`: diferencia mensual real vs. proyectado, en %, últimos 12 meses (`period` = `2026-09`).
+ */
+export type RevisionPerformance = {
+  revisionId: number;
+  monthlyDeviation: Point[];
+  yearToDate: number; // % real vs. proyectado en el año corrido
+  threshold: number; // ± % aceptable (X-03)
+  mape12: number; // error medio absoluto a 12 meses, %
+};
+
+/**
  * Acierto de las proyecciones publicadas. La definición del indicador está pendiente (X-14):
  * hoy se muestra como 100 % menos el error medio absoluto a `horizonMonths` meses.
  */

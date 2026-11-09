@@ -5,7 +5,9 @@
  * Este módulo se elimina en T-18, cuando las vistas lean la API.
  */
 import type { ProductKey } from '../lib/product';
-import type { Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionValues, Scenario } from '../data/types';
+import type {
+  Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario,
+} from '../data/types';
 
 const FIRST_YEAR = 2010;
 const LAST_OBSERVED_YEAR = 2025;
@@ -101,6 +103,29 @@ export function demoRevisionValues(id: number): RevisionValues {
     region: product === 'ee' ? 'SIN' : 'Nacional',
     unit: product === 'ee' ? 'GWh' : 'GBTUD',
     scenarios,
+  };
+}
+
+/** Desviación mensual ilustrativa: arranca cerca de cero y se aleja (energía eléctrica hacia abajo, como el mockup). */
+export function demoRevisionPerformance(id: number): RevisionPerformance {
+  const product: ProductKey = id >= 200 ? 'gn' : 'ee';
+  const months: string[] = [];
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(Date.UTC(2026, 8 - i, 1)); // hasta sep-2026, la fecha de corte
+    months.push(`${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`);
+  }
+  const [start, drift] = product === 'ee' ? [0.4, -0.3] : [0.3, 0.05];
+  const monthlyDeviation = months.map((period, i) => ({
+    period,
+    value: round(start + drift * i + wobble(i + (product === 'ee' ? 3 : 7), 0.4), 1),
+  }));
+  const ytd = monthlyDeviation.filter((p) => p.period.startsWith('2026'));
+  return {
+    revisionId: id,
+    monthlyDeviation,
+    yearToDate: round(ytd.reduce((s, p) => s + p.value, 0) / ytd.length, 1),
+    threshold: product === 'ee' ? 1.5 : 2,
+    mape12: product === 'ee' ? 2.1 : 1.4,
   };
 }
 

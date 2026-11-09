@@ -32,6 +32,7 @@ Es la página principal del sitio: `/`. También se llega desde cualquier págin
     - el acierto de las proyecciones publicadas y su error medio.
 - **Gráfico de la proyección vigente:** el dato real (línea sólida) y la proyección hasta 2040 en el escenario medio (línea discontinua), con la banda entre los escenarios bajo y alto. El título dice cuánto crecería la demanda.
 - **Próximamente:** datos abiertos, simulador, metodología y API. Aún no están disponibles.
+- **Acceso al modo pantalla** para televisores: «Ver en modo pantalla →» junto al gráfico (en computador) y en el pie de página.
 - **Pie de página** con los datos de la entidad y los enlaces legales.
 
 ## Cómo se usa (paso a paso)
@@ -48,6 +49,7 @@ Es la página principal del sitio: `/`. También se llega desde cualquier págin
 | Descargar imagen | Descarga el gráfico como imagen PNG. |
 | Ver como tabla | Muestra los datos del gráfico en una tabla. |
 | Pantalla completa | Amplía el gráfico. |
+| Ver en modo pantalla → | Abre los tableros para televisores ([Modo pantalla](modo-pantalla.md)). Solo en pantallas de computador. |
 
 En el teléfono, el menú se abre con el botón **Menú**.
 
@@ -62,3 +64,4 @@ En el teléfono, el menú se abre con el botón **Menú**.
 
 ## Historial
 - 2026-11-08: primera versión con cifras ilustrativas (diario técnico: `2026-11-08-portal-inicio`).
+- 2026-11-08: acceso al modo pantalla (diario técnico: `2026-11-08-modo-pantalla`).

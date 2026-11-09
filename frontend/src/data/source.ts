@@ -4,8 +4,10 @@
  * las vistas no cambian porque solo usan los hooks de `queries.ts`.
  */
 import type { ProductKey } from '../lib/product';
-import { demoAccuracy, demoExogenous, demoObserved, demoRevisions, demoRevisionValues } from '../demo/fixtures';
-import type { Accuracy, ExogenousVariable, ObservedSeries, Revision, RevisionValues } from './types';
+import {
+  demoAccuracy, demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues,
+} from '../demo/fixtures';
+import type { Accuracy, ExogenousVariable, ObservedSeries, Revision, RevisionPerformance, RevisionValues } from './types';
 
 export const ILLUSTRATIVE = true;
 
@@ -15,4 +17,5 @@ export const source = {
   revisionValues: async (revisionId: number): Promise<RevisionValues> => demoRevisionValues(revisionId),
   exogenous: async (): Promise<ExogenousVariable[]> => demoExogenous(),
   accuracy: async (): Promise<Accuracy> => demoAccuracy(),
+  revisionPerformance: async (revisionId: number): Promise<RevisionPerformance> => demoRevisionPerformance(revisionId),
 };
