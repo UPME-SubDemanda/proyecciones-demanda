@@ -42,3 +42,20 @@ test('en tablet el menú se pliega y se abre con «Menú»', async ({ page }) =>
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toBeHidden();
 });
+
+test('histórico de revisiones: menú, selección, escenario y búsqueda', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.route('**/api/v1/auth/me', (route) => route.fulfill({ json: USER }));
+  await page.goto('/app');
+  await page.getByRole('link', { name: 'Histórico de revisiones' }).click();
+  await expect(page).toHaveURL(/\/app\/proyecciones\/historico/);
+  await expect(page.getByText('Proyecciones / Histórico de revisiones')).toBeVisible();
+  const table = page.getByRole('table', { name: /Revisiones publicadas/ });
+  await table.getByRole('row', { name: /Jul-2023/ }).click();
+  await expect(page).toHaveURL(/revision=2023-07/);
+  await page.getByRole('button', { name: 'Alto', exact: true }).click();
+  await expect(page).toHaveURL(/escenario=high/);
+  await page.getByRole('searchbox').fill('v3.2');
+  await expect(table.getByRole('row')).toHaveCount(2); // encabezado + vigente
+  await expect(page.getByRole('button', { name: /Comparar/ })).toBeDisabled();
+});

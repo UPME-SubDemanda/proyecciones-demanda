@@ -28,7 +28,7 @@ export const NAVIGATION: NavGroup[] = [
     label: 'Proyecciones',
     items: [
       { label: 'Proyección vs. real', path: '/app/proyecciones/vs-real', icon: 'realVsEstimated', built: false, step: 'T-12' },
-      { label: 'Histórico de revisiones', path: '/app/proyecciones/historico', icon: 'history', built: false, step: 'T-10' },
+      { label: 'Histórico de revisiones', path: '/app/proyecciones/historico', icon: 'history', built: true, step: 'T-10' },
       { label: 'Comparar revisiones', path: '/app/proyecciones/comparar', icon: 'history', built: false, step: 'T-13' },
     ],
   },
@@ -67,4 +67,13 @@ export function activeItem(pathname: string, groups: NavGroup[]): NavItem | unde
     .flatMap((g) => g.items)
     .filter((i) => pathname === i.path || pathname.startsWith(`${i.path}/`))
     .sort((a, b) => b.path.length - a.path.length)[0];
+}
+
+/** Ubicación para el encabezado: «Proyecciones / Histórico de revisiones», o solo la vista si no tiene grupo. */
+export function activeLocation(pathname: string, groups: NavGroup[]): string {
+  for (const g of groups) {
+    const item = activeItem(pathname, [g]);
+    if (item && activeItem(pathname, groups) === item) return g.label ? `${g.label} / ${item.label}` : item.label;
+  }
+  return 'Inicio';
 }

@@ -13,6 +13,7 @@ import { EmptyState } from '../components/EmptyState/EmptyState';
 import { ErrorState } from '../components/ErrorState/ErrorState';
 import { KpiCard } from '../components/KpiCard/KpiCard';
 import { Chip } from '../components/Chip/Chip';
+import { DataTable } from '../components/DataTable/DataTable';
 import { ProductIcon } from '../components/ProductIcon/ProductIcon';
 import { RangeSlider } from '../components/RangeSlider/RangeSlider';
 import { SideNav } from '../components/SideNav/SideNav';
@@ -150,6 +151,27 @@ export function ComponentGallery() {
         ) : (
           <Skeleton height={420} label="Cargando gráfico" />
         )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h2">DataTable</h2>
+        <div className="bg-surface-raised border border-line rounded-md">
+          <DataTable
+            caption="Revisiones de ejemplo"
+            rowKey={(r) => r.code}
+            highlight={(r) => r.current}
+            rows={[
+              { code: 'Jul-2026', model: 'EE-LP v3.2.0', mape: null as number | null, current: true },
+              { code: 'Ene-2026', model: 'EE-LP v3.1.1', mape: 1.4, current: false },
+              { code: 'Jul-2023', model: 'EE-LP v2.4.0', mape: 2.3, current: false },
+            ]}
+            columns={[
+              { key: 'code', header: 'Revisión', rowHeader: true, render: (r) => r.code, sortValue: (r) => r.code },
+              { key: 'model', header: 'Modelo', render: (r) => <span className="text-mono">{r.model}</span> },
+              { key: 'mape', header: 'MAPE', numeric: true, render: (r) => (r.mape === null ? '—' : `${r.mape.toLocaleString('es-CO')} %`), sortValue: (r) => r.mape },
+            ]}
+          />
+        </div>
       </section>
 
       <section className="flex flex-col gap-3">
