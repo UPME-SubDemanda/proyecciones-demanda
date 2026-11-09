@@ -1,0 +1,25 @@
+#!/bin/sh
+# Regenera las páginas generadas antes de cada commit y las agrega al mismo commit,
+# para que la CI no falle por olvidarlo (DOC-02, T-20).
+#   docs/tecnica/referencias.md        <- scripts/referencias.py (si cambia cualquier .md)
+#   docs/usuario/inventario/index.md   <- scripts/inventario.py  (si cambia el inventario o las rutas)
+# Se activa una vez por copia del repositorio:  git config core.hooksPath .githooks
+set -e
+
+PY=$(command -v python3 || command -v python)
+if [ -z "$PY" ]; then
+  echo "pre-commit: no se encontró Python; no se regeneraron las páginas generadas." >&2
+  exit 0
+fi
+
+changed=$(git diff --cached --name-only --diff-filter=ACMRD)
+
+if echo "$changed" | grep -qE '\.md$|^scripts/referencias\.py$'; then
+  "$PY" scripts/referencias.py >/dev/null
+  git add docs/tecnica/referencias.md
+fi
+
+if echo "$changed" | grep -qE '^docs/usuario/inventario/|^frontend/src/routes\.config\.tsx$|^scripts/inventario\.py$'; then
+  "$PY" scripts/inventario.py >/dev/null
+  git add docs/usuario/inventario/index.md
+fi

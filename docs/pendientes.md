@@ -15,8 +15,8 @@ Estados: **Hecho** · **En curso** · **Siguiente** · **Pendiente** · **Bloque
 | T-01 | Entorno local de desarrollo | — | — | #1 | #3 | Hecho |
 | T-02 | Mockups aprobados (8 pantallas) | — | — | #2 | #4 | Hecho |
 | T-03 | Guía del flujo de trabajo del equipo | — | — | #5 | #6 | Hecho |
-| T-04 | Plan de trabajo y cambio de etapas (público pasa a 1.1) | — | — | #7 | — | En curso |
-| T-20 | Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs | — | T-04 | #9 | — | Siguiente |
+| T-04 | Plan de trabajo y cambio de etapas (público pasa a 1.1) | — | — | #7 | #10 | Hecho |
+| T-20 | Página de referencias: qué significa cada ID (reglas, pasos del plan, pendientes y decisiones), generada por script y buscable en MkDocs | — | T-04 | #9 | — | En curso |
 
 ### Construcción visual con cifras ilustrativas
 

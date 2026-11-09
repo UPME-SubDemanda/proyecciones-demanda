@@ -92,6 +92,8 @@ git push origin --delete fix/7-energy-units    # o el botón «Delete branch» d
 
 Los commits van en inglés con Conventional Commits (FLU-06); la documentación y la interfaz, en español.
 
+Con el hook activo (`git config core.hooksPath .githooks`, una vez), cada commit regenera las páginas de referencias y del inventario. Ver [Páginas generadas](index.md#paginas-generadas).
+
 ## Ejemplos
 
 ### 1. Corrección: el entorno local no levantaba (issue #1, PR #3)
