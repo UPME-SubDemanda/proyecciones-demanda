@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-09
 autor: David Bedoya
-pr: ?
+pr: 22
 issue: 21
 tipo: agrega
 vistas: [historico-revisiones]

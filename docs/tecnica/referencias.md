@@ -1168,7 +1168,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Histórico de revisiones
 
-Etapa: 1 · Depende de: T-08 · Issue: #21 · PR: —
+Etapa: 1 · Depende de: T-08 · Issue: #21 · PR: #22
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
