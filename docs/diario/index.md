@@ -8,7 +8,7 @@ Lista generada por `scripts/diario.py` desde el encabezado de cada entrada. No e
 
 | Fecha | Entrada | Tipo | Vistas | Features | Issue | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-08 | [Modo pantalla](2026/2026-11-08-modo-pantalla.md) | agrega | modo-pantalla, portal-inicio | modo-pantalla | [#15](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/15) | pendiente |
+| 2026-11-08 | [Modo pantalla](2026/2026-11-08-modo-pantalla.md) | agrega | modo-pantalla, portal-inicio | modo-pantalla | [#15](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/15) | [#16](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/16) |
 | 2026-11-08 | [Portal inicio](2026/2026-11-08-portal-inicio.md) | agrega | portal-inicio | portal-publico | [#13](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/13) | [#14](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/14) |
 | 2026-11-08 | [Estructura base frontend](2026/2026-11-08-estructura-base-frontend.md) | agrega | — | estructura-base-frontend | [#8](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/8) | [#12](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/12) |
 | 2026-11-08 | [Referencias](2026/2026-11-08-referencias.md) | agrega | — | referencias | [#9](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/9) | [#11](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/11) |

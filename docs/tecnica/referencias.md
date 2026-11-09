@@ -1136,7 +1136,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Modo pantalla: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy, con acceso desde el portal
 
-Etapa: 1.1 · Depende de: T-05 · Issue: #15 · PR: —
+Etapa: 1.1 · Depende de: T-05 · Issue: #15 · PR: #16
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
