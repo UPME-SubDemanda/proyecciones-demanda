@@ -23,6 +23,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ### Cambiado
 - Ingreso: estados de verificación y sin permiso con los componentes de estado; enlace para volver al portal (issue #17).
+- Guía técnica: sección «Usuario administrador local» (usuario `admin@local`, contraseña en `DEV_ADMIN_PASSWORD` de `.env`, cómo crearlo sin escribir la contraseña en la terminal y cómo crear un usuario propio); `DEV_ADMIN_PASSWORD` en `.env.example` (issue #17).
 - Gráfico real vs. proyección: elige escenarios visibles y rango de años, y tiene modo pantalla (issue #15, PR #16).
 - Pantalla completa: el botón de `ChartCard` y del modo pantalla cambia a «Salir de pantalla completa» mientras está activa (issue #15, PR #16).
 - Gráficos: ECharts se importa por módulos (`echarts/core`) para que el portal cargue menos; `ChartCard` ordena las acciones en una barra propia y acepta acciones táctiles de 44 px; `Button` tiene tamaño `touch` (A11-07) (issue #13, PR #14).

@@ -29,4 +29,5 @@ Es la base de todas las vistas internas (T-09 a T-14): menú, producto activo y 
 - Ingreso con regreso a la página pedida: `?siguiente=` para usuario local y `sessionStorage` para Google, porque su retorno del backend siempre es `/app` (`auth/returnTo.ts`, solo destinos `/app…`). Sin cambios en el backend.
 - `RequireRole` usa `Skeleton` y `ErrorState`; `LoginPage` tiene «Volver al portal público». La página de ingreso sigue sin mockup (X-06).
 - Pruebas: 122 unitarias y un recorrido de Playwright (`e2e/app-shell.spec.ts`) con la sesión simulada. Las capturas de la app también usan una sesión simulada: no se usan credenciales reales.
+- Guía técnica: sección «Usuario administrador local» en `docs/tecnica/index.md` y `DEV_ADMIN_PASSWORD` en `.env.example` (sin valor). El comando de creación lee la contraseña del entorno del contenedor `api`, así no queda en el historial de la terminal.
 - En teléfono la app no está optimizada (LAY-08 lo permite: optimizada a 1280 px y usable en tablet).
