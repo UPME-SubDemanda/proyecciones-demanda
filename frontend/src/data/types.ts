@@ -68,6 +68,25 @@ export type RevisionPerformance = {
 };
 
 /**
+ * Demanda diaria reciente para el tablero «El sistema hoy». `period` = `2026-09-30`.
+ * Datos operativos públicos (XM y Gestor del Mercado de Gas); la definición final está en X-14.
+ */
+export type SystemToday = {
+  lastDay: string;
+  energyDaily: Point[]; // GWh por día, últimos 30 días
+  energyPrevYear: Point[]; // mismo día del año anterior (mismas fechas, un año antes)
+  gasDaily: Point[]; // GBTUD por día
+  energyYesterday: number; // GWh
+  energyVsLastYear: number; // % frente al mismo día del año anterior
+  peakPowerMW: number;
+  peakTime: string; // «19:30»
+  gasYesterday: number; // GBTUD
+  gasVsMonthAverage: number; // %
+  energyYearToDate: number; // GWh, enero hasta el último mes
+  weekendDrop: number; // % que bajan los fines de semana
+};
+
+/**
  * Acierto de las proyecciones publicadas. La definición del indicador está pendiente (X-14):
  * hoy se muestra como 100 % menos el error medio absoluto a `horizonMonths` meses.
  */

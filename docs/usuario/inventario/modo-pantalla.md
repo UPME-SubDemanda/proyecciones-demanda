@@ -6,8 +6,8 @@ ruta: /pantalla
 roles: [publico]
 estado: desarrollo
 version_desde: 0.1.0
-diseno: docs/tecnica/mockups/modo-pantalla.png (aprobado el 2026-11-08 por David Bedoya)
-capturas: [../capturas/modo-pantalla.png]
+diseno: docs/tecnica/mockups/modo-pantalla.png, modo-pantalla-comparar-proyecciones.png y modo-pantalla-el-sistema-hoy.png (aprobados el 2026-11-08 por David Bedoya)
+capturas: [../capturas/modo-pantalla.png, ../capturas/modo-pantalla-comparar-proyecciones.png, ../capturas/modo-pantalla-el-sistema-hoy.png]
 actualizado: 2026-11-08
 ---
 
@@ -28,27 +28,43 @@ Muestra las proyecciones de demanda en **televisores y monitores** de la UPME (r
 Para dejarlo fijo en un televisor, abra la dirección en el navegador del equipo y use **Pantalla completa**.
 
 ## Qué muestra
-Un tablero por producto: **energía eléctrica** y **gas natural**. Cada tablero tiene:
+Cuatro tableros que se turnan: **energía eléctrica**, **gas natural**, **comparar proyecciones** y **el sistema hoy**. Todos tienen la misma estructura: encabezado con el tema del tablero, hora y fecha y los controles; una fila de filtros; cuatro cifras; un gráfico principal y dos bloques a la derecha; y un pie con la fuente, la fecha de los datos y el estado.
 
-- **Encabezado:** producto, hora y fecha, y los controles de la pantalla.
-- **Filtros:** la revisión, el rango de años y los escenarios que se ven.
-- **Cuatro cifras:**
-    - la demanda proyectada del próximo año;
-    - cuánto va la demanda real por encima o por debajo de lo proyectado en el año corrido, y si está dentro del umbral aceptado;
-    - el crecimiento promedio anual hasta 2040;
-    - el error medio de la revisión.
-- **Gráfico principal:** dato real (línea sólida), proyección media (línea discontinua) y banda entre los escenarios bajo y alto, con la fecha de corte de los datos.
-- **Desviación mensual:** barras de los últimos 12 meses; en rojo, los meses fuera del umbral.
-- **Demanda en 2030 por escenario.**
-- **Pie:** fuente, puntos para cambiar de tablero y estado («Actualizado hace…», o la pausa).
+**Energía eléctrica y gas natural**
+
+- Filtros de revisión, rango de años y escenarios.
+- Cifras: demanda proyectada del próximo año; real frente a proyectado en el año corrido, con el umbral aceptado; crecimiento promedio hasta 2040; error medio de la revisión.
+- Gráfico principal: dato real (línea sólida), proyección media (discontinua) y banda bajo–alto, con la fecha de corte.
+- Desviación mensual de los últimos 12 meses (en rojo, fuera del umbral) y demanda en 2030 por escenario.
+
+**Comparar proyecciones** (energía eléctrica)
+
+![Tablero comparar proyecciones](../capturas/modo-pantalla-comparar-proyecciones.png)
+
+- Filtro de rango de años.
+- Cifras: revisiones publicadas, la revisión más acertada, cuánto cambió la proyección a 2030 entre la primera y la última revisión, y cuántas revisiones se ven.
+- Gráfico «abanico»: el escenario medio de cada revisión sobre el dato real; la vigente, discontinua.
+- Botones de color para elegir qué revisiones comparar, y la exactitud de cada una (error medio, menos es mejor).
+
+**El sistema hoy**
+
+![Tablero el sistema hoy](../capturas/modo-pantalla-el-sistema-hoy.png)
+
+- Cifras: demanda de energía del día anterior, demanda máxima de potencia y su hora, demanda de gas natural del día anterior y acumulado del año.
+- Demanda diaria de energía de los últimos 30 días frente al mismo día del año anterior, y barras de gas natural por día.
+- «Explore más datos»: un código QR para abrir el portal en el celular (por completar).
+
+El tablero de **variables exógenas** llegará cuando tenga diseño aprobado.
 
 ## Cómo se usa (paso a paso)
-1. Abra `/pantalla` y active **Pantalla completa**.
-2. Los tableros cambian solos cada 20 segundos; la barra amarilla de abajo muestra cuánto falta.
+1. Abra `/pantalla` y toque el ícono de **pantalla completa**.
+2. Los tableros cambian solos cada 20 segundos; la barra amarilla de abajo muestra cuánto falta. Si la rotación se pausa, la barra se queda quieta y continúa donde iba.
 3. Para ver otro tablero, toque los **puntos** del pie, las **flechas** laterales o **arrastre** la pantalla hacia un lado.
 4. Al tocar cualquier cosa, la rotación se detiene 30 segundos («Pausa por interacción · continúa en N s»).
 5. Si nadie toca la pantalla por 5 minutos, los filtros vuelven a sus valores iniciales.
-6. Para salir, toque **Salir de pantalla completa** (o la tecla Esc) y luego **Volver al inicio**, que lleva a la página de inicio del portal. «Volver al inicio» también sale de la pantalla completa.
+6. Para salir, toque el ícono de **pantalla completa** otra vez (o la tecla Esc) y luego el ícono de la **casa** («Volver al inicio»), que lleva a la página de inicio del portal. La casa también sale de la pantalla completa.
+
+Los controles del encabezado son íconos; al dejar el cursor encima, cada uno dice qué hace.
 
 ## Filtros y opciones
 | Opción | Qué hace |
@@ -57,17 +73,20 @@ Un tablero por producto: **energía eléctrica** y **gas natural**. Cada tablero
 | Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, 2015–2035. |
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
-| Pausar / Reanudar | Detiene la rotación hasta volver a tocar el botón. |
-| Pantalla completa / Salir de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
-| Volver al inicio | Sale del modo pantalla y vuelve al inicio del portal. |
+| Ícono de mano / triángulo (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
+| Ícono de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
+| Ícono de casa (Volver al inicio) | Sale del modo pantalla y vuelve al inicio del portal. |
 
 **Configuración por dirección**, para dejar una pantalla lista sin tocarla:
 
 | Dirección | Resultado |
 | --- | --- |
-| `/pantalla` | Energía eléctrica y gas natural, cada 20 s |
+| `/pantalla` | Los cuatro tableros, cada 20 s |
 | `/pantalla?tableros=gn` | Solo gas natural |
-| `/pantalla?tableros=ee,gn&intervalo=60` | Ambos tableros, cada 60 s |
+| `/pantalla?tableros=ee,gn&intervalo=60` | Energía eléctrica y gas natural, cada 60 s |
+| `/pantalla?tableros=comparar,sistema` | Comparar proyecciones y el sistema hoy |
+
+Nombres de los tableros: `ee` (energía eléctrica), `gn` (gas natural), `comparar` (comparar proyecciones) y `sistema` (el sistema hoy).
 
 ## Preguntas frecuentes
 **¿Qué pasa si se cae internet?** La pantalla sigue mostrando los últimos datos y el pie dice «Sin conexión · últimos datos de hace N». Se actualiza sola cuando vuelve la conexión (cada 15 minutos lo intenta).
@@ -77,4 +96,4 @@ Un tablero por producto: **energía eléctrica** y **gas natural**. Cada tablero
 **¿Funciona en cualquier televisor?** Está diseñado para pantallas de 1920 × 1080 y se ajusta a cualquier pantalla de formato 16:9.
 
 ## Historial
-- 2026-11-08: primera versión con cifras ilustrativas: tableros de energía eléctrica y gas natural (diario técnico: `2026-11-08-modo-pantalla`).
+- 2026-11-08: primera versión con cifras ilustrativas: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy (diario técnico: `2026-11-08-modo-pantalla`).

@@ -1,11 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { averageGrowth, deviationTitle, formatAge, parseBoards } from './kioskData';
+import { averageGrowth, dailyTitle, defaultCompared, deviationTitle, fanTitle, formatAge, parseBoards } from './kioskData';
 
 describe('cálculos del modo pantalla', () => {
   it('tableros de la URL (TV-08)', () => {
     expect(parseBoards('gn')).toEqual(['gn']);
-    expect(parseBoards('gn,ee,gn,agua')).toEqual(['gn', 'ee']);
-    expect(parseBoards(null)).toEqual(['ee', 'gn']);
+    expect(parseBoards('sistema,ee,sistema,agua')).toEqual(['sistema', 'ee']);
+    expect(parseBoards(null)).toEqual(['ee', 'gn', 'comparar', 'sistema']);
+  });
+  it('revisiones comparadas al empezar: tres recientes y la más antigua', () =>
+    expect(defaultCompared(['2026-07', '2026-01', '2025-07', '2025-01', '2024-07', '2023-07'])).toEqual(['2026-07', '2026-01', '2025-07', '2023-07']));
+  it('títulos con hallazgo (GRA-02)', () => {
+    expect(fanTitle(-5.4, '2023')).toBe('Las revisiones recientes proyectan una demanda más baja que las de 2023');
+    expect(dailyTitle([{ period: '2026-09-01', value: 240 }], [{ period: '2026-09-01', value: 234 }], '2026-09-30'))
+      .toBe('La demanda de energía de septiembre supera la de 2025');
   });
   it('crecimiento promedio anual', () => expect(averageGrowth(100, 121, 2)).toBeCloseTo(10));
   it('título con hallazgo (GRA-02)', () => {

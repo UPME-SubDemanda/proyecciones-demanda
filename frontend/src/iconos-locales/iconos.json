@@ -1,0 +1,27 @@
+[
+  {
+    "nombre": "Stop",
+    "variante": "Sin-Fondo-Negro",
+    "origen": "https://docs.upme.gov.co/2026/07/Stop-Sin-Fondo-Negro.svg"
+  },
+  {
+    "nombre": "send",
+    "variante": "Sin-Fondo-Negro",
+    "origen": "https://docs.upme.gov.co/2026/07/send-Sin-Fondo-Negro.svg"
+  },
+  {
+    "nombre": "fullScreen",
+    "variante": "Sin-Fondo-Negro",
+    "origen": "https://docs.upme.gov.co/2026/07/fullScreen-Sin-Fondo-Negro.svg"
+  },
+  {
+    "nombre": "chevron-lef",
+    "variante": "Sin-Fondo-Negro",
+    "origen": "https://docs.upme.gov.co/2026/07/chevron-lef-Sin-Fondo-Negro.svg"
+  },
+  {
+    "nombre": "chevron-right",
+    "variante": "Sin-Fondo-Negro",
+    "origen": "https://docs.upme.gov.co/2026/07/chevron-right-Sin-Fondo-Negro.svg"
+  }
+]

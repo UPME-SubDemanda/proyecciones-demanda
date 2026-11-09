@@ -1,7 +1,10 @@
 /**
  * Lógica de rotación del modo pantalla, sin React, para probarla con tiempos simulados.
- * TV-02: rotación cada N s. TV-03: navegación manual y arrastre de 80 px.
+ * TV-02: rotación cada N s con barra de progreso. TV-03: navegación manual y arrastre de 80 px.
  * TV-04: cualquier interacción pausa 30 s; a los 5 min sin interacción, los filtros vuelven a sus valores.
+ *
+ * El tiempo del tablero se acumula solo mientras corre: en una pausa la barra se congela
+ * (sigue visible) y al reanudar continúa donde iba.
  */
 
 export const INTERVALS = [10, 20, 30, 60] as const; // segundos (TV-02)
@@ -12,8 +15,10 @@ export const SWIPE_THRESHOLD_PX = 80;
 
 export type RotationState = {
   index: number;
-  /** Inicio del tablero actual (o de la reanudación tras una pausa). */
-  startedAt: number;
+  /** Tiempo ya mostrado del tablero actual, sin contar el tramo en curso. */
+  elapsed: number;
+  /** Inicio del tramo en curso, o `null` si está en pausa. */
+  runningSince: number | null;
   /** Pausa por interacción hasta este instante (TV-04). */
   pauseUntil: number;
   /** Pausa con el botón: no se reanuda sola. */
@@ -26,45 +31,62 @@ export type RotationState = {
 };
 
 export function initialRotation(now: number): RotationState {
-  return { index: 0, startedAt: now, pauseUntil: 0, userPaused: false, lastInteraction: now, resetKey: 0, idleResetDone: true };
+  return {
+    index: 0, elapsed: 0, runningSince: now, pauseUntil: 0, userPaused: false,
+    lastInteraction: now, resetKey: 0, idleResetDone: true,
+  };
 }
 
 export function wrap(index: number, count: number): number {
   return ((index % count) + count) % count;
 }
 
-/** Avanza el reloj: cambia de tablero si se cumplió el intervalo y reinicia filtros tras 5 min sin interacción. */
+function isPaused(s: RotationState, now: number): boolean {
+  return s.userPaused || now < s.pauseUntil;
+}
+
+/** Tiempo mostrado del tablero actual hasta `now`. */
+function shown(s: RotationState, now: number): number {
+  return s.elapsed + (s.runningSince === null ? 0 : now - s.runningSince);
+}
+
+/** Detiene el tramo en curso y acumula su tiempo. */
+function freeze(s: RotationState, now: number): RotationState {
+  return s.runningSince === null ? s : { ...s, elapsed: shown(s, now), runningSince: null };
+}
+
+/** Avanza el reloj: congela o reanuda, cambia de tablero al cumplirse el intervalo y reinicia filtros tras 5 min. */
 export function tick(s: RotationState, now: number, count: number, intervalMs: number): RotationState {
   let next = s;
   if (!s.idleResetDone && now - s.lastInteraction >= IDLE_RESET_MS) {
     next = { ...next, resetKey: s.resetKey + 1, idleResetDone: true };
   }
-  if (next.userPaused || now < next.pauseUntil || count < 2) return next;
-  const from = Math.max(next.startedAt, next.pauseUntil);
-  if (now - from >= intervalMs) {
-    return { ...next, index: wrap(next.index + 1, count), startedAt: now, pauseUntil: 0 };
+  if (isPaused(next, now)) return freeze(next, now);
+  if (next.runningSince === null) next = { ...next, runningSince: now };
+  if (count >= 2 && shown(next, now) >= intervalMs) {
+    return { ...next, index: wrap(next.index + 1, count), elapsed: 0, runningSince: now };
   }
   return next;
 }
 
-/** Cualquier toque, clic o arrastre: pausa 30 s (TV-04). */
+/** Cualquier toque, clic o arrastre: pausa 30 s (TV-04) y congela la barra. */
 export function interact(s: RotationState, now: number): RotationState {
-  return { ...s, pauseUntil: now + INTERACTION_PAUSE_MS, lastInteraction: now, idleResetDone: false };
+  return { ...freeze(s, now), pauseUntil: now + INTERACTION_PAUSE_MS, lastInteraction: now, idleResetDone: false };
 }
 
+/** Ir a un tablero: empieza de cero, en pausa por interacción. */
 export function goTo(s: RotationState, index: number, now: number, count: number): RotationState {
-  return { ...interact(s, now), index: wrap(index, count), startedAt: now };
+  return { ...interact(s, now), index: wrap(index, count), elapsed: 0 };
 }
 
 export function togglePause(s: RotationState, now: number): RotationState {
-  return s.userPaused ? { ...s, userPaused: false, startedAt: now, pauseUntil: 0 } : { ...interact(s, now), userPaused: true };
+  if (s.userPaused) return { ...s, userPaused: false, pauseUntil: 0, runningSince: now };
+  return { ...interact(s, now), userPaused: true };
 }
 
-/** Fracción del intervalo ya transcurrida, para la barra de progreso (0 en pausa). */
+/** Fracción del intervalo ya mostrada, para la barra de progreso (0 a 1); en pausa queda congelada. */
 export function progress(s: RotationState, now: number, intervalMs: number): number {
-  if (s.userPaused || now < s.pauseUntil) return 0;
-  const from = Math.max(s.startedAt, s.pauseUntil);
-  return Math.min(1, Math.max(0, (now - from) / intervalMs));
+  return Math.min(1, Math.max(0, shown(s, now) / intervalMs));
 }
 
 /** Segundos que faltan para reanudar tras una interacción, o 0. */

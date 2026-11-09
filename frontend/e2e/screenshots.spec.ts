@@ -8,6 +8,8 @@ type View = { id: string; path: string; mobile?: boolean; viewport?: { width: nu
 const views: View[] = [
   { id: 'portal-inicio', path: '/', mobile: true },
   { id: 'modo-pantalla', path: '/pantalla?intervalo=60', viewport: { width: 1920, height: 1080 } },
+  { id: 'modo-pantalla-comparar-proyecciones', path: '/pantalla?tableros=comparar&intervalo=60', viewport: { width: 1920, height: 1080 } },
+  { id: 'modo-pantalla-el-sistema-hoy', path: '/pantalla?tableros=sistema&intervalo=60', viewport: { width: 1920, height: 1080 } },
 ];
 
 for (const v of views) {

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues } from './fixtures';
+import {
+  demoExogenous, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
+} from './fixtures';
 import { ILLUSTRATIVE } from '../data/source';
 
 describe('cifras ilustrativas (CON-07)', () => {
@@ -36,6 +38,13 @@ describe('cifras ilustrativas (CON-07)', () => {
     expect(perf.monthlyDeviation).toHaveLength(12);
     expect(perf.monthlyDeviation.at(-1)?.period).toBe('2026-09');
     expect(Math.abs(perf.yearToDate)).toBeGreaterThan(perf.threshold);
+  });
+
+  it('demanda diaria: 30 días y el año anterior por debajo, alineado por día de la semana', () => {
+    const t = demoSystemToday();
+    expect(t.energyDaily).toHaveLength(30);
+    t.energyDaily.forEach((p, i) => expect(t.energyPrevYear[i].value).toBeLessThan(p.value));
+    expect(t.lastDay).toBe('2026-09-30');
   });
 
   it('variables exógenas con fuente y unidad', () =>

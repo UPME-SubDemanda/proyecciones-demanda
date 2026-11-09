@@ -6,7 +6,7 @@
  */
 import type { ProductKey } from '../lib/product';
 import type {
-  Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario,
+  Accuracy, ExogenousVariable, ObservedSeries, Point, Revision, RevisionPerformance, RevisionValues, Scenario, SystemToday,
 } from '../data/types';
 
 const FIRST_YEAR = 2010;
@@ -51,10 +51,15 @@ export function demoObserved(product: ProductKey): ObservedSeries {
 }
 
 /** Revisiones semestrales; la última publicada es la vigente. */
-const REVISION_CODES = ['2025-01', '2025-07', '2026-01', '2026-07'];
+const REVISION_CODES = ['2023-07', '2024-07', '2025-01', '2025-07', '2026-01', '2026-07'];
 const MODEL: Record<ProductKey, string[]> = {
-  ee: ['EE-LP v3.0.0', 'EE-LP v3.1.0', 'EE-LP v3.1.1', 'EE-LP v3.2.0'],
-  gn: ['GN-MP v1.4.0', 'GN-MP v2.0.0', 'GN-MP v2.0.0', 'GN-MP v2.0.1'],
+  ee: ['EE-LP v2.4.0', 'EE-LP v2.5.0', 'EE-LP v3.0.0', 'EE-LP v3.1.0', 'EE-LP v3.1.1', 'EE-LP v3.2.0'],
+  gn: ['GN-MP v1.2.0', 'GN-MP v1.3.0', 'GN-MP v1.4.0', 'GN-MP v2.0.0', 'GN-MP v2.0.0', 'GN-MP v2.0.1'],
+};
+/** Error medio a 12 meses de cada revisión (MAPE, %), en el orden de REVISION_CODES; como el mockup. */
+const MAPE: Record<ProductKey, number[]> = {
+  ee: [2.3, 1.9, 1.6, 1.7, 1.4, 2.1],
+  gn: [2.0, 1.8, 1.5, 1.6, 1.2, 1.4],
 };
 
 function revisionId(product: ProductKey, index: number): number {
@@ -85,15 +90,16 @@ export function demoRevisionValues(id: number): RevisionValues {
   const product: ProductKey = id >= 200 ? 'gn' : 'ee';
   const index = id % 100;
   const { growth } = BASE[product];
-  // Cada revisión arranca del último dato real y es un poco más optimista que la siguiente.
-  const anchor = observedValue(product, LAST_OBSERVED_YEAR);
-  const optimism = (REVISION_CODES.length - 1 - index) * 0.002;
+  // Cada revisión arranca del último año con dato real cuando se publicó y es algo más optimista que la siguiente.
+  const anchorYear = Math.min(LAST_OBSERVED_YEAR, Number(REVISION_CODES[index].slice(0, 4)) - 1);
+  const anchor = observedValue(product, anchorYear);
+  const optimism = (REVISION_CODES.length - 1 - index) * 0.0015;
   const scenarios = {} as Record<Scenario, Point[]>;
   for (const scenario of Object.keys(SPREAD) as Scenario[]) {
     const points: Point[] = [];
-    for (let year = LAST_OBSERVED_YEAR; year <= HORIZON; year++) {
+    for (let year = anchorYear; year <= HORIZON; year++) {
       const rate = growth + optimism + SPREAD[scenario];
-      points.push({ period: String(year), value: round(anchor * (1 + rate) ** (year - LAST_OBSERVED_YEAR)) });
+      points.push({ period: String(year), value: round(anchor * (1 + rate) ** (year - anchorYear)) });
     }
     scenarios[scenario] = points;
   }
@@ -125,7 +131,41 @@ export function demoRevisionPerformance(id: number): RevisionPerformance {
     monthlyDeviation,
     yearToDate: round(ytd.reduce((s, p) => s + p.value, 0) / ytd.length, 1),
     threshold: product === 'ee' ? 1.5 : 2,
-    mape12: product === 'ee' ? 2.1 : 1.4,
+    mape12: MAPE[product][id % 100],
+  };
+}
+
+/** Último mes con dato diario: septiembre de 2026 (la fecha de corte). */
+const DAILY_YEAR = 2026;
+const DAILY_MONTH = 9;
+
+/** Demanda diaria ilustrativa de los últimos 30 días: los fines de semana bajan cerca de 12 %. */
+export function demoSystemToday(): SystemToday {
+  const days = Array.from({ length: 30 }, (_, i) => i + 1);
+  const isWeekend = (y: number, d: number) => [0, 6].includes(new Date(Date.UTC(y, DAILY_MONTH - 1, d)).getUTCDay());
+  // El año anterior se compara contra el día equivalente de la semana, por eso usa el calendario del año actual.
+  const energy = (d: number, base: number) => round(base * (isWeekend(DAILY_YEAR, d) ? 0.88 : 1) * (1 + wobble(d, 0.015)), 1);
+  const date = (d: number) => `${DAILY_YEAR}-${String(DAILY_MONTH).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  const energyDaily = days.map((d) => ({ period: date(d), value: energy(d, 240) }));
+  const energyPrevYear = days.map((d) => ({ period: date(d), value: energy(d, 234) }));
+  const gasDaily = days.map((d) => ({ period: date(d), value: round(1050 * (isWeekend(DAILY_YEAR, d) ? 0.95 : 1) * (1 + wobble(d * 1.3, 0.03))) }));
+  const last = energyDaily.at(-1)!;
+  const lastPrev = energyPrevYear.at(-1)!;
+  const gasLast = gasDaily.at(-1)!;
+  const gasAvg = gasDaily.reduce((s, p) => s + p.value, 0) / gasDaily.length;
+  return {
+    lastDay: last.period,
+    energyDaily,
+    energyPrevYear,
+    gasDaily,
+    energyYesterday: last.value,
+    energyVsLastYear: round(((last.value - lastPrev.value) / lastPrev.value) * 100, 1),
+    peakPowerMW: 11_950,
+    peakTime: '19:30',
+    gasYesterday: gasLast.value,
+    gasVsMonthAverage: round(((gasLast.value - gasAvg) / gasAvg) * 100, 1),
+    energyYearToDate: 64_120,
+    weekendDrop: 12,
   };
 }
 
