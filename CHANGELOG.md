@@ -4,6 +4,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ## [Sin publicar]
 ### Agregado
+- Entorno local en un paso: `scripts/dev-setup.sh` crea `.env` con secretos aleatorios, activa los hooks y levanta todo; la API migra la base y crea `admin@local` al arrancar (`backend/dev-start.sh`, CLI `create-user --if-missing`). Servicios de documentación en Docker (guía en 8002, técnica en 8001) y ficha local de MkDocs (issue #27, PR #28).
 - Estructura inicial del proyecto (upme-estandares 1.0.0).
 - Reglas de upme-estandares 2.1.0 copiadas en `reglas/` (incluye TEC-10); `CLAUDE.md` carga `AGENTS.md` y las reglas de flujo (FLU-09, IA-02).
 - Autenticación: cuenta institucional de Google o usuario local, roles asignados por administradores.
@@ -42,6 +43,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - `backend/test.db` del repositorio; las bases SQLite locales quedan ignoradas (issue #1, PR #3).
 
 ### Corregido
+- Entorno Docker: el contenedor `web` mostraba el frontend del momento del build y no llegaba a la API (`/api` apuntaba a sí mismo); ahora el código de `frontend/` y `backend/` está montado con recarga al guardar, el proxy usa `API_PROXY_TARGET` y la API espera a que la base esté lista. `.dockerignore` del frontend para no copiar `node_modules` del equipo (issue #27, PR #28).
 - Gráficos: los años del eje X no se veían en el portal ni en la app desde el modo pantalla (PR #16), porque las opciones de tamaño de pantalla borraban las etiquetas del tema fuera de ese modo (issue #19, PR #20).
 - Entorno local: `prefect-worker` no compilaba (paquetes de `pipelines/` sin declarar) y arrancaba antes de que `prefect-server` estuviera listo; ahora espera su healthcheck (issue #1, PR #3).
 - Entorno local: `web` no compilaba con pnpm reciente; se fija `pnpm@9.15.9` (la versión mayor de la CI), se permite el build de `esbuild` y se versiona `pnpm-lock.yaml` (issue #1, PR #3).

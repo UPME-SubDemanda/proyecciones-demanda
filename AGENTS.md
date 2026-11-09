@@ -38,7 +38,8 @@ scripts/      lint_design.py · check_changelog.py · inventario.py · referenci
 
 ## Comandos
 ```bash
-docker compose up -d                         # db, api, web, prefect
+./scripts/dev-setup.sh                       # primera vez: .env, hooks y todo arriba (repetible)
+docker compose up -d                         # db, api, web, docs, prefect (api migra y crea admin@local)
 # Usuario admin@local de desarrollo: contraseña en DEV_ADMIN_PASSWORD de .env (docs/tecnica/index.md). No la muestres ni la copies.
 cd backend && uv run pytest
 cd frontend && pnpm dev | pnpm test | pnpm screenshots

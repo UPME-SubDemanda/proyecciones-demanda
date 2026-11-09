@@ -138,4 +138,4 @@ cd frontend && pnpm screenshots                                  # contra http:/
 BASE_URL=http://localhost:5174 pnpm screenshots                  # contra otro servidor de desarrollo
 ```
 
-El contenedor `web` de Docker (5173) corre la imagen construida; si el código cambió, reconstruirlo (`docker compose up -d --build web`) o capturar contra `pnpm dev` en otro puerto.
+El contenedor `web` (5173) sirve el código actual (carpeta montada), así que las capturas pueden ir contra él: `pnpm screenshots` sin `BASE_URL`. `BASE_URL` sigue sirviendo para capturar contra otro servidor.

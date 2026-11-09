@@ -7,3 +7,4 @@ Una ficha local por herramienta (DOC-07), con la estructura de la plantilla de `
 | FastAPI | [fastapi.md](fastapi.md) | upme-estandares |
 | Prefect | [prefect.md](prefect.md) | upme-estandares |
 | Autenticación | [autenticacion.md](autenticacion.md) | upme-estandares |
+| MkDocs (Material) | [mkdocs.md](mkdocs.md) | upme-estandares |
