@@ -16,8 +16,8 @@
 | Tabla | Qué guarda | Columnas principales | Nota |
 | --- | --- | --- | --- |
 | `xm_sinergox_values` | Valores de la API SINERGOX de XM como llegan | `extraction_id`, `metric` (`DemaSIN`, `DemaReal`…), `entity` (`Sistema`, `Agente`…), `code`, `date`, `hour` (vacía en las diarias), `value_text`, `loaded_at` | Todas las métricas de SINERGOX tienen la misma forma, así que van en una sola tabla |
-| `files` | Cada archivo recibido: anexos de revisiones (Excel), informes (PDF) | `id`, `source`, `file_name`, `sha256`, `size_bytes`, `content` (binario), `revision_code`, `received_at`, `loaded_at` | El mismo archivo (misma huella) no se carga dos veces |
-| `file_cells` | Las celdas con dato de cada hoja de un archivo | `file_id`, `sheet`, `row`, `col`, `header_path` («DEE_Mensual › SIN+GCE+ME+GD_UPME › IC Superior 95 %»), `value_text`, `value_num` | Permite volver a leer un anexo sin el archivo y depurar el lector |
+| `files` | Cada archivo recibido: anexos de revisiones (Excel), informes (PDF) | `id`, `source`, `file_name`, `sha256`, `size_bytes`, `content` (binario), `revision_code`, `received_at`, `load_run_id`, `loaded_at` | El mismo archivo (misma huella) no se carga dos veces |
+| `file_cells` | Las celdas con dato de cada hoja de un archivo | `file_id`, `sheet`, `row_index`, `col_index`, `header_path` («DEE_Mensual › SIN+GCE+ME+GD_UPME › IC Superior 95 %»), `value_text`, `value_num` | Permite volver a leer un anexo sin el archivo y depurar el lector |
 
 Las consultas a las fuentes (qué se pidió, cuándo, respuesta, huella) no van aquí sino en [`operacion.extractions`](operacion.md), porque son de operación y siguen existiendo aunque cambie el origen de una fuente.
 
@@ -29,7 +29,7 @@ Las consultas a las fuentes (qué se pidió, cuándo, respuesta, huella) no van 
 
 **Rendimiento:** `raw` solo se lee por extracción o por métrica y rango de fechas, con índice. Unos millones de filas no son un problema para PostgreSQL. Si una tabla crece mucho, se particiona por métrica o por año, sin cambiar cómo se consulta.
 
-**Volumen esperado de SINERGOX:** `DemaSIN` diaria desde 2000 son unas 9 800 filas; una métrica horaria guardada como llega (un día con 24 horas por fila) son otras 9 800, y en formato largo, unas 235 000. Más las versiones, que solo aparecen cuando XM corrige.
+**Volumen esperado de SINERGOX:** `DemaSIN` diaria desde 2000 son unas 9 800 filas. Las horarias se guardan una fila por hora (XM las entrega con 24 columnas por día): unas 235 000 filas por métrica. Más lo que XM corrige, que solo se guarda si cambió.
 
 ## Ejemplo
 

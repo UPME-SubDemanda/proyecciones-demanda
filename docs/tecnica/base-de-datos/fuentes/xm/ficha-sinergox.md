@@ -47,7 +47,7 @@ XM publica el día anterior con rezago. Los últimos días llegan incompletos y 
 | Esquema | Tabla | Qué guarda de esta fuente |
 | --- | --- | --- |
 | `operacion` | `extractions`, `load_runs`, `load_messages` | Consultas, bitácora y mensajes |
-| `raw` | `xm_sinergox_values` | Valores como llegan (texto, kWh, 24 horas por fila en las horarias) |
+| `raw` | `xm_sinergox_values` | Valores como llegan (texto, kWh); las horarias, una fila por hora |
 | `staging` | `observed_values` | Valores normalizados con los códigos del catálogo |
 | `core` | `observed_values` | Valores versionados, con estado de calidad |
 

@@ -46,7 +46,7 @@ frontend/     React: src/zones/{app,portal,pantalla}, src/components, src/estand
 pipelines/    Flujos de Prefect (flows/), lógica pura (lib/), horarios (deployments.py)
 reglas/       Copia de las reglas de upme-estandares (no editar)
 docs/         usuario/ (pública) · tecnica/ (privada) · diario/ · decisiones/ · producto/
-scripts/      dev-setup.sh · lint_design.py · check_changelog.py · inventario.py · referencias.py · diario.py · mapa.py · reporte.py
+scripts/      dev-setup.sh · lint_design.py · check_changelog.py · inventario.py · referencias.py · diario.py · mapa.py · reporte.py · diccionario.py
 ```
 
 ## Comandos
@@ -59,6 +59,7 @@ cd frontend && pnpm dev | pnpm test | pnpm screenshots
 python scripts/lint_design.py frontend/src
 python scripts/inventario.py                 # regenera docs/usuario/inventario/index.md
 python scripts/referencias.py                # regenera docs/tecnica/referencias.md (tras cambiar reglas, pendientes o ADR)
+docker compose exec api uv run --no-dev python /scripts/diccionario.py   # regenera el diccionario de la base (tras una migración, PBD-03)
 git config core.hooksPath .githooks          # una vez: el hook pre-commit regenera referencias e inventario solo
 uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 ```
@@ -71,7 +72,7 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 5. **Base de datos**: cambios solo con migraciones de Alembic; esquemas raw/staging/core/publicacion/auth (BD-03, BD-04).
 6. **Si una regla no encaja o falta una**: detente y pregunta. Propón un ADR (en el proyecto si es propio de esta app, o en `upme-estandares` si es general). Anota lo no resuelto en `docs/pendientes.md`.
 7. Interfaz y documentación en español de Colombia; código en inglés.
-8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md`, `docs/diario/index.md` y el mapa del `README.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py`, `scripts/inventario.py` y `scripts/mapa.py` antes de cada commit que toque Markdown, rutas o carpetas.
+8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md`, `docs/diario/index.md` el mapa del `README.md` y `docs/tecnica/base-de-datos/diccionario.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py`, `scripts/inventario.py` y `scripts/mapa.py` antes de cada commit que toque Markdown, rutas o carpetas.
 9. **Carpetas nuevas**: toda carpeta nueva se describe en `repo-map.toml` (`breve` y `va_aqui`) en el mismo PR; si no, el hook detiene el commit y la CI falla (`scripts/mapa.py`). Al borrar una carpeta, quitar su entrada. El mapa del README se regenera solo: no lo edites a mano.
 
 ## Ciclo con un asistente

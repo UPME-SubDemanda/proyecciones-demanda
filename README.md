@@ -198,7 +198,7 @@ scripts/             # Scripts del proyecto
 | `.github/ISSUE_TEMPLATE/` | Feature, Corrección, Hotfix y Documentación (FLU-01). Una plantilla nueva se acuerda con el estándar. |
 | `.github/workflows/` | `ci.yml`: verificaciones que un PR debe pasar. Cada página generada o regla verificable nueva suma aquí su paso `--check`. |
 | `backend/` | Todo el servidor: API, autenticación, acceso a la base y sus pruebas. Python 3.12 con uv. |
-| `backend/alembic/` | Una migración de Alembic por cambio de esquema (BD-04). Nunca cambiar la base a mano. |
+| `backend/alembic/` | Una migración de Alembic por cambio de esquema (BD-04). Nunca cambiar la base a mano. Todo objeto nuevo lleva comentario en español (PBD-01) y se documenta en `docs/tecnica/base-de-datos/` (PBD-02). |
 | `backend/app/` | Organizado por capa: rutas (`api`), autenticación (`auth`), configuración (`core`) y base de datos (`db`). |
 | `backend/app/api/` | Endpoints en `api/v1/`, uno por recurso. Si cambia la API, actualizar `docs/tecnica/api.md` (DOC-08). |
 | `backend/app/auth/` | Ingreso local y con Google, roles y la CLI de usuarios (`cli.py`). Ver `docs/tecnica/herramientas/autenticacion.md`. |
@@ -234,7 +234,7 @@ scripts/             # Scripts del proyecto
 | `pipelines/flows/` | Un flujo por carga o cálculo, documentado en `docs/tecnica/flujos.md`. |
 | `pipelines/lib/` | Funciones puras y probables que usan los flujos. |
 | `reglas/` | Reglas de flujo, diseño, técnicas y de marca, y `VERSION` (FLU-09). **No editar aquí**: se cambian en upme-estandares. |
-| `scripts/` | Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash. |
+| `scripts/` | Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash; la excepción es `diccionario.py`, que usa `psycopg` del backend porque lee la base. |
 
 **Archivos principales**
 

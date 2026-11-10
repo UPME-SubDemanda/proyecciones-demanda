@@ -83,7 +83,7 @@ docker compose exec api uv run python -m app.auth.cli create-user su.correo@upme
 
 ## Páginas generadas
 
-Cuatro páginas se generan con scripts y la CI falla si no están al día:
+Cinco páginas se generan con scripts y la CI falla si no están al día:
 
 | Página | Script | Se regenera cuando cambia |
 | --- | --- | --- |
@@ -91,8 +91,20 @@ Cuatro páginas se generan con scripts y la CI falla si no están al día:
 | `docs/usuario/inventario/index.md` | `scripts/inventario.py` | Una página del inventario o las rutas del frontend |
 | `docs/diario/index.md` | `scripts/diario.py` | Una entrada del diario (su encabezado) |
 | Mapa del repositorio en `README.md` | `scripts/mapa.py` desde `repo-map.toml` | Se agregan o borran archivos, o cambia `repo-map.toml` |
+| `docs/tecnica/base-de-datos/diccionario.md` | `scripts/diccionario.py` desde la base | Una migración cambia el esquema o un comentario |
 
-El hook `.githooks/pre-commit` las regenera y las agrega al mismo commit, sin hacer nada a mano. Se activa una vez por copia del repositorio con `git config core.hooksPath .githooks`. Sin el hook, hay que correr los scripts antes del commit; si se olvida, la CI lo avisa.
+El hook `.githooks/pre-commit` regenera las cuatro primeras y las agrega al mismo commit, sin hacer nada a mano. Se activa una vez por copia del repositorio con `git config core.hooksPath .githooks`. Sin el hook, hay que correr los scripts antes del commit; si se olvida, la CI lo avisa.
+
+### Diccionario de la base: se genera con la base encendida
+
+El diccionario sale de los comentarios de la base (PBD-03), así que el hook no lo regenera: necesita una base con las migraciones aplicadas. Quien cambia el esquema lo regenera con la base de Docker encendida:
+
+```bash
+docker compose restart api                                      # aplica las migraciones nuevas
+docker compose exec api uv run --no-dev python /scripts/diccionario.py   # escribe docs/tecnica/base-de-datos/diccionario.md
+```
+
+Si falta un comentario, el script dice cuál y cómo agregarlo. La CI aplica las migraciones en una base de prueba, verifica el diccionario y prueba que las migraciones se pueden revertir (PBD-04).
 
 ### Mapa del repositorio: toda carpeta se describe
 
@@ -106,6 +118,8 @@ Si alguien crea una carpeta y no la describe, **el commit se detiene** (hook) y 
 docker compose exec api uv run pytest   # backend (SQLite en backend/test.db, no versionado)
 docker compose exec web pnpm test       # frontend (Vitest)
 ```
+
+Las pruebas del modelo de datos (`backend/tests/test_db_model.py`) corren solo contra PostgreSQL: en la CI, con la base de prueba; en Docker, con `docker compose exec -e TEST_POSTGRES_URL=postgresql://app:app@db:5432/proyecciones_demanda api uv run pytest tests/test_db_model.py`. Sin esa variable se saltan.
 
 Con uv y pnpm 9 instalados también se pueden correr en el equipo: `cd backend && uv run pytest` y `cd frontend && pnpm test`. Las capturas y los recorridos de Playwright sí se corren en el equipo (`docs/tecnica/frontend.md`, «Capturas»).
 

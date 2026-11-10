@@ -1393,7 +1393,7 @@ Etapa: 1.1 · Depende de: T-18 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-22 · En curso {#t-22}
+### T-22 · Hecho {#t-22}
 
 Documentar el modelo de datos v2, las reglas del proyecto (PBD, PDA, PFU, PFL, PER), la sección «Base de datos», las fuentes de XM y este plan
 
@@ -1401,17 +1401,17 @@ Etapa: 1 · Depende de: T-15 · Issue: #32 · PR: #33
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-23 · Siguiente {#t-23}
+### T-23 · En curso {#t-23}
 
 Migración `0003` con el modelo v2 y todos los comentarios; script del diccionario con su verificación; base PostgreSQL de prueba en la CI (PBD-01 a PBD-04)
 
-Etapa: 1 · Depende de: T-22 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-22 · Issue: #34 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-24 · Pendiente {#t-24}
+### T-24 · Siguiente {#t-24}
 
-Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error)
+Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error) y las vistas anchas de `core`
 
 Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
 

@@ -15,4 +15,4 @@ Ejemplo de `core.v_ee_revision_vs_real` (revisión 2026-07, abril de 2026, GWh; 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-04 | 2026-07 | … | 7 169,10 | 7 258,31 | 7 080,09 | 7 334,83 | 7 003,77 | … |
 
-Si una vista se vuelve lenta, pasa a vista materializada (una copia que se refresca después de cada carga), sin tecnología nueva.
+Se crean en T-24, con datos reales para probarlas y con las métricas de error definidas (X-25). Si una vista se vuelve lenta, pasa a vista materializada (una copia que se refresca después de cada carga), sin tecnología nueva.

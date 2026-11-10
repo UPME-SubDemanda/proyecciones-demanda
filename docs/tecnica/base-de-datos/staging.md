@@ -11,10 +11,10 @@
 | Tabla | Qué guarda | Columnas |
 | --- | --- | --- |
 | `observed_values` | Valores reales de cualquier variable y fuente | `load_run_id`, `variable`, `geography`, `frequency`, `period`, `value` (unidad del catálogo), `source_version`, `quality_status` propuesto, `rule_results` (qué reglas pasó o no) |
-| `revision_values` | Valores publicados de las series de una revisión | La misma forma que [`core.revision_values`](core.md#revisiones-publicadas), con `load_run_id` |
-| `revision_component_values` | Valores de los componentes de una revisión | Igual que en `core`, con `load_run_id` |
-| `revision_components` | Atributos de cada componente en esa revisión (GCE con grupo, área, entrada, capacidad, radicado) | Igual que en `core`, con `load_run_id` |
-| `revision_assumptions` | Supuestos con forma de serie (PIB, población, temperatura, capacidad de GD) | Igual que en `core`, con `load_run_id` |
+| `revision_values` | Valores publicados de las series de una revisión | La misma forma que [`core.revision_values`](core.md#revisiones-publicadas), con `load_run_id` y la revisión como `product` + `revision_code` (en `core` se convierte en `revision_id`) |
+| `revision_component_values` | Valores de los componentes de una revisión | Igual que en `core`, con `load_run_id`, `product` y `revision_code` |
+| `revision_components` | Atributos de cada componente en esa revisión (GCE con grupo, área, entrada, capacidad, radicado) | Igual que en `core`, con `load_run_id`, `product` y `revision_code` |
+| `revision_assumptions` | Supuestos con forma de serie (PIB, población, temperatura, capacidad de GD) | Igual que en `core`, con `load_run_id`, `product` y `revision_code` |
 
 ## Qué pasa en `staging`
 

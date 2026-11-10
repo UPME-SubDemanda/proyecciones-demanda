@@ -33,7 +33,7 @@ va_aqui = "Todo el servidor: API, autenticación, acceso a la base y sus pruebas
 
 [carpetas."backend/alembic"]
 breve = "Migraciones de la base de datos"
-va_aqui = "Una migración de Alembic por cambio de esquema (BD-04). Nunca cambiar la base a mano."
+va_aqui = "Una migración de Alembic por cambio de esquema (BD-04). Nunca cambiar la base a mano. Todo objeto nuevo lleva comentario en español (PBD-01) y se documenta en `docs/tecnica/base-de-datos/` (PBD-02)."
 
 [carpetas."backend/app"]
 breve = "Código de la API"
@@ -177,7 +177,7 @@ va_aqui = "Reglas de flujo, diseño, técnicas y de marca, y `VERSION` (FLU-09).
 
 [carpetas.scripts]
 breve = "Scripts del proyecto"
-va_aqui = "Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash."
+va_aqui = "Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash; la excepción es `diccionario.py`, que usa `psycopg` del backend porque lee la base."
 
 [archivos]
 "README.md" = "Esta puerta de entrada. El mapa se genera con `scripts/mapa.py`."

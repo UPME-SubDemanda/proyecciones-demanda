@@ -3,7 +3,7 @@
 Cómo está organizada la base `proyecciones_demanda` (PostgreSQL 16, BD-01): qué guarda cada esquema, cómo llega un dato desde su fuente hasta la app, y con qué reglas. Cada esquema tiene su página, y cada tabla su explicación y ejemplos (PBD-02).
 
 !!! note "Estado"
-    Esta sección describe el **modelo de datos v2**, aprobado el 2026-11-10 ([P-0004](../../decisiones/0004-modelo-datos-v2.md)). La migración que lo crea es el siguiente paso (T-23). Mientras tanto, la base tiene el modelo de la migración `0002` (resumen en [Modelo de datos](../modelo-de-datos.md)), que no tiene datos salvo los dos productos y los roles.
+    Esta sección describe el **modelo de datos v2**, aprobado el 2026-11-10 ([P-0004](../../decisiones/0004-modelo-datos-v2.md)) y creado con la migración `0003` (T-23). Están sembrados los catálogos fijos; los datos reales llegan desde T-24. Cada columna, con su tipo y comentario, está en el [diccionario](diccionario.md).
 
 ## Los esquemas
 
@@ -89,4 +89,4 @@ Las vistas leen `core` (y el público, `publicacion`). Ninguna lee `raw`, y por 
 - [Convenciones](convenciones.md): nombres, comentarios, valores permitidos, procedencia, fechas y números.
 - [Vistas para revisar y analizar](vistas.md): las tablas anchas para mirar a ojo, Excel o Power BI.
 - [Fuentes de datos](fuentes/index.md): guía de cada entidad y ficha de cada fuente.
-- Diccionario de tablas y columnas: se genera desde la base en T-23 (PBD-03).
+- [Diccionario](diccionario.md): cada tabla, vista y columna con su tipo y comentario, generado desde la base (PBD-03).
