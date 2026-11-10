@@ -1405,7 +1405,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Migración `0003` con el modelo v2 y todos los comentarios; script del diccionario con su verificación; base PostgreSQL de prueba en la CI (PBD-01 a PBD-04)
 
-Etapa: 1 · Depende de: T-22 · Issue: #34 · PR: —
+Etapa: 1 · Depende de: T-22 · Issue: #34 · PR: #35
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
