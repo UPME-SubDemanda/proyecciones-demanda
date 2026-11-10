@@ -32,6 +32,7 @@ Antes de trabajar con datos de una fuente, lee su guía y su ficha (PFU-01, PFU-
 | --- | --- |
 | XM (API SINERGOX, SIMEM, PARATEC, Sinergox web) | `docs/tecnica/base-de-datos/fuentes/xm/guia-api-xm.md` y, para la demanda, `docs/tecnica/base-de-datos/fuentes/xm/ficha-sinergox.md` |
 | Anexos de revisiones de la UPME | `docs/tecnica/base-de-datos/core.md` (revisiones publicadas) y las observaciones de X-23 |
+| Modelo de una revisión (informe) | `docs/tecnica/modelos/` y PFU-03: cita la página del informe en todo lo que documentes |
 | Fuente nueva | Crea su ficha con `docs/tecnica/base-de-datos/fuentes/plantilla-ficha.md` antes de la primera carga |
 
 Cita los IDs de las reglas (GRA-03, FLU-07, PBD-05…) en tus resúmenes y PR. Qué significa cada ID (reglas, pasos T-xx, pendientes X-xx, decisiones): `docs/tecnica/referencias.md`, generada con `python scripts/referencias.py`.

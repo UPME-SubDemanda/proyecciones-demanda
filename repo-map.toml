@@ -87,6 +87,10 @@ va_aqui = "Cómo levantar, arquitectura, frontend, reglas del proyecto, modelo y
 breve = "Documentación de la base de datos y de las fuentes de datos"
 va_aqui = "Una página por esquema (raw, staging, core, publicacion, auth, operacion), convenciones, vistas y, en `fuentes/`, la guía de cada entidad y la ficha de cada fuente (PBD-02, PFU-01, PFU-02). Todo esquema o tabla nueva se documenta aquí en el mismo PR. El diccionario de columnas se genera desde la base."
 
+[carpetas."docs/tecnica/modelos"]
+breve = "Modelos de proyección de cada revisión publicada"
+va_aqui = "Una página por producto con el modelo de cada revisión tal como lo dice su informe, citando la página de cada dato (PFU-03). En la etapa 1 solo se documentan; no se corren modelos (P-0001)."
+
 [carpetas."docs/tecnica/herramientas"]
 breve = "Fichas locales de herramientas"
 va_aqui = "Una ficha por herramienta usada (DOC-07): cómo encaja aquí, comandos y reglas propias."

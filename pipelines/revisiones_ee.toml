@@ -5,7 +5,8 @@
 #   issue #36); se marca «fecha aproximada» en notes y queda en X-23 y X-32.
 # - document_url: el informe oficial. Mientras no se confirme el enlace exacto de cada informe, la página
 #   de la UPME (X-31).
-# - model: lo que dice el informe; si no se tiene el informe, «por confirmar» (X-32).
+# - model: lo que dice el informe, en menos de 300 caracteres y con la página (PFU-03); el detalle va en
+#   docs/tecnica/modelos/ee.md. Si no se tiene el informe, «por confirmar» (X-32).
 # - Estos metadatos se corrigen en la misma revisión, con registro del cambio (PBD-08); las cifras no.
 # - data_cutoff, first_projected_period y horizon_end salen del anexo: el corte es el mes anterior al
 #   primero de la hoja mensual.
@@ -53,5 +54,5 @@ file = "Anexo_proyeccion_demanda_2026_2040_ver_Ago2026.xlsx"
 published_on = 2026-07-31
 source_consulted_on = 2026-04-14
 document_url = "https://www.upme.gov.co"
-model = "Combinación de pronósticos: VAR endógeno 22 %, VAR exógeno 56 %, VEC 22 % (pesos del ejercicio de 2023). El VEC incluye variables dummy de impulso o escalón para Q2/2010–Q1/2011, Q1/2013–Q4/2013, Q3/2017–Q2/2018, Q2/2020–Q1/2021, Q2/2023–Q1/2024 y Q2/2026–Q1/2027 (nota 38 del informe)"
+model = "Combinación de pronósticos: VAR endógeno 22 %, VAR exógeno 56 % y VEC 22 % (pesos de 2023); el VEC lleva variables dummy de impulso o escalón por periodos (informe, p. 43, notas 36 a 38). Detalle: docs/tecnica/modelos/ee.md"
 notes = "El anexo se llama «ver_Ago2026». Datos de XM consultados el 2026-04-14 (informe). Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-31)."

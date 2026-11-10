@@ -69,6 +69,8 @@ Cada error, advertencia o información de la carga va en `operacion.load_message
 
 **PFU-02 (DEBE)** Toda entidad que entrega datos al proyecto tiene una guía de sus fuentes al nivel de la [guía de XM](base-de-datos/fuentes/xm/guia-api-xm.md): mapa de fuentes, endpoints, cómo descubrir una variable, definiciones, trampas, ejemplos y arquitectura recomendada. La guía se construye a medida que se analiza la fuente. `AGENTS.md` dice qué documento leer antes de trabajar con cada fuente.
 
+**PFU-03 (DEBE)** Todo lo que se documente del modelo de una revisión, o de cualquier dato tomado de un informe publicado, cita el informe y la página donde se dice. Se usa la página impresa en el informe y, si el PDF numera distinto, también la del PDF. Aplica a la documentación de [Modelos](modelos/index.md) y a los metadatos de la base (`core.revisions.model`, `notes`). Lo que el informe no dice no se escribe como hecho: se anota como duda (X-23) o como dato por confirmar. Ejemplo: «el VEC lleva variables dummy de impulso o escalón (Rev. Julio 2026, p. 43, nota 38)».
+
 ## Flujo de trabajo (PFL)
 
 **PFL-01 (DEBE)** Toda necesidad de aclarar o documentar que aparezca se vuelve regla de este documento y, a la vez, entra a un pendiente para llevarla a `upme-estandares`, con su contexto y un prompt listo para ejecutarlo completo. Siempre que una regla, script o paso de CI pueda servir a otros proyectos, entra a ese pendiente con todo lo necesario para copiarlo.

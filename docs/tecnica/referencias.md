@@ -36,7 +36,7 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proy
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
 | [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 8 |
 | [PDA](#pda) | Datos y cargas (PDA) | `docs/tecnica/reglas-proyecto.md` | 7 |
-| [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 2 |
+| [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 3 |
 | [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 2 |
 | [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 35 |
@@ -1198,6 +1198,12 @@ Toda entidad que entrega datos al proyecto tiene una guía de sus fuentes al niv
 
 Fuente: [reglas-proyecto.md · Fuentes de datos (PFU)](reglas-proyecto.md#fuentes-de-datos-pfu)
 
+### PFU-03 · DEBE {#pfu-03}
+
+Todo lo que se documente del modelo de una revisión, o de cualquier dato tomado de un informe publicado, cita el informe y la página donde se dice. Se usa la página impresa en el informe y, si el PDF numera distinto, también la del PDF. Aplica a la documentación de [Modelos](modelos/index.md) y a los metadatos de la base (`core.revisions.model`, `notes`). Lo que el informe no dice no se escribe como hecho: se anota como duda (X-23) o como dato por confirmar. Ejemplo: «el VEC lleva variables dummy de impulso o escalón (Rev. Julio 2026, p. 43, nota 38)».
+
+Fuente: [reglas-proyecto.md · Fuentes de datos (PFU)](reglas-proyecto.md#fuentes-de-datos-pfu)
+
 ## PFL · Flujo de trabajo (PFL) {#pfl}
 
 ### PFL-01 · DEBE {#pfl-01}
@@ -1683,7 +1689,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-22 · Reglas del proyecto al estándar {#x-22}
 
-Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
+Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado, citar la página del informe) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1763,7 +1769,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-32 · Modelo de cada revisión {#x-32}
 
-Solo 2026-07 tiene el modelo, tomado de su informe; las otras 4 revisiones de EE dicen «por confirmar». El líder entrega los informes de 2023-12, 2024-07, 2024-12 y 2025-07; de cada uno se toma el modelo (y, si lo dice, el día de publicación y el corte del dato real) y se corrige en la misma fila con registro (PBD-08). Igual que X-31
+Solo 2026-07 tiene el modelo, tomado de su informe; las otras 4 revisiones de EE dicen «por confirmar». El líder entrega los informes de 2023-12, 2024-07, 2024-12 y 2025-07; de cada uno se toma el modelo (y, si lo dice, el día de publicación y el corte del dato real), se documenta en `docs/tecnica/modelos/ee.md` citando la página (PFU-03) y se corrige en la misma fila con registro (PBD-08). Igual que X-31
 
 Responsable: Líder · Estado: Abierto
 

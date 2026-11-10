@@ -168,6 +168,7 @@ docs/                # Toda la documentación (MkDocs)
     base-de-datos/   # Documentación de la base de datos y de las fuentes de datos
     herramientas/    # Fichas locales de herramientas
     mockups/         # Mockups aprobados
+    modelos/         # Modelos de proyección de cada revisión publicada
   usuario/           # Guía de usuario (sitio público)
     capturas/        # Capturas de la guía
     inventario/      # Una página por vista o feature
@@ -215,6 +216,7 @@ scripts/             # Scripts del proyecto
 | `docs/tecnica/base-de-datos/` | Una página por esquema (raw, staging, core, publicacion, auth, operacion), convenciones, vistas y, en `fuentes/`, la guía de cada entidad y la ficha de cada fuente (PBD-02, PFU-01, PFU-02). Todo esquema o tabla nueva se documenta aquí en el mismo PR. El diccionario de columnas se genera desde la base. |
 | `docs/tecnica/herramientas/` | Una ficha por herramienta usada (DOC-07): cómo encaja aquí, comandos y reglas propias. |
 | `docs/tecnica/mockups/` | Capturas congeladas de cada diseño aprobado, con su registro en `README.md` (FLU-03). |
+| `docs/tecnica/modelos/` | Una página por producto con el modelo de cada revisión tal como lo dice su informe, citando la página de cada dato (PFU-03). En la etapa 1 solo se documentan; no se corren modelos (P-0001). |
 | `docs/usuario/` | Escrita para personas no técnicas: inicio, roles, glosario e inventario de vistas. |
 | `docs/usuario/capturas/` | Generadas con Playwright (`pnpm screenshots`, DOC-03). No se pegan a mano. Antes de borrar una, buscar quién la enlaza. |
 | `docs/usuario/inventario/` | Con las secciones de DOC-01 (para qué sirve, cómo llegar, qué muestra, paso a paso, filtros, preguntas). El índice se genera solo. |
