@@ -9,13 +9,14 @@ import { EChart } from '../../components/charts/EChart';
 import { revisionsFanOption } from '../../components/charts/kioskCharts';
 import { useObservedSeries, useRevisions, useRevisionsPerformance, useRevisionsValues } from '../../data/queries';
 import { formatMonth, formatPercent, revisionLabel } from '../../lib/format';
+import { eeChartUnit, RESOLUTION_OPTIONS, type Resolution } from '../../lib/resolution';
+import { SegmentedControl } from '../../components/SegmentedControl/SegmentedControl';
 import { icons } from '../../lib/icons';
 import { HorizontalBars, KioskHeader, Panel } from './KioskParts';
 import { fanTitle, defaultCompared } from './kioskData';
 
 const PRODUCT = 'ee' as const;
-const DIVISOR = 1000;
-const UNIT = 'TWh/año';
+const DIVISOR = 1000; // KPIs y barras: TWh
 const COMPARE_YEAR = '2030';
 const DEFAULT_RANGE: [number, number] = [2015, 2035];
 
@@ -35,26 +36,31 @@ export function KioskCompareBoard() {
   const ids = list.map((r) => r.id);
   const values = useRevisionsValues(ids);
   const perf = useRevisionsPerformance(ids);
+  // Resolución del abanico (issue #40): anual por omisión o mensual; se reinicia con el tablero (TV-04).
+  const [resolution, setResolution] = useState<Resolution>('A');
+  const chartObserved = useObservedSeries(PRODUCT, resolution);
+  const chartValues = useRevisionsValues(ids, resolution);
+  const chart = eeChartUnit(resolution);
   const [range, setRange] = useState<[number, number]>(DEFAULT_RANGE);
   const [shown, setShown] = useState<string[] | null>(null);
   const compared = shown ?? defaultCompared(list.map((r) => r.code));
   const palette = roles.dark.series;
 
   const option = useMemo(() => {
-    if (!observed.data || !values.data) return null;
+    if (!chartObserved.data || !chartValues.data) return null;
     return revisionsFanOption({
-      observed: observed.data.data.points,
+      observed: chartObserved.data.data.points,
       revisions: list
         .map((r, i) => ({ r, i }))
         .filter(({ r }) => compared.includes(r.code))
-        .map(({ r, i }) => ({ label: revisionLabel(r.code), points: values.data!.data[i].scenarios.mid, color: palette[i % palette.length], current: r.isCurrent })),
+        .map(({ r, i }) => ({ label: revisionLabel(r.code), points: chartValues.data!.data[i].scenarios.mid, color: palette[i % palette.length], current: r.isCurrent })),
       range,
-      divisor: DIVISOR,
-      unit: UNIT,
+      divisor: chart.divisor,
+      unit: chart.unit,
     });
-  }, [observed.data, values.data, list, compared, range, palette]);
+  }, [chartObserved.data, chartValues.data, list, compared, range, palette, chart.divisor, chart.unit]);
 
-  if (observed.isError || revisions.isError || values.isError || perf.isError)
+  if (observed.isError || revisions.isError || values.isError || perf.isError || chartObserved.isError || chartValues.isError)
     return <ErrorState title="No se pudieron cargar las revisiones" description="Se reintentará en unos minutos." />;
   if (!option || !values.data || !perf.data || !list.length) return <Skeleton height={860} label="Cargando comparación de revisiones" />;
 
@@ -74,6 +80,7 @@ export function KioskCompareBoard() {
     <div className="h-full flex flex-col gap-6">
       <div className="flex items-center gap-10 flex-wrap">
         <RangeSlider label="Rango" min={2010} max={2040} value={range} onChange={setRange} />
+        <SegmentedControl ariaLabel="Resolución" size="touch" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />
       </div>
 
       <div className="grid grid-cols-4 gap-6">

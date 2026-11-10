@@ -45,6 +45,7 @@ Responde en un minuto si **la proyección vigente sigue siendo válida** para en
 | --- | --- |
 | Energía eléctrica / Gas natural (encabezado) | Producto del gráfico; se mantiene en toda la app. |
 | 5 años / 10 años / Todo | Años que muestra el gráfico; queda en la dirección (`?rango=5`). |
+| Anual / Mensual | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=mensual`). En mensual no se dibuja el punto del año corrido. |
 | Descargar datos, Descargar imagen, Ver como tabla, Pantalla completa | Acciones del gráfico. |
 | Descargar informe | **En construcción** (X-19). |
 | Ver alertas, Ver todas y las acciones de cada alerta | **En construcción**: llevarán a las vistas de alertas, del monitor de variables y de desempeño cuando existan. |
@@ -58,4 +59,4 @@ Responde en un minuto si **la proyección vigente sigue siendo válida** para en
 
 ## Historial
 - 2026-11-09: primera versión con cifras ilustrativas (diario técnico: `2026-11-09-tablero-ejecutivo`).
-- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional, y gráfica anual o mensual (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

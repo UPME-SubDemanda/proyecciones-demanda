@@ -107,6 +107,31 @@ def test_performance_compares_complete_real_months(db, api):
     assert body["error12"] is None and body["threshold"] == 1.5  # menos de 12 meses; umbral ilustrativo
 
 
+def test_monthly_values_start_at_the_first_projected_month(db, api):
+    april = date(2099, 4, 1)
+    rev_id = revision(db, "2099-07", date(2099, 7, 31), april, annual={date(2099, 1, 1): 3600},
+                      monthly={april: 300, date(2099, 5, 1): 310})
+    body = api.get(f"/api/v1/ee/revisions/{rev_id}/values?frequency=M").json()
+    assert body["frequency"] == "M"
+    assert body["scenarios"]["mid"] == [{"period": "2099-04", "value": 300}, {"period": "2099-05", "value": 310}]
+    assert body["scenarios"]["low"][0] == {"period": "2099-04", "value": 295}
+    assert api.get(f"/api/v1/ee/revisions/{rev_id}/values").json()["scenarios"]["mid"] == [
+        {"period": "2099", "value": 3600}]  # por omisión, anual
+
+
+def test_monthly_observed_shows_only_complete_months(db, api):
+    demasin(db, date(2099, 1, 1), 31, 1)   # enero completo
+    demasin(db, date(2099, 2, 1), 10, 1)   # febrero a medias
+    body = api.get("/api/v1/ee/observed?frequency=M").json()
+    points = {p["period"]: p["value"] for p in body["points"]}
+    assert body["frequency"] == "M" and points["2099-01"] == 31 and "2099-02" not in points
+    assert body["cutoff"] == "2099-01"
+
+
+def test_unknown_frequency_is_rejected(api):
+    assert api.get("/api/v1/ee/observed?frequency=X").status_code == 422
+
+
 def test_observed_shows_only_complete_years(db, api):
     demasin(db, date(2098, 12, 1), 31, 1)  # 2098 solo tiene diciembre
     demasin(db, date(2099, 1, 1), 365, 1)

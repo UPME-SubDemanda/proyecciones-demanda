@@ -15,6 +15,7 @@ import { downloadFile, fileName, toCsv } from '../../lib/download';
 import { formatMonth, formatPercent, revisionLabel } from '../../lib/format';
 import { icons } from '../../lib/icons';
 import { useProduct } from '../../lib/product';
+import { eeChartUnit, effectiveResolution, periodLabel, periodYear, RESOLUTION_OPTIONS, useResolution } from '../../lib/resolution';
 import { AppPage } from './AppPage';
 
 const SCENARIOS: Scenario[] = ['low', 'mid', 'high'];
@@ -49,8 +50,12 @@ export function RevisionHistory() {
   const values = useRevisionsValues(ids);
   const perf = useRevisionsPerformance(ids);
   const isEE = product.key === 'ee';
-  const unit = isEE ? 'TWh/año' : 'GBTUD';
-  const divisor = isEE ? 1000 : 1;
+  // Resolución de la gráfica (issue #40): anual por omisión; mensual solo en energía eléctrica.
+  const [resolutionParam, setResolution] = useResolution();
+  const resolution = effectiveResolution(product.key, resolutionParam);
+  const chartObserved = useObservedSeries(product.key, resolution);
+  const chartValues = useRevisionsValues(ids, resolution);
+  const { unit, divisor, decimals } = isEE ? eeChartUnit(resolution) : { unit: 'GBTUD', divisor: 1, decimals: 0 };
 
   const setParam = (key: string, value: string | null) =>
     setParams((prev) => {
@@ -70,15 +75,15 @@ export function RevisionHistory() {
   );
 
   const option = useMemo(() => {
-    if (!observed.data || !values.data) return null;
-    const last = Number(observed.data.data.points.at(-1)!.period);
+    if (!chartObserved.data || !chartValues.data) return null;
+    const last = periodYear(chartObserved.data.data.points.at(-1)!.period);
     return historyChartOption({
       product: product.key,
-      observed: observed.data.data.points,
-      revisions: rows.filter((r) => r.values).map((r) => ({
+      observed: chartObserved.data.data.points,
+      revisions: list.map((revision, i) => ({ revision, chart: chartValues.data!.data[i] })).filter((r) => r.chart).map((r) => ({
         code: r.revision.code,
         label: formatMonth(r.revision.code),
-        points: r.values!.scenarios[scenario],
+        points: r.chart.scenarios[scenario],
         current: r.revision.isCurrent,
       })),
       selected: selectedCode,
@@ -87,7 +92,7 @@ export function RevisionHistory() {
       divisor,
       range: [last - 7, last + 5],
     });
-  }, [observed.data, values.data, rows, scenario, selectedCode, product.key, unit, divisor]);
+  }, [chartObserved.data, chartValues.data, list, scenario, selectedCode, product.key, unit, divisor]);
 
   const filtered = rows.filter((r) => {
     const q = query.trim().toLowerCase();
@@ -146,7 +151,7 @@ export function RevisionHistory() {
     },
   ];
 
-  const isError = observed.isError || revisions.isError || values.isError || perf.isError;
+  const isError = observed.isError || revisions.isError || values.isError || perf.isError || chartObserved.isError || chartValues.isError;
   const firstYear = list.at(-1)?.code.slice(0, 4);
 
   return (
@@ -164,36 +169,39 @@ export function RevisionHistory() {
     >
       {isError ? (
         <ErrorState title="No se pudieron cargar las revisiones" description="Intente de nuevo en unos minutos." />
-      ) : !option || !observed.data || !perf.data ? (
+      ) : !option || !observed.data || !perf.data || !chartObserved.data || !chartValues.data ? (
         <Skeleton height={480} label="Cargando gráfico de revisiones" />
       ) : (
         <ChartCard
           title={historyTitle([...rows].reverse().map((r) => ({ year: r.revision.code.slice(0, 4), error12: r.error12 })))}
-          subtitle={`Cada línea es una revisión publicada (escenario ${SCENARIO_LABEL[scenario].toLowerCase()}). Elija una revisión en la tabla para resaltarla; pase el cursor para ver el error de cada año.`}
+          subtitle={`Cada línea es una revisión publicada (escenario ${SCENARIO_LABEL[scenario].toLowerCase()}). Elija una revisión en la tabla para resaltarla; pase el cursor para ver el error de cada ${resolution === 'M' ? 'mes' : 'año'}.`}
           option={option}
           table={{
-            headers: ['Año', `Real (${unit})`, ...rows.map((r) => `${formatMonth(r.revision.code)} (${unit})`)],
-            rows: [...new Set([...observed.data.data.points.map((p) => p.period), ...rows.flatMap((r) => r.values?.scenarios[scenario].map((p) => p.period) ?? [])])]
+            headers: [resolution === 'M' ? 'Mes' : 'Año', `Real (${unit})`, ...list.map((r) => `${formatMonth(r.code)} (${unit})`)],
+            rows: [...new Set([...chartObserved.data.data.points.map((p) => p.period), ...chartValues.data.data.flatMap((v) => v?.scenarios[scenario].map((p) => p.period) ?? [])])]
               .sort()
               .map((y) => [
-                y,
-                ((v) => (v === undefined ? null : v / divisor))(observed.data!.data.points.find((p) => p.period === y)?.value),
-                ...rows.map((r) => {
-                  const v = r.values?.scenarios[scenario].find((p) => p.period === y)?.value;
+                periodLabel(y),
+                ((v) => (v === undefined ? null : v / divisor))(chartObserved.data!.data.points.find((p) => p.period === y)?.value),
+                ...chartValues.data!.data.map((values) => {
+                  const v = values?.scenarios[scenario].find((p) => p.period === y)?.value;
                   return v === undefined ? null : v / divisor;
                 }),
               ]),
           }}
           download={{ context: product.key, version: 'todas', content: `historico ${SCENARIO_LABEL[scenario]}`, source: `${observed.data.data.source}, UPME`, cutoff: observed.data.data.cutoff }}
           controls={
-            <SegmentedControl
-              ariaLabel="Escenario"
-              value={scenario}
-              onChange={(s) => setParam('escenario', s === 'mid' ? null : s)}
-              options={SCENARIOS.map((s) => ({ value: s, label: SCENARIO_LABEL[s] }))}
-            />
+            <>
+              <SegmentedControl
+                ariaLabel="Escenario"
+                value={scenario}
+                onChange={(s) => setParam('escenario', s === 'mid' ? null : s)}
+                options={SCENARIOS.map((s) => ({ value: s, label: SCENARIO_LABEL[s] }))}
+              />
+              {isEE && <SegmentedControl ariaLabel="Resolución" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />}
+            </>
           }
-          decimals={isEE ? 1 : 0}
+          decimals={decimals}
           illustrative={observed.data.illustrative}
         />
       )}

@@ -8,9 +8,9 @@ API de FastAPI en `/api/v1` (TEC-08). Documentación interactiva, generada por F
 | --- | --- | --- |
 | `GET /health` | Estado de la API | No |
 | `/auth/...` | Ingreso local y con Google, sesión, usuarios y roles ([ficha](herramientas/autenticacion.md)) | Según la ruta |
-| `GET /ee/observed` | Dato real anual de energía eléctrica | No |
+| `GET /ee/observed?frequency=A\|M` | Dato real anual o mensual de energía eléctrica | No |
 | `GET /ee/revisions` | Revisiones publicadas de energía eléctrica | No |
-| `GET /ee/revisions/{id}/values` | Valores anuales de una revisión, por escenario | No |
+| `GET /ee/revisions/{id}/values?frequency=A\|M` | Valores anuales o mensuales de una revisión, por escenario | No |
 | `GET /ee/revisions/{id}/performance` | Desempeño de una revisión frente al dato real | No |
 | `GET /ee/system-today` | Demanda diaria reciente del SIN («El sistema hoy») | No |
 
@@ -32,7 +32,7 @@ No piden ingreso porque son datos publicables, revisiones publicadas por la UPME
 
 ### `GET /ee/observed`
 
-Dato real anual de `DemaSIN`: la suma de los meses de `core.observed_monthly`, **solo años completos**. El año en curso no se muestra como un año entero. `cutoff` es el último mes completo.
+Dato real de `DemaSIN` desde `core.observed_monthly`. `frequency=A` (por omisión): la suma de los meses, **solo años completos**; el año en curso no se muestra como un año entero. `frequency=M`: un punto por mes (`period` = `2026-10`), **solo meses completos**. `cutoff` es el último mes completo. Otra frecuencia responde 422.
 
 ```json
 {"product": "ee", "frequency": "A", "region": "SIN", "unit": "GWh", "source": "XM", "cutoff": "2026-10",
@@ -45,7 +45,7 @@ Revisiones `published` o `superseded`, de la más antigua a la más reciente. `i
 
 ### `GET /ee/revisions/{id}/values`
 
-Valores anuales de la serie comparable, desde el primer año de la revisión (el primero es mixto: suma meses reales y proyectados) hasta el horizonte. Responde 404 si la revisión no existe o no está publicada.
+Valores de la serie comparable hasta el horizonte. `frequency=A` (por omisión): por año, desde el primer año de la revisión (el primero es mixto: suma meses reales y proyectados). `frequency=M`: por mes, desde el primer mes proyectado (`period` = `2026-04`). Responde 404 si la revisión no existe o no está publicada.
 
 ```json
 {"revisionId": 5, "frequency": "A", "region": "SIN", "unit": "GWh",

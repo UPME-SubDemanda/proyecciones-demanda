@@ -12,9 +12,9 @@ Decisiones provisionales del issue #40 (docs/pendientes.md, T-37):
 from __future__ import annotations
 
 from datetime import date, timedelta
-from typing import Annotated
+from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from sqlalchemy import text
@@ -24,6 +24,8 @@ from app.db.session import get_db
 
 router = APIRouter(prefix="/ee", tags=["energía eléctrica"])
 DB = Annotated[Session, Depends(get_db)]
+# A anual (por omisión) o M mensual: las gráficas de EE se pueden ver en mensual (issue #40).
+Frequency = Annotated[Literal["A", "M"], Query(description="A anual o M mensual")]
 
 PRODUCT = "ee"
 REGION = "SIN"
@@ -115,8 +117,17 @@ def month(d: date) -> str:
 
 
 @router.get("/observed", response_model=ObservedSeries, response_model_by_alias=True)
-def observed(db: DB) -> ObservedSeries:
-    """Dato real anual: solo años completos (el año en curso no se muestra como un año entero)."""
+def observed(db: DB, frequency: Frequency = "A") -> ObservedSeries:
+    """Dato real anual (solo años completos: el año en curso no se muestra como un año entero) o mensual (solo meses
+    completos)."""
+    if frequency == "M":
+        months = db.execute(text(f"""
+            SELECT period, value FROM core.observed_monthly
+             WHERE variable = {REAL} AND geography = 'ee_sin' AND source_frequency = 'D' AND is_complete
+             ORDER BY period""")).all()
+        return ObservedSeries(product=PRODUCT, frequency="M", region=REGION, unit=UNIT, source=SOURCE,
+                              cutoff=month(months[-1][0]) if months else "",
+                              points=[Point(period=month(p), value=round(float(v), 1)) for p, v in months])
     rows = db.execute(text(f"""
         SELECT extract(year FROM period)::int AS year, sum(value) AS value, bool_and(is_complete) AND count(*) = 12
           FROM core.observed_monthly
@@ -151,19 +162,21 @@ def _revision_or_404(db: Session, revision_id: int) -> None:
 
 
 @router.get("/revisions/{revision_id}/values", response_model=RevisionValues, response_model_by_alias=True)
-def revision_values(revision_id: int, db: DB) -> RevisionValues:
-    """Valores anuales de la serie comparable: medio, y bajo y alto = límites del IC 68 % (provisional)."""
+def revision_values(revision_id: int, db: DB, frequency: Frequency = "A") -> RevisionValues:
+    """Valores anuales o mensuales de la serie comparable: medio, y bajo y alto = límites del IC 68 % (provisional).
+    Lo mensual empieza en el primer mes proyectado; lo anual, en el primer año (mixto)."""
     _revision_or_404(db, revision_id)
     rows = db.execute(text(f"""
-        SELECT extract(year FROM period)::int AS year, mid, ci68_lower, ci68_upper FROM core.v_revision_wide
+        SELECT period, mid, ci68_lower, ci68_upper FROM core.v_revision_wide
          WHERE revision_id = :id AND series = {SERIES} AND measure = 'ee_energy' AND geography = 'ee_sin'
-           AND frequency = 'A' AND mid IS NOT NULL
-         ORDER BY period"""), {"id": revision_id}).all()
+           AND frequency = :freq AND mid IS NOT NULL
+         ORDER BY period"""), {"id": revision_id, "freq": frequency}).all()
+    label = month if frequency == "M" else (lambda p: str(p.year))
 
     def series(i: int) -> list[Point]:
-        return [Point(period=str(r[0]), value=round(float(r[i] if r[i] is not None else r[1]), 1)) for r in rows]
+        return [Point(period=label(r[0]), value=round(float(r[i] if r[i] is not None else r[1]), 1)) for r in rows]
 
-    return RevisionValues(revision_id=revision_id, frequency="A", region=REGION, unit=UNIT,
+    return RevisionValues(revision_id=revision_id, frequency=frequency, region=REGION, unit=UNIT,
                           scenarios=Scenarios(low=series(2), mid=series(1), high=series(3)))
 
 

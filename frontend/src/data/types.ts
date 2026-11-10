@@ -40,7 +40,7 @@ export type Revision = {
 /** core.revision_values — valores proyectados por escenario. */
 export type RevisionValues = {
   revisionId: number;
-  frequency: 'A';
+  frequency: 'A' | 'M';
   region: string;
   unit: string;
   scenarios: Record<Scenario, Point[]>;

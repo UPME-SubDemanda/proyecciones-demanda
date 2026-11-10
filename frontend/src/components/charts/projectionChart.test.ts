@@ -66,6 +66,19 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     expect('axisLabel' in x).toBe(false);
   });
   it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
+  it('en mensual rotula los meses y la tabla dice «Mes» (issue #40)', () => {
+    const monthlyInput = {
+      ...input,
+      observed: [{ period: '2026-03', value: 7000 }],
+      projection: { ...input.projection, scenarios: { low: [{ period: '2026-04', value: 6900 }], mid: [{ period: '2026-04', value: 7100 }], high: [{ period: '2026-04', value: 7300 }] } },
+      cutoff: undefined,
+    };
+    const x = projectionChartOption(monthlyInput).xAxis as { axisLabel: { formatter: (v: string) => string } };
+    expect(x.axisLabel.formatter('2026-04')).toBe('abr-2026');
+    const table = projectionTable(monthlyInput);
+    expect(table.headers[0]).toBe('Mes');
+    expect(table.rows.map((r) => r[0])).toEqual(['mar-2026', 'abr-2026']);
+  });
   it('tema oscuro usa los roles oscuros', () => {
     const dark = projectionChartOption({ ...input, dark: true }).series as LineSeriesOption[];
     expect(dark.find((s) => s.name === 'Real')!.lineStyle?.color).toBe(roles.dark.real);

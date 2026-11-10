@@ -48,6 +48,7 @@ Es la página principal del sitio: `/`. También se llega desde cualquier págin
 | Opción | Qué hace |
 | --- | --- |
 | Energía eléctrica / Gas natural | Cambia el producto del gráfico. Queda en la dirección de la página (`?producto=gn`), así que se puede compartir. |
+| Anual / Mensual | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=mensual`). El título sigue con el crecimiento anual. |
 | Descargar datos | Descarga un CSV con el dato real y los tres escenarios, con fuente, versión, fecha de corte y licencia. |
 | Descargar imagen | Descarga el gráfico como imagen PNG. |
 | Ver como tabla | Muestra los datos del gráfico en una tabla. |
@@ -70,4 +71,4 @@ En el teléfono, el menú se abre con el botón **Menú**.
 - 2026-11-08: primera versión con cifras ilustrativas (diario técnico: `2026-11-08-portal-inicio`).
 - 2026-11-08: acceso al modo pantalla (diario técnico: `2026-11-08-modo-pantalla`).
 - 2026-11-08: enlace «Ingresar» a la app interna (diario técnico: `2026-11-08-app-interna`).
-- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional, y gráfica anual o mensual (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

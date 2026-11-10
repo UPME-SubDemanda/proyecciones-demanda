@@ -21,6 +21,8 @@ Es una conexión **provisional**, para ver datos reales de una vez mientras se t
 - Solo se muestra la serie SIN+GCE+ME+GD_UPME, la que se compara con el dato real.
 - Los indicadores de error son los que ya tenían las vistas. El umbral de ±1,5 % sigue siendo ilustrativo y ahora lo dice.
 
+Las gráficas de proyección de energía eléctrica se pueden ver **por año o por mes** con un control «Anual / Mensual». Por omisión siguen anuales, como los diseños aprobados. En mensual se ve la estacionalidad de la demanda y, mes a mes, cómo va el dato real frente a lo proyectado.
+
 Lo que todavía no tiene datos reales sigue con cifras de ejemplo, y cada gráfico o tarjeta lo dice:
 - gas natural;
 - el monitor de exógenas;
@@ -48,4 +50,5 @@ Para revisar las vistas con datos verdaderos antes de decidir cómo se muestran 
 - **Primeras cifras:**
     - con la revisión vigente (jul-2026), la demanda real de abril a octubre de 2026 va 2,2 % por debajo de lo proyectado;
     - la revisión con menor error a 12 meses es jul-2025 (MAPE 1,3 %).
+- **Resolución mensual:** la API acepta `frequency=M` en el dato real (solo meses completos) y en los valores de una revisión (desde su primer mes proyectado). En el frontend, `lib/resolution.ts`. En el modo pantalla, el control va en el encabezado de la gráfica principal, porque en la fila de filtros no cabía a 1920 px.
 - **Capturas:** regeneradas con los datos reales (DOC-03), con la marca de ilustrativo solo en lo que sigue siendo de ejemplo.

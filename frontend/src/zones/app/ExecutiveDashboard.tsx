@@ -17,6 +17,7 @@ import { formatDate, formatMonth, formatNumber, formatPercent, formatProvenance,
 import { icons } from '../../lib/icons';
 import { deviationTitle, outOfThresholdSince, sinceText } from '../../lib/insights';
 import { PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
+import { eeChartUnit, effectiveResolution, RESOLUTION_OPTIONS, useResolution } from '../../lib/resolution';
 import { AppPage } from './AppPage';
 import { isBuilt } from './navigation';
 import { parseRange, RANGE_LABEL, RANGES, rangeYears, yearToDateEstimate, type RangeKey } from './dashboardData';
@@ -87,6 +88,12 @@ export function ExecutiveDashboard() {
   const alerts = useAlerts();
   const active = product.key === 'ee' ? ee : gn;
   const isEE = product.key === 'ee';
+  // Resolución de la gráfica (issue #40): anual por omisión; mensual solo en energía eléctrica.
+  const [resolutionParam, setResolution] = useResolution();
+  const resolution = effectiveResolution(product.key, resolutionParam);
+  const monthly = resolution === 'M';
+  const chartObserved = useObservedSeries(product.key, resolution);
+  const chartValues = useRevisionValues(active.current?.id, resolution);
 
   const setRange = (r: RangeKey) =>
     setParams((prev) => {
@@ -96,40 +103,44 @@ export function ExecutiveDashboard() {
     }, { replace: true, preventScrollReset: true });
 
   const input = useMemo(() => {
-    if (!active.ready) return null;
+    if (!active.ready || !chartObserved.data || !chartValues.data) return null;
     const points = active.observed!.data.points;
     const last = points.at(-1)!;
     const year = String(Number(last.period) + 1);
     const projected = active.values!.data.scenarios.mid.find((p) => p.period === year)?.value ?? 0;
     const ytd = active.perf!.data.yearToDate;
     const ytdValue = yearToDateEstimate(projected, ytd);
-    const unitDivisor = isEE ? 1000 : 1;
+    const units = isEE ? eeChartUnit(resolution) : { unit: 'GBTUD', divisor: 1, decimals: 0 };
+    const unitDivisor = units.divisor;
+    const chartPoints = chartObserved.data.data.points;
     return {
       product: product.key,
-      observed: points,
-      projection: active.values!.data,
+      observed: chartPoints,
+      projection: chartValues.data.data,
       projectionLabel: `Vigente ${formatMonth(active.current!.code)}`,
       past: active.list
         .filter((r) => !r.isCurrent)
         .slice(-2)
         .map((r) => ({ label: formatMonth(r.code), points: [] as typeof points })),
-      cutoff: { period: last.period, label: `Corte ${formatMonth(active.observed!.data.cutoff)}` },
-      unit: isEE ? 'TWh/año' : 'GBTUD',
+      cutoff: { period: chartPoints.at(-1)!.period, label: `Corte ${formatMonth(active.observed!.data.cutoff)}` },
+      unit: units.unit,
       divisor: unitDivisor,
+      decimals: units.decimals,
       scenarioLabels: false,
       range: rangeYears(range, Number(last.period)),
-      ytdPoint: {
+      // El punto del año corrido es anual: en mensual ya se ven los meses reales.
+      ytdPoint: monthly ? undefined : {
         period: year,
         value: ytdValue,
         label: `${year} año corrido: ${formatNumber(ytdValue / unitDivisor, { decimals: isEE ? 1 : 0 })} (${formatPercent(ytd, { signed: true })})`,
       },
     };
-  }, [active, product.key, isEE, range]);
+  }, [active, product.key, isEE, range, resolution, monthly, chartObserved.data, chartValues.data]);
 
   // Valores de las revisiones anteriores para las líneas finas (GRA-01).
   const pastIds = active.list.filter((r) => !r.isCurrent).slice(-2).map((r) => r.id);
-  const pastA = useRevisionValues(pastIds[0]);
-  const pastB = useRevisionValues(pastIds[1]);
+  const pastA = useRevisionValues(pastIds[0], resolution);
+  const pastB = useRevisionValues(pastIds[1], resolution);
   const option = useMemo(() => {
     if (!input) return null;
     const pastValues = [pastA.data?.data, pastB.data?.data];
@@ -180,7 +191,7 @@ export function ExecutiveDashboard() {
         <ProductKpis product="gn" status={gn} />
       </section>
 
-      {active.isError ? (
+      {active.isError || chartObserved.isError || chartValues.isError ? (
         <ErrorState title="No se pudo cargar el gráfico" description="Intente de nuevo en unos minutos." />
       ) : !input || !option ? (
         <Skeleton height={480} label="Cargando gráfico" />
@@ -198,14 +209,17 @@ export function ExecutiveDashboard() {
             cutoff: active.observed!.data.cutoff,
           }}
           controls={
-            <SegmentedControl
-              ariaLabel="Rango de años"
-              value={range}
-              onChange={setRange}
-              options={RANGES.map((r) => ({ value: r, label: RANGE_LABEL[r] }))}
-            />
+            <>
+              <SegmentedControl
+                ariaLabel="Rango de años"
+                value={range}
+                onChange={setRange}
+                options={RANGES.map((r) => ({ value: r, label: RANGE_LABEL[r] }))}
+              />
+              {isEE && <SegmentedControl ariaLabel="Resolución" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />}
+            </>
           }
-          decimals={isEE ? 1 : 0}
+          decimals={input.decimals}
           illustrative={active.observed!.illustrative}
         />
       )}

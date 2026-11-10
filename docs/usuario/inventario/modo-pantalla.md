@@ -74,6 +74,7 @@ Los controles del encabezado son íconos; al dejar el cursor encima, cada uno di
 | Proyección | Elige la revisión que se compara; por defecto, la vigente. |
 | Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, 2015–2035. |
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
+| Anual / Mensual (en la gráfica principal de energía eléctrica y en «Comparar proyecciones») | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Como los demás filtros, vuelve a anual cuando el tablero rota. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
 | Ícono de pausa / reproducir (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
 | Ícono de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
@@ -99,4 +100,4 @@ Nombres de los tableros: `ee` (energía eléctrica), `gn` (gas natural), `compar
 
 ## Historial
 - 2026-11-08: primera versión con cifras ilustrativas: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy (diario técnico: `2026-11-08-modo-pantalla`).
-- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional, y gráfica anual o mensual (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

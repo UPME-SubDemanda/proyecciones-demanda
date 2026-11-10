@@ -10,6 +10,7 @@
  */
 import type { components } from '../api/schema';
 import type { ProductKey } from '../lib/product';
+import type { Resolution } from '../lib/resolution';
 import {
   demoAccuracy, demoAlerts, demoExogenous, demoExogenousMonitor, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
 } from '../demo/fixtures';
@@ -34,20 +35,21 @@ async function api<T>(path: string): Promise<T> {
 const isDemoRevision = (id: number) => id >= DEMO_REVISION_ID;
 
 export const source = {
-  observed: async (product: ProductKey): Promise<WithOrigin<ObservedSeries>> => {
+  /** `frequency` M solo existe para energía eléctrica; gas natural siempre es anual. */
+  observed: async (product: ProductKey, frequency: Resolution = 'A'): Promise<WithOrigin<ObservedSeries>> => {
     if (product !== 'ee') return demo(demoObserved(product));
-    const body = await api<Api['ObservedSeries']>('/ee/observed');
-    return real({ ...body, product: 'ee', frequency: 'A' });
+    const body = await api<Api['ObservedSeries']>(`/ee/observed?frequency=${frequency}`);
+    return real({ ...body, product: 'ee', frequency });
   },
   revisions: async (product: ProductKey): Promise<WithOrigin<Revision[]>> => {
     if (product !== 'ee') return demo(demoRevisions(product));
     const body = await api<Api['Revision'][]>('/ee/revisions');
     return real(body.map((r) => ({ ...r, product: 'ee' as const, status: r.status as RevisionStatus })));
   },
-  revisionValues: async (revisionId: number): Promise<WithOrigin<RevisionValues>> => {
+  revisionValues: async (revisionId: number, frequency: Resolution = 'A'): Promise<WithOrigin<RevisionValues>> => {
     if (isDemoRevision(revisionId)) return demo(demoRevisionValues(revisionId));
-    const body = await api<Api['RevisionValues']>(`/ee/revisions/${revisionId}/values`);
-    return real({ ...body, frequency: 'A' });
+    const body = await api<Api['RevisionValues']>(`/ee/revisions/${revisionId}/values?frequency=${frequency}`);
+    return real({ ...body, frequency });
   },
   revisionPerformance: async (revisionId: number): Promise<WithOrigin<RevisionPerformance>> => {
     if (isDemoRevision(revisionId)) return demo(demoRevisionPerformance(revisionId));

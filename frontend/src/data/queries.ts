@@ -4,6 +4,7 @@
  */
 import { useQuery } from '@tanstack/react-query';
 import type { ProductKey } from '../lib/product';
+import type { Resolution } from '../lib/resolution';
 import { source } from './source';
 import type { WithOrigin } from './types';
 
@@ -13,9 +14,9 @@ async function all<T>(requests: Promise<WithOrigin<T>>[]): Promise<WithOrigin<T[
   return { data: results.map((r) => r.data), illustrative: results.some((r) => r.illustrative) };
 }
 
-/** Dato real anual del producto. */
-export function useObservedSeries(product: ProductKey) {
-  return useQuery({ queryKey: ['observed', product], queryFn: () => source.observed(product) });
+/** Dato real del producto: anual, o mensual en energía eléctrica. */
+export function useObservedSeries(product: ProductKey, frequency: Resolution = 'A') {
+  return useQuery({ queryKey: ['observed', product, frequency], queryFn: () => source.observed(product, frequency) });
 }
 
 /** Revisiones publicadas del producto, de la más antigua a la vigente. */
@@ -23,11 +24,11 @@ export function useRevisions(product: ProductKey) {
   return useQuery({ queryKey: ['revisions', product], queryFn: () => source.revisions(product) });
 }
 
-/** Valores por escenario de una revisión. No consulta mientras no haya revisión elegida. */
-export function useRevisionValues(revisionId: number | undefined) {
+/** Valores por escenario de una revisión (anual o mensual). No consulta mientras no haya revisión elegida. */
+export function useRevisionValues(revisionId: number | undefined, frequency: Resolution = 'A') {
   return useQuery({
-    queryKey: ['revision-values', revisionId],
-    queryFn: () => source.revisionValues(revisionId as number),
+    queryKey: ['revision-values', revisionId, frequency],
+    queryFn: () => source.revisionValues(revisionId as number, frequency),
     enabled: revisionId !== undefined,
   });
 }
@@ -70,11 +71,11 @@ export function useRevisionsPerformance(revisionIds: number[]) {
   });
 }
 
-/** Valores de varias revisiones a la vez (abanico de revisiones). */
-export function useRevisionsValues(revisionIds: number[]) {
+/** Valores de varias revisiones a la vez (abanico de revisiones), anuales o mensuales. */
+export function useRevisionsValues(revisionIds: number[], frequency: Resolution = 'A') {
   return useQuery({
-    queryKey: ['revisions-values', revisionIds],
-    queryFn: () => all(revisionIds.map((id) => source.revisionValues(id))),
+    queryKey: ['revisions-values', revisionIds, frequency],
+    queryFn: () => all(revisionIds.map((id) => source.revisionValues(id, frequency))),
     enabled: revisionIds.length > 0,
   });
 }

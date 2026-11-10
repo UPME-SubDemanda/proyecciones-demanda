@@ -43,7 +43,8 @@ Menú lateral: **Proyecciones › Histórico de revisiones**, o `/app/proyeccion
 | Opción | Qué hace |
 | --- | --- |
 | Bajo / Medio / Alto | Escenario de todas las revisiones en el gráfico (`?escenario=high`). |
-| Fila de la tabla | Resalta la revisión en el gráfico (`?revision=2023-07`). |
+| Anual / Mensual | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=mensual`). |
+| Fila de la tabla | Resalta la revisión en el gráfico (`?revision=2023-12`). |
 | Buscar | Filtra la tabla por revisión o modelo. |
 | Descargar todas | CSV con todas las revisiones y escenarios. |
 | Datos | CSV con los tres escenarios de esa revisión. |
@@ -59,4 +60,4 @@ Menú lateral: **Proyecciones › Histórico de revisiones**, o `/app/proyeccion
 
 ## Historial
 - 2026-11-09: primera versión con cifras ilustrativas (diario técnico: `2026-11-09-historico-revisiones`).
-- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional, y gráfica anual o mensual (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

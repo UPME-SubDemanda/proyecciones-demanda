@@ -6,6 +6,7 @@ import type { BarSeriesOption, EChartsOption, LineSeriesOption } from 'echarts';
 import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import type { Point } from '../../data/types';
 import { formatMonth, formatNumber, formatPercent } from '../../lib/format';
+import { inYearRange, periodLabel } from '../../lib/resolution';
 import type { ProductKey } from '../../lib/product';
 
 export type DeviationInput = {
@@ -82,7 +83,7 @@ export function revisionsFanOption({
   const scaled = revisions.map((r) => ({ ...r, values: scaleMap(r.points) }));
   const periods = [...new Set([...real.keys(), ...scaled.flatMap((r) => [...r.values.keys()])])]
     .sort()
-    .filter((p) => Number(p) >= range[0] && Number(p) <= range[1]);
+    .filter((p) => inYearRange(p, range));
   const at = (m: Map<string, number>) => periods.map((p) => m.get(p) ?? null);
   return {
     animationDuration: 400,
@@ -92,12 +93,12 @@ export function revisionsFanOption({
       trigger: 'axis',
       formatter: (params) => {
         const list = Array.isArray(params) ? params : [params];
-        return [`<strong>${list[0]?.name ?? ''}</strong>`, ...list
+        return [`<strong>${periodLabel(String(list[0]?.name ?? ''))}</strong>`, ...list
           .filter((p) => p.value !== null && p.value !== undefined)
           .map((p) => `${p.seriesName}: ${formatNumber(Number(p.value), { decimals: 1 })} ${unit}`)].join('<br/>');
       },
     },
-    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: { fontSize } },
+    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: { fontSize, formatter: periodLabel } },
     yAxis: { type: 'value', name: unit, scale: true, nameTextStyle: { fontSize }, axisLabel: { fontSize, formatter: (v: number) => formatNumber(v) } },
     series: [
       ...scaled.map<LineSeriesOption>((r) => ({

@@ -30,7 +30,8 @@ export interface paths {
         };
         /**
          * Observed
-         * @description Dato real anual: solo años completos (el año en curso no se muestra como un año entero).
+         * @description Dato real anual (solo años completos: el año en curso no se muestra como un año entero) o mensual (solo meses
+         *     completos).
          */
         get: operations["observed_api_v1_ee_observed_get"];
         put?: never;
@@ -70,7 +71,8 @@ export interface paths {
         };
         /**
          * Revision Values
-         * @description Valores anuales de la serie comparable: medio, y bajo y alto = límites del IC 68 % (provisional).
+         * @description Valores anuales o mensuales de la serie comparable: medio, y bajo y alto = límites del IC 68 % (provisional).
+         *     Lo mensual empieza en el primer mes proyectado; lo anual, en el primer año (mixto).
          */
         get: operations["revision_values_api_v1_ee_revisions__revision_id__values_get"];
         put?: never;
@@ -425,7 +427,10 @@ export interface operations {
     };
     observed_api_v1_ee_observed_get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description A anual o M mensual */
+                frequency?: "A" | "M";
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -439,6 +444,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ObservedSeries"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -465,7 +479,10 @@ export interface operations {
     };
     revision_values_api_v1_ee_revisions__revision_id__values_get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description A anual o M mensual */
+                frequency?: "A" | "M";
+            };
             header?: never;
             path: {
                 revision_id: number;

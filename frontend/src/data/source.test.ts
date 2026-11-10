@@ -14,7 +14,7 @@ describe('source (T-37: energía eléctrica real, lo demás ilustrativo)', () =>
   it('energía eléctrica sale de la API y no es ilustrativa', async () => {
     const fetchMock = mockApi({ product: 'ee', frequency: 'A', region: 'SIN', unit: 'GWh', source: 'XM', cutoff: '2026-10', points: [] });
     const result = await source.observed('ee');
-    expect(fetchMock).toHaveBeenCalledWith('/api/v1/ee/observed');
+    expect(fetchMock).toHaveBeenCalledWith('/api/v1/ee/observed?frequency=A');
     expect(result.illustrative).toBe(false);
   });
 

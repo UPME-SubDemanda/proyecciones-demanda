@@ -1,13 +1,14 @@
 /**
  * Gráfico «¿Cómo va lo real frente a lo estimado?» (GRA-03): línea real + proyección vigente + banda
  * de escenarios bajo–alto, con la codificación fija de GRA-01. Lo usan el portal, el tablero
- * ejecutivo y el modo pantalla.
+ * ejecutivo y el modo pantalla. Los periodos pueden ser años (`2026`) o meses (`2026-04`, issue #40).
  */
 import type { EChartsOption, LineSeriesOption } from 'echarts';
 import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import { SCENARIO_LABEL, type Point, type RevisionValues, type Scenario } from '../../data/types';
 import { formatNumber, formatPercent } from '../../lib/format';
 import { PRODUCTS, type ProductKey } from '../../lib/product';
+import { inYearRange, periodLabel } from '../../lib/resolution';
 
 export type ProjectionChartInput = {
   product: ProductKey;
@@ -52,9 +53,10 @@ export function projectionTable(input: ProjectionChartInput) {
   const { low, mid, high } = input.projection.scenarios;
   const [l, m, h] = [scale(low, divisor), scale(mid, divisor), scale(high, divisor)];
   const periods = [...new Set([...real.keys(), ...m.keys()])].sort();
+  const monthly = periods.some((p) => p.length === 7);
   return {
-    headers: ['Año', `Real (${input.unit})`, `Bajo (${input.unit})`, `Medio (${input.unit})`, `Alto (${input.unit})`],
-    rows: periods.map((p) => [p, real.get(p) ?? null, l.get(p) ?? null, m.get(p) ?? null, h.get(p) ?? null]),
+    headers: [monthly ? 'Mes' : 'Año', `Real (${input.unit})`, `Bajo (${input.unit})`, `Medio (${input.unit})`, `Alto (${input.unit})`],
+    rows: periods.map((p) => [periodLabel(p), real.get(p) ?? null, l.get(p) ?? null, m.get(p) ?? null, h.get(p) ?? null]),
   };
 }
 
@@ -68,7 +70,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const { low, mid, high } = input.projection.scenarios;
   const [l, m, h] = [scale(low, divisor), scale(mid, divisor), scale(high, divisor)];
   const pastScaled = (input.past ?? []).map((r) => ({ label: r.label, values: scale(r.points, divisor) }));
-  const inRange = (p: string) => !input.range || (Number(p) >= input.range[0] && Number(p) <= input.range[1]);
+  const inRange = (p: string) => inYearRange(p, input.range);
   const periods = [...new Set([...real.keys(), ...m.keys(), ...pastScaled.flatMap((r) => [...r.values.keys()])])]
     .sort()
     .filter(inRange);
@@ -76,6 +78,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const visible = new Set<Scenario>(input.scenarios ?? ['low', 'mid', 'high']);
   const band = visible.has('low') && visible.has('high');
   const ytd = input.ytdPoint && periods.includes(input.ytdPoint.period) ? input.ytdPoint : undefined;
+  const monthly = periods.some((p) => p.length === 7);
 
   const endLabel = (text: string, color: string): LineSeriesOption['endLabel'] => ({
     show: true, formatter: text, color, fontWeight: 700, fontSize: input.kiosk ? 18 : input.compact ? 11 : 12,
@@ -204,7 +207,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         const period = String(list[0]?.name ?? '');
         const r = real.get(period);
         const e = m.get(period);
-        const lines = [`<strong>${period}</strong>`];
+        const lines = [`<strong>${periodLabel(period)}</strong>`];
         if (r !== undefined) lines.push(`Real: ${formatNumber(r, { decimals: DATA_DECIMALS })} ${input.unit}`);
         if (e !== undefined) lines.push(`${input.projectionLabel}: ${formatNumber(e, { decimals: DATA_DECIMALS })} ${input.unit}`);
         if (r !== undefined && e !== undefined && e !== 0)
@@ -214,8 +217,11 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         return lines.join('<br/>');
       },
     },
-    // Las claves de tamaño solo se agregan en modo pantalla: `axisLabel: undefined` borraría las del tema.
-    xAxis: { type: 'category', data: periods, boundaryGap: false, ...(input.kiosk ? { axisLabel: { fontSize: 16 } } : {}) },
+    // Solo se agregan las claves que hacen falta: `axisLabel` vacío o `undefined` pisaría las del tema.
+    xAxis: {
+      type: 'category', data: periods, boundaryGap: false,
+      ...(input.kiosk || monthly ? { axisLabel: { ...(monthly ? { formatter: periodLabel } : {}), ...(input.kiosk ? { fontSize: 16 } : {}) } } : {}),
+    },
     yAxis: {
       type: 'value',
       name: input.unit,
