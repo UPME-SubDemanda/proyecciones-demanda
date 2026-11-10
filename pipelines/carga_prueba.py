@@ -1,11 +1,10 @@
-"""Carga de prueba de T-24: los anexos de las revisiones de EE y una variable diaria de XM.
+"""Carga de prueba de T-24: los anexos de las revisiones de EE.
 
-No es el pipeline (eso es T-27 a T-29): se corre a mano contra la base local. Ver docs/tecnica/flujos.md.
+No es el pipeline (el flujo de anexos es T-27): se corre a mano contra la base local. Ver docs/tecnica/flujos.md.
+XM ya tiene su flujo de Prefect (T-28): flows/xm_observed.py.
 
     # Anexos: la carpeta donde están los archivos de revisiones_ee.toml (no entran al repositorio)
     python carga_prueba.py anexos /anexos
-    # DemaSIN diaria desde 2010 (decisión del 2026-11-10, X-26)
-    python carga_prueba.py xm --variable xm_demasin --desde 2010-01-01
 
 Con Docker: docker compose run --rm -v "$HOME/Downloads:/anexos:ro" -v ./pipelines:/opt/pipelines \\
     prefect-worker python carga_prueba.py anexos /anexos
@@ -13,7 +12,6 @@ Con Docker: docker compose run --rm -v "$HOME/Downloads:/anexos:ro" -v ./pipelin
 import argparse
 import sys
 import tomllib
-from datetime import date, timedelta
 from pathlib import Path
 
 from lib import loads, store
@@ -50,25 +48,14 @@ def run_annexes(folder: Path, only: list[str]) -> int:
     return 1 if failed else 0
 
 
-def run_xm(variable: str, start: date, end: date) -> int:
-    with store.connect() as conn:
-        return 1 if show_run(conn, loads.load_xm_daily(conn, variable, start, end)) == "failed" else 0
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = parser.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("anexos", help="carga los anexos de revisiones_ee.toml que estén en la carpeta")
     a.add_argument("carpeta", type=Path)
     a.add_argument("--solo", nargs="*", default=[], help="códigos de revisión (por ejemplo 2026-07)")
-    x = sub.add_parser("xm", help="carga una variable diaria de XM SINERGOX")
-    x.add_argument("--variable", default="xm_demasin")
-    x.add_argument("--desde", type=date.fromisoformat, default=date(2010, 1, 1))
-    x.add_argument("--hasta", type=date.fromisoformat, default=date.today() - timedelta(days=1))
     args = parser.parse_args()
-    if args.cmd == "anexos":
-        return run_annexes(args.carpeta, args.solo)
-    return run_xm(args.variable, args.desde, args.hasta)
+    return run_annexes(args.carpeta, args.solo)
 
 
 if __name__ == "__main__":

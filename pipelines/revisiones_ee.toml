@@ -8,6 +8,11 @@
 # - model: lo que dice el informe, en menos de 300 caracteres y con la página (PFU-03); el detalle va en
 #   docs/tecnica/modelos/ee.md. Si no se tiene el informe, «por confirmar» (X-32).
 # - Estos metadatos se corrigen en la misma revisión, con registro del cambio (PBD-08); las cifras no.
+# - annex_url: el anexo en el sitio de la UPME, sin parámetros de rastreo (`?_gl=…`). En el despliegue,
+#   load-published-revisions (T-27) lo descarga de ahí; nadie copia archivos al servidor.
+# - annex_sha256: la huella del anexo que se validó (comprobada el 2026-11-10 contra el archivo cargado en T-24).
+#   Si el archivo descargado tiene otra huella, la carga no sigue y deja un error en la bitácora: un anexo
+#   distinto puede traer otras cifras, y decidir si es una corrección (P-0003) es de una persona.
 # - data_cutoff, first_projected_period y horizon_end salen del anexo: el corte es el mes anterior al
 #   primero de la hoja mensual.
 
@@ -15,6 +20,9 @@
 code = "2023-12"
 name = "Rev. Diciembre 2023"
 file = "Anexo_proyeccion_demanda_ energia_electrica_rev_dic_2023.xlsx"
+annex_url = "https://docs.upme.gov.co/DemandayEficiencia/Documents/Anexo_proyeccion_demanda_%20energia_electrica_rev_dic_2023.xlsx"
+annex_sha256 = "96b83444abf8e750555af55bdbb5a54f6b5e3f47190f26574288359490265f8e"
+# El sitio de la UPME dice que el anexo se subió el 2024-02-01: indicio de la fecha de publicación, no dato confirmado (X-32).
 published_on = 2023-12-31
 document_url = "https://www.upme.gov.co"
 model = "Por confirmar con el informe de la revisión (X-32): el anexo no lo dice"
@@ -24,6 +32,9 @@ notes = "Fecha de publicación aproximada (último día del mes). Enlace del inf
 code = "2024-07"
 name = "Rev. Julio 2024"
 file = "Anexo_proyeccion_demanda_2024_2038_v2_Jul2024.xlsx"
+annex_url = "https://docs.upme.gov.co/DemandayEficiencia/Documents/Anexo_proyeccion_demanda_2024_2038_v2_Jul2024.xlsx"
+annex_sha256 = "c2b10540b74093c5786d8d170416b0530ccf4b44b179d529fb9cac5c3ff9e2fc"
+# El sitio de la UPME dice que el anexo se subió el 2024-08-25: indicio de la fecha de publicación, no dato confirmado (X-32).
 published_on = 2024-07-31
 document_url = "https://www.upme.gov.co"
 model = "Por confirmar con el informe de la revisión (X-32): el anexo no lo dice"
@@ -33,6 +44,9 @@ notes = "Se carga el anexo «v2»; falta saber qué corrigió frente a la primer
 code = "2024-12"
 name = "Rev. Diciembre 2024"
 file = "Anexo_proyeccion_demanda_2024_2038_vDic2024.xlsx"
+annex_url = "https://docs.upme.gov.co/DemandayEficiencia/Documents/Anexo_proyeccion_demanda_2024_2038_vDic2024.xlsx"
+annex_sha256 = "16dff361c9a41e536edd641102e4cb5ec002009190968a943c48b64a16dd2389"
+# El sitio de la UPME dice que el anexo se subió el 2025-02-13: indicio de la fecha de publicación, no dato confirmado (X-32).
 published_on = 2024-12-31
 document_url = "https://www.upme.gov.co"
 model = "Por confirmar con el informe de la revisión (X-32): el anexo no lo dice"
@@ -42,6 +56,9 @@ notes = "Fecha de publicación aproximada (último día del mes). Enlace del inf
 code = "2025-07"
 name = "Rev. Julio 2025"
 file = "Anexo_proyeccion_demanda_2025_2039_verJul2025.xlsx"
+annex_url = "https://docs.upme.gov.co/DemandayEficiencia/Documents/Anexo_proyeccion_demanda_2025_2039_verJul2025.xlsx"
+annex_sha256 = "c70d0640d192a437fe7f2dea4873bd1c363b9ec721a70c5ba98ae5187725fd35"
+# El sitio de la UPME dice que el anexo se subió el 2025-09-05: indicio de la fecha de publicación, no dato confirmado (X-32).
 published_on = 2025-07-31
 document_url = "https://www.upme.gov.co"
 model = "Por confirmar con el informe de la revisión (X-32): el anexo no lo dice"
@@ -51,6 +68,9 @@ notes = "Fecha de publicación aproximada (último día del mes). Enlace del inf
 code = "2026-07"
 name = "Rev. Julio 2026"
 file = "Anexo_proyeccion_demanda_2026_2040_ver_Ago2026.xlsx"
+annex_url = "https://docs.upme.gov.co/DemandayEficiencia/Documents/Anexo_proyeccion_demanda_2026_2040_ver_Ago2026.xlsx"
+annex_sha256 = "7eb04796747e77500c985d306f1c40e23d8bff6e10b3b5d011f3247db56ec0b5"
+# El sitio de la UPME dice que el anexo se subió el 2026-08-07: indicio de la fecha de publicación, no dato confirmado (X-32).
 published_on = 2026-07-31
 source_consulted_on = 2026-04-14
 document_url = "https://www.upme.gov.co"

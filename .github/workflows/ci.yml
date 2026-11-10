@@ -64,5 +64,8 @@ jobs:
         run: uv run python ../scripts/diccionario.py --check
       - name: Pruebas del modelo de datos y de las vistas de core
         run: uv run pytest -q tests/test_db_model.py tests/test_db_views.py
+      - name: Carga de XM contra la base, con XM simulado (T-28)
+        working-directory: pipelines
+        run: uv sync && uv run pytest -q tests/test_xm_load_db.py
       - name: Migraciones de ida y vuelta (PBD-04)
         run: uv run alembic downgrade base && uv run alembic upgrade head

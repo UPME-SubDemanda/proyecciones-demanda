@@ -8,3 +8,4 @@ Una ficha local por herramienta (DOC-07), con la estructura de la plantilla de `
 | Prefect | [prefect.md](prefect.md) | upme-estandares |
 | Autenticación | [autenticacion.md](autenticacion.md) | upme-estandares |
 | MkDocs (Material) | [mkdocs.md](mkdocs.md) | upme-estandares |
+| GitHub Actions (CI) | [github-actions.md](github-actions.md) | upme-estandares |

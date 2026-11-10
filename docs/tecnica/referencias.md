@@ -37,10 +37,10 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proy
 | [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 8 |
 | [PDA](#pda) | Datos y cargas (PDA) | `docs/tecnica/reglas-proyecto.md` | 7 |
 | [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 3 |
-| [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 2 |
+| [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 3 |
 | [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
-| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 35 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 32 |
+| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 36 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 33 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 4 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 18 |
 
@@ -1221,6 +1221,16 @@ Al copiar una versión nueva de `reglas/` desde `upme-estandares` (FLU-09), el a
 
 Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
 
+### PFL-03 · DEBE {#pfl-03}
+
+Toda automatización de la CI se documenta en el mismo PR que la crea, la cambia o la quita: cada job y cada paso de `.github/workflows/`, y también los hooks de Git que la acompañan (`.githooks/`). La documentación vive en la [ficha de GitHub Actions](herramientas/github-actions.md) y dice, por cada paso:
+1. qué verifica y por qué, con la regla que hace cumplir;
+2. en qué job corre y qué necesita (por ejemplo, PostgreSQL);
+3. cómo correrlo en local antes de abrir el PR;
+4. qué hacer si falla.
+
+Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
+
 ## PER · Cálculo del error (PER) {#per}
 
 ### PER-01 · DEBE {#per-01}
@@ -1421,7 +1431,7 @@ Etapa: 1 · Depende de: T-22 · Issue: #34 · PR: #35
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-24 · En curso {#t-24}
+### T-24 · Hecho {#t-24}
 
 Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error) y las vistas anchas de `core`
 
@@ -1453,11 +1463,11 @@ Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-28 · Pendiente (X-26) {#t-28}
+### T-28 · En curso {#t-28}
 
-Cliente de XM SINERGOX y carga histórica de la demanda
+Flujo de Prefect para la carga histórica de XM: las medidas que XM publica por día (`DemaSIN` y `DemaMaxPot`) desde 2010 (X-26)
 
-Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-23 · Issue: #38 · PR: #39
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1469,9 +1479,17 @@ Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
+### T-36 · Pendiente {#t-36}
+
+Medidas horarias de XM: `DemaReal`, `DemaCome` y `ExpoEner`, que SINERGOX solo publica por hora (`/hourly`), en el flujo `ingest-observed-demand`, cargadas a demanda desde 2010 (su total diario y mensual sale de sumar las horas); migración que hace que `core.v_observed_wide` y `core.v_ee_revision_vs_real` usen lo diario cuando una medida tiene diario y horario en el mismo mes
+
+Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
 ### T-30 · Pendiente {#t-30}
 
-Bitácora y mensajes de carga, y cómo se consultan (PDA-05)
+Bitácora y mensajes de carga, y cómo se consultan (PDA-05). Incluye cerrar como `failed` una carga que quedó `running` porque su ejecución se canceló o se cayó (pasó al cancelar una en T-28)
 
 Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
 
@@ -1689,7 +1707,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-22 · Reglas del proyecto al estándar {#x-22}
 
-Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado, citar la página del informe) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
+Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado, citar la página del informe, documentar la CI) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1705,7 +1723,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-24 · Calidad de los datos reales {#x-24}
 
-Para las cargas de XM: reglas y umbrales para marcar un dato como anómalo (día incompleto, fuera de rango, salto frente a la versión anterior, incoherencia entre medidas); qué rol acepta o rechaza una anomalía y dónde (una vista nueva necesita diseño, FLU-03); cuántos días recarga la diaria y a qué hora; si la conciliación del domingo baja todo el histórico o un tramo; desde qué tamaño un cambio genera aviso y cómo llega mientras no haya Google Chat (PDA-02 a PDA-04)
+Para las cargas de XM: reglas y umbrales para marcar un dato como anómalo (día incompleto, fuera de rango, salto frente a la versión anterior, incoherencia entre medidas); qué rol acepta o rechaza una anomalía y dónde (una vista nueva necesita diseño, FLU-03); cuántos días recarga la diaria y a qué hora; si la conciliación del domingo baja todo el histórico o un tramo; desde qué tamaño un cambio genera aviso y cómo llega mientras no haya Google Chat (PDA-02 a PDA-04). Además: `operacion.source_status` guarda un estado por fuente y no por variable, así que con `DemaMaxPot` (más de un mes de rezago) XM parece desactualizada aunque `DemaSIN` esté al día (visto en T-28); decidir si pasa a ser por variable
 
 Responsable: Líder · Estado: Abierto
 
@@ -1721,7 +1739,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-26 · Alcance de la carga de XM {#x-26}
 
-Qué medidas se cargan desde el inicio además de `DemaSIN` (propuesta: `DemaReal`, `DemaCome`, `ExpoEner`, `DemaMaxPot`), desde qué año, si el cliente es el REST con `httpx` (propuesto) o `pydataxm` (dependencia nueva, TEC-06), y si se usan las proyecciones UPME que publica XM (`EscDemUPME*`) para cruzar con las revisiones. **Decidido el 2026-11-10:** `DemaSIN` desde el 2010-01-01 (cargada en T-24) y cliente REST con `httpx`. Sigue abierto: las demás medidas y si se carga desde el inicio de la serie
+Qué medidas se cargan desde el inicio además de `DemaSIN` (propuesta: `DemaReal`, `DemaCome`, `ExpoEner`, `DemaMaxPot`), desde qué año, si el cliente es el REST con `httpx` (propuesto) o `pydataxm` (dependencia nueva, TEC-06), y si se usan las proyecciones UPME que publica XM (`EscDemUPME*`) para cruzar con las revisiones. **Decidido el 2026-11-10:** cliente REST con `httpx`; `DemaSIN` y `DemaMaxPot` diarias desde el 2010-01-01 (T-24 y T-28); `DemaReal`, `DemaCome` y `ExpoEner` solo existen por hora en SINERGOX y se cargan a demanda en T-36. Sigue abierto: si se usan las proyecciones `EscDemUPME*` de XM
 
 Responsable: Líder · Estado: Abierto (en parte)
 
@@ -1761,7 +1779,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-31 · Enlace del informe de cada revisión {#x-31}
 
-Las 5 revisiones de EE cargadas en T-24 apuntan a `https://www.upme.gov.co` porque falta el enlace exacto de cada informe (`document_url` en `pipelines/revisiones_ee.toml`). Conseguir los 5 enlaces y corregirlos en la misma fila, sin crear revisiones nuevas, con registro del cambio (PBD-08). La primera corrección define cómo queda ese registro en `operacion` (hoy `load_runs.load_type` no tiene un tipo para correcciones: necesita migración)
+Las 5 revisiones de EE cargadas en T-24 apuntan a `https://www.upme.gov.co` porque falta el enlace exacto de cada informe (`document_url` en `pipelines/revisiones_ee.toml`). Los enlaces de los 5 **anexos** ya están (2026-11-10): `annex_url` y `annex_sha256` en `pipelines/revisiones_ee.toml`, comprobados contra los archivos cargados; T-27 los usa para cargar en el despliegue. Faltan los 5 enlaces de los **informes**, para corregirlos en la misma fila, sin crear revisiones nuevas, con registro del cambio (PBD-08). La primera corrección define cómo queda ese registro en `operacion` (hoy `load_runs.load_type` no tiene un tipo para correcciones: necesita migración)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1770,6 +1788,14 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 ### X-32 · Modelo de cada revisión {#x-32}
 
 Solo 2026-07 tiene el modelo, tomado de su informe; las otras 4 revisiones de EE dicen «por confirmar». El líder entrega los informes de 2023-12, 2024-07, 2024-12 y 2025-07; de cada uno se toma el modelo (y, si lo dice, el día de publicación y el corte del dato real), se documenta en `docs/tecnica/modelos/ee.md` citando la página (PFU-03) y se corrige en la misma fila con registro (PBD-08). Igual que X-31
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-33 · Conocer Prefect a fondo {#x-33}
+
+El líder quiere conocer bien la herramienta antes de que las cargas corran solas (T-29, T-31). Revisar: conceptos (flujo, tarea, despliegue, ejecución, worker), la interfaz, horarios, reintentos, avisos, qué pasa si el worker o el servidor se caen, cómo se despliega en un servidor y alternativas, porque está en el stack como provisional. Punto de partida: la [ficha local de Prefect](../tecnica/herramientas/prefect.md)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1824,4 +1850,4 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | P-10 | Experimentos y modelos  MLflow  —  Planeada (fase 2, P-10)  mlflow | `reglas/REGLAS-TECNICAS.md` |
 | P-11 | …tras esa base no exista, se cargan en raw del producto con su fuente (pendiente P-11). | `reglas/REGLAS-TECNICAS.md` |
 | P-12 | Observabilidad  Grafana + Prometheus  —  Planeada (P-12)  grafana | `reglas/REGLAS-TECNICAS.md` |
-| P-17 | …ivados esta regla se cumple por disciplina del equipo y la revisión automática (P-17). | `reglas/REGLAS-FLUJO.md` |
+| P-17 | …ivados esta regla se cumple por disciplina del equipo y la revisión automática (P-17). | `docs/tecnica/herramientas/github-actions.md`, `reglas/REGLAS-FLUJO.md` |
