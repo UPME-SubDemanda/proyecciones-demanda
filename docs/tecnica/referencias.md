@@ -6,7 +6,7 @@ hide: [toc]
 
 Qué significa cada ID que se cita en el proyecto. Escriba el ID en el buscador (por ejemplo `DOC-04` o `T-05`) o use el índice.
 
-Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `docs/decisiones/`. No editar a mano: cambie la fuente y regenere.
+Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proyecto.md`, `docs/pendientes.md` y `docs/decisiones/`. No editar a mano: cambie la fuente y regenere.
 
 ## Índice
 
@@ -34,9 +34,14 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `d
 | [IA](#ia) | Asistentes de IA (Claude, Cursor, Codex, Gemini) | `reglas/REGLAS-FLUJO.md` | 5 |
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
-| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 21 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 21 |
-| [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 3 |
+| [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 7 |
+| [PDA](#pda) | Datos y cargas (PDA) | `docs/tecnica/reglas-proyecto.md` | 7 |
+| [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 2 |
+| [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 2 |
+| [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
+| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 35 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 30 |
+| [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 4 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 18 |
 
 ## UPME-LOG · Logos (UPME-LOG) {#upme-log}
@@ -1074,6 +1079,150 @@ Respaldos diarios y prueba de restauración trimestral (responsable por definir 
 
 Fuente: [REGLAS-TECNICAS.md · Bases de datos](https://github.com/UPME-SubDemanda/proyecciones-demanda/blob/develop/reglas/REGLAS-TECNICAS.md#bases-de-datos)
 
+## PBD · Base de datos (PBD) {#pbd}
+
+### PBD-01 · DEBE {#pbd-01}
+
+Todo esquema, tabla, vista y columna de la base lleva un comentario en español (`COMMENT ON`) que dice qué es y para qué sirve. El comentario se escribe en la migración de Alembic que crea el objeto. Los nombres van en inglés y `snake_case` en todos los esquemas, incluido `raw` (BD-05).
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-02 · DEBE {#pbd-02}
+
+Todo esquema y toda tabla o vista tiene su documentación en la sección [Base de datos](base-de-datos/index.md) de esta guía, con para qué existe, contexto, cómo se usa y ejemplos puntuales, en el mismo PR que lo crea o lo cambia (DOC-08).
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-03 · DEBE {#pbd-03}
+
+El diccionario de tablas y columnas se genera desde los comentarios de la base, no se escribe a mano. La CI falla si falta un comentario, con un mensaje que nombra el objeto y cómo corregirlo. Ejemplo: «Falta el comentario de la columna `core.revision_values.value`. Agrégalo con `comment=` en la migración». Igual para esquemas, tablas y vistas.
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-04 · DEBE {#pbd-04}
+
+La CI aplica las migraciones en una base PostgreSQL de prueba de la misma versión del proyecto, las revierte y, sobre esa base, verifica los comentarios (PBD-03) y que el diccionario esté al día. Ningún cambio de esquema entra sin pasar por ahí. Las pruebas del backend con SQLite no reemplazan esta verificación.
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-05 · DEBE {#pbd-05}
+
+Los datos de fuentes externas nunca se sobrescriben:
+- cada extracción queda registrada, y los valores se guardan solo si son nuevos o cambiaron frente a la última versión;
+- cada valor guarda su `version` (1, 2, 3… por periodo, sin repetirse) y su fecha de carga (`loaded_at`), y la versión propia de la fuente si la trae;
+- el valor vigente es la versión máxima aceptada de cada periodo, y el valor a una fecha es la versión máxima aceptada cargada hasta esa fecha;
+- todo cambio detectado queda registrado con su fecha y sus valores anterior y nuevo.
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-06 · DEBE {#pbd-06}
+
+Lo oficial nunca comparte tablas con lo experimental. Las salidas de modelos candidatos, sus pruebas y sus métricas (fase 2) viven en un esquema propio o en las herramientas de MLOps (MLflow, DVC). Solo una revisión aprobada y publicada entra a `core.revisions` y `core.revision_values`.
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+### PBD-07 · DEBE {#pbd-07}
+
+Además de los cinco esquemas de BD-03, la base tiene el esquema `operacion` para lo que describe cómo funciona el sistema: bitácora de cargas, mensajes de carga, extracciones, estado de las fuentes, notificaciones y auditoría. No guarda datos del producto ni depende de una fuente, así que sigue igual si cambia el origen de los datos (P-0004).
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
+## PDA · Datos y cargas (PDA) {#pda}
+
+### PDA-01 · DEBE {#pda-01}
+
+La arquitectura está desacoplada del origen de los datos:
+- cada fuente externa tiene su lector y sus tablas `raw`;
+- la transformación a `staging` entrega una forma fija por tipo de dato (el contrato);
+- `core`, la API y las vistas nunca leen `raw` ni dependen de una fuente.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-02 · DEBE {#pda-02}
+
+Toda carga aplica las reglas de detección de datos anómalos que documenta la ficha de la fuente. Un dato anómalo queda marcado, se reporta y no se usa en cálculos ni vistas. Solo una persona con el rol autorizado puede aceptarlo o rechazarlo, y queda registrado quién, cuándo y por qué. Si la fuente entrega después una versión que pasa las reglas, la anomalía se cierra y queda anotado.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-03 · DEBE {#pda-03}
+
+La carga incremental de cada fuente se complementa con una carga completa periódica del histórico (conciliación). Toda diferencia se versiona (PBD-05) y se registra como cambio; lo que no cambió no se vuelve a guardar.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-04 · DEBE {#pda-04}
+
+Si cambia o queda anómalo un dato que ya usó una revisión publicada o un modelo, se registra un aviso para el modelador o analista responsable, que decide qué hacer.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-05 · DEBE {#pda-05}
+
+Toda ejecución de un flujo de carga deja una fila en la bitácora (`operacion.load_runs`), aunque no encuentre nada, con:
+- rango consultado;
+- periodos nuevos, cambiados y sin cambio;
+- datos anómalos nuevos y errores;
+- un mensaje legible.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-06 · DEBE {#pda-06}
+
+Toda carga de un archivo publicado (por ejemplo, un anexo de una revisión) ubica los datos por los textos de los encabezados, no por posiciones fijas, y verifica las identidades internas del archivo antes de aceptarlo: sumas de componentes, total anual igual a la suma de los meses y límites del intervalo alrededor del valor medio. Si algo no cuadra, la carga falla con un mensaje que dice qué hoja, qué serie y qué periodo, y queda en la bitácora (PDA-05).
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+### PDA-07 · DEBE {#pda-07}
+
+Cuando una fuente cambia de convención entre publicaciones (signo, nombres, unidades), todo el histórico se normaliza a la convención más reciente al cargarlo; no se guardan valores con convenciones distintas. La regla de normalización de cada versión queda en la ficha de la fuente y en su lector. Ejemplo: la generación distribuida (GD) se guarda siempre positiva y la resta la aplica `core.series_composition`.
+
+Fuente: [reglas-proyecto.md · Datos y cargas (PDA)](reglas-proyecto.md#datos-y-cargas-pda)
+
+## PFU · Fuentes de datos (PFU) {#pfu}
+
+### PFU-01 · DEBE {#pfu-01}
+
+Toda fuente externa tiene su ficha en el apartado [Fuentes de datos](base-de-datos/fuentes/index.md) antes de su primera carga, con la [plantilla de ficha](base-de-datos/fuentes/plantilla-ficha.md).
+
+Fuente: [reglas-proyecto.md · Fuentes de datos (PFU)](reglas-proyecto.md#fuentes-de-datos-pfu)
+
+### PFU-02 · DEBE {#pfu-02}
+
+Toda entidad que entrega datos al proyecto tiene una guía de sus fuentes al nivel de la [guía de XM](base-de-datos/fuentes/xm/guia-api-xm.md): mapa de fuentes, endpoints, cómo descubrir una variable, definiciones, trampas, ejemplos y arquitectura recomendada. La guía se construye a medida que se analiza la fuente. `AGENTS.md` dice qué documento leer antes de trabajar con cada fuente.
+
+Fuente: [reglas-proyecto.md · Fuentes de datos (PFU)](reglas-proyecto.md#fuentes-de-datos-pfu)
+
+## PFL · Flujo de trabajo (PFL) {#pfl}
+
+### PFL-01 · DEBE {#pfl-01}
+
+Toda necesidad de aclarar o documentar que aparezca se vuelve regla de este documento y, a la vez, entra a un pendiente para llevarla a `upme-estandares`, con su contexto y un prompt listo para ejecutarlo completo. Siempre que una regla, script o paso de CI pueda servir a otros proyectos, entra a ese pendiente con todo lo necesario para copiarlo.
+
+Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
+
+### PFL-02 · DEBE {#pfl-02}
+
+Al copiar una versión nueva de `reglas/` desde `upme-estandares` (FLU-09), el asistente o la persona que la copia:
+1. revisa qué reglas de este documento ya están en el estándar y las reemplaza por la referencia a la regla del estándar;
+2. verifica que ninguna regla de aquí contradiga una del estándar;
+3. lo reporta en el PR de la actualización.
+
+Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
+
+## PER · Cálculo del error (PER) {#per}
+
+### PER-01 · DEBE {#per-01}
+
+Provisional hasta validarla con los datos cargados en este proyecto (T-26). El error de una revisión de energía eléctrica se calcula así:
+- **Dato real:** `DemaSIN` de XM, agregada a meses completos.
+- **Serie de comparación:** `SIN+GCE+ME+GD_UPME`.
+- **Error:** proyectado − real, en GWh y en %. Un valor positivo significa que la UPME sobreestimó.
+- **Meses parciales:** se descartan; no se escalan.
+- **Horizonte:** se mide desde el primer mes proyectado de la revisión.
+- **Las demás series:** solo muestran cuánto aporta cada componente (GCE, ME y GD); no se usan para medir el error.
+
+Fuente: [reglas-proyecto.md · Cálculo del error (PER)](reglas-proyecto.md#calculo-del-error-per)
+
 ## T · Plan de trabajo {#t}
 
 ### T-01 · Hecho {#t-01}
@@ -1204,23 +1353,23 @@ Etapa: 1 · Depende de: T-08 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-15 · En curso (X-01, X-02) {#t-15}
+### T-15 · Hecho (insumos de EE y GN revisados; sigue X-02) {#t-15}
 
 Reunir archivos de revisiones, series reales y exógenas, y decidir desde qué revisión cargar
 
-Etapa: 1 · Depende de: — · Issue: — · PR: —
+Etapa: 1 · Depende de: — · Issue: #32 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-16 · Pendiente {#t-16}
+### T-16 · Reemplazado por T-22 y T-23 {#t-16}
 
-Tablas `raw`/`staging` y ajustes al modelo de datos según lo que pidan las vistas
+Tablas `raw`/`staging` y ajustes al modelo de datos
 
 Etapa: 1 · Depende de: T-15 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-17 · Pendiente {#t-17}
+### T-17 · Reemplazado por T-27 a T-31 {#t-17}
 
 Flujos de carga (Prefect)
 
@@ -1228,7 +1377,7 @@ Etapa: 1 · Depende de: T-16 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-18 · Pendiente {#t-18}
+### T-18 · Reemplazado por T-33 y T-34 {#t-18}
 
 Endpoints de la API y conexión de cada vista a datos reales; retirar las cifras ilustrativas
 
@@ -1236,7 +1385,7 @@ Etapa: 1 y 1.1 · Depende de: T-17 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-19 · Bloqueado (X-04) {#t-19}
+### T-19 · Reemplazado por T-33 {#t-19}
 
 Vistas `publicacion.*` para el portal y el modo pantalla
 
@@ -1244,19 +1393,131 @@ Etapa: 1.1 · Depende de: T-18 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
+### T-22 · En curso {#t-22}
+
+Documentar el modelo de datos v2, las reglas del proyecto (PBD, PDA, PFU, PFL, PER), la sección «Base de datos», las fuentes de XM y este plan
+
+Etapa: 1 · Depende de: T-15 · Issue: #32 · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-23 · Siguiente {#t-23}
+
+Migración `0003` con el modelo v2 y todos los comentarios; script del diccionario con su verificación; base PostgreSQL de prueba en la CI (PBD-01 a PBD-04)
+
+Etapa: 1 · Depende de: T-22 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-24 · Pendiente {#t-24}
+
+Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error)
+
+Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-25 · Bloqueado (X-02, X-23) {#t-25}
+
+Revisiones anteriores a dic-2023 y versiones corregidas (la «v2» de jul-2024)
+
+Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-26 · Pendiente {#t-26}
+
+Validar la variable real para el cálculo del error (hipótesis: `DemaSIN` frente a `SIN+GCE+ME+GD_UPME`, PER-01)
+
+Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-27 · Pendiente {#t-27}
+
+Lector de anexos de la UPME (por encabezados, con verificación de sumas y normalización entre versiones) y flujo `load-published-revisions`
+
+Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-28 · Pendiente (X-26) {#t-28}
+
+Cliente de XM SINERGOX y carga histórica de la demanda
+
+Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-29 · Pendiente (X-24) {#t-29}
+
+Carga diaria y conciliación semanal de XM, con cambios, anomalías y avisos (PDA-02 a PDA-04)
+
+Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-30 · Pendiente {#t-30}
+
+Bitácora y mensajes de carga, y cómo se consultan (PDA-05)
+
+Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-31 · Pendiente (servidores, en el estándar) {#t-31}
+
+Tareas programadas de las cargas
+
+Etapa: 1 · Depende de: T-29 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-32 · Pendiente (X-03, X-14, X-25) {#t-32}
+
+Decisiones visuales: escenario medio e intervalos, serie y métricas de error que se muestran, umbrales, mockups de vistas nuevas (anomalías, bitácora, avisos)
+
+Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-33 · Pendiente (X-04, X-28) {#t-33}
+
+Contrato de la API (pública e interna) y vistas `publicacion`
+
+Etapa: 1 y 1.1 · Depende de: T-32 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-34 · Pendiente {#t-34}
+
+Conectar las vistas de EE a la API y retirar las cifras ilustrativas de EE
+
+Etapa: 1 y 1.1 · Depende de: T-33 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-35 · Pendiente {#t-35}
+
+Operación: cargas en un servidor, contraste con las cifras publicadas, inventario, capturas, CHANGELOG y diario
+
+Etapa: 1 · Depende de: T-34 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
 ## X · Pendientes de decisión {#x}
 
 ### X-01 · Fuentes y formatos {#x-01}
 
-Reunir archivos de revisiones pasadas, series reales y exógenas; definir tablas `raw`/`staging`
+Reunir archivos de revisiones pasadas, series reales y exógenas; definir tablas `raw`/`staging`. Hecho para EE (API de XM y 5 anexos de revisiones) y revisada la estructura de GN; las tablas están en el modelo v2 ([P-0004](../decisiones/0004-modelo-datos-v2.md)). Faltan las exógenas (DANE, IDEAM)
 
-Responsable: Equipo · Estado: Abierto
+Responsable: Equipo · Estado: Parcial
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-02 · Histórico {#x-02}
 
-Desde qué revisión cargar (EE y GN)
+Desde qué revisión cargar (EE y GN). Hay 5 revisiones de EE (dic-2023 a ago-2026); falta saber si hay anteriores con anexo (X-23, T-25)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1312,9 +1573,9 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-09 · Corrección de revisiones {#x-09}
 
-Agregar estado `superseded` y columna `supersedes_id` en `core.revisions` para enlazar una revisión corregida con la original (P-0003). El mockup aprobado del histórico ya muestra «Crear corrección»: alinear el flujo con esta decisión
+Agregar estado `superseded` y columna `supersedes_id` en `core.revisions` para enlazar una revisión corregida con la original (P-0003). Resuelto en el diseño del modelo v2 (P-0004); se crea en la migración `0003` (T-23). El mockup aprobado del histórico ya muestra «Crear corrección»: alinear el flujo con esta decisión
 
-Responsable: Equipo · Estado: Abierto
+Responsable: Equipo · Estado: Decidido (falta T-23)
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
@@ -1352,7 +1613,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-14 · Datos del portal y del modo pantalla {#x-14}
 
-Antes de conectar datos reales al portal y al modo pantalla (T-18, T-19): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, el **error medio de la revisión** (MAPE a 12 meses), el **crecimiento promedio** del horizonte, la **desviación mensual** real vs. proyectado (la proyección es anual: cómo se reparte por mes), la **demanda diaria** del tablero «El sistema hoy» (fuente y frecuencia de XM y del Gestor del Mercado de Gas, demanda máxima de potencia), el umbral que se muestra (X-03) y el texto de la licencia de los datos descargados (X-04)
+Antes de conectar datos reales al portal y al modo pantalla (T-33, T-34): definir cómo se calcula el **acierto de las proyecciones** (hoy, ilustrativo: 100 % menos el error medio a 12 meses; ver X-03), qué año y escenario muestran las cifras principales, el **error medio de la revisión** (MAPE a 12 meses), el **crecimiento promedio** del horizonte, la **desviación mensual** real vs. proyectado (la proyección es anual: cómo se reparte por mes), la **demanda diaria** del tablero «El sistema hoy» (fuente y frecuencia de XM y del Gestor del Mercado de Gas, demanda máxima de potencia), el umbral que se muestra (X-03) y el texto de la licencia de los datos descargados (X-04)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1414,6 +1675,78 @@ Responsable: Líder · Estado: Abierto
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
+### X-22 · Reglas del proyecto al estándar {#x-22}
+
+Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-23 · Observaciones a los anexos de EE {#x-23}
+
+Remitir al equipo de modelación las observaciones a los 5 anexos y al informe Rev. Julio 2026 (7 errores, 7 inconsistencias, 10 dudas y 7 sugerencias) y anotar sus respuestas. Entre ellas: las 5 áreas no suman la serie SIN; qué fue la «v2» de jul-2024; si hay revisiones anteriores a dic-2023; el salto de GD_PNUMA en 2039; el día exacto de publicación de cada revisión; equivalencias de nombres de GCE entre revisiones; si los primeros meses de cada hoja mensual son proyección
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-24 · Calidad de los datos reales {#x-24}
+
+Para las cargas de XM: reglas y umbrales para marcar un dato como anómalo (día incompleto, fuera de rango, salto frente a la versión anterior, incoherencia entre medidas); qué rol acepta o rechaza una anomalía y dónde (una vista nueva necesita diseño, FLU-03); cuántos días recarga la diaria y a qué hora; si la conciliación del domingo baja todo el histórico o un tramo; desde qué tamaño un cambio genera aviso y cómo llega mientras no haya Google Chat (PDA-02 a PDA-04)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-25 · Métricas de error que se muestran {#x-25}
+
+La UPME publica APE, AAE y MSE (método de la IEA) por mes, valor e intervalo; el análisis previo usa MAPE y sesgo; los mockups muestran «MAPE a 12 meses». Decidir qué se calcula y se muestra, y si se cargan los errores que publica la UPME para contrastarlos. Relacionado con X-03 y X-14
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-26 · Alcance de la carga de XM {#x-26}
+
+Qué medidas se cargan desde el inicio además de `DemaSIN` (propuesta: `DemaReal`, `DemaCome`, `ExpoEner`, `DemaMaxPot`), desde qué año, si el cliente es el REST con `httpx` (propuesto) o `pydataxm` (dependencia nueva, TEC-06), y si se usan las proyecciones UPME que publica XM (`EscDemUPME*`) para cruzar con las revisiones
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-27 · Gas natural {#x-27}
+
+Al trabajar GN: confirmar la unidad (el anexo no la dice; se asume GBTUD), qué hacer con el histórico que trae el anexo de la revisión y cuál es la fuente externa del dato real (Gestor del Mercado de Gas)
+
+Responsable: Líder · Estado: Planeado
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-28 · API pública desde el inicio {#x-28}
+
+La hoja de ruta (`docs/producto/index.md`) deja la API pública para la etapa 3. Diseñarla pública desde la fase 5 de datos pide definir separación pública e interna, solo datos publicables (`publicacion`, TV-06), licencia (X-04), contrato estable y si hace falta límite de consultas o caché (posible tecnología nueva, TEC-05). Si se decide, ADR del proyecto
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-29 · Base de datos común de la UPME {#x-29}
+
+Habrá una base de datos común con los datos de otras entidades que usa toda la UPME (BD-02). Se tiene en cuenta en la arquitectura (PDA-01) pero no se documenta aún. Cuando exista: qué se sabe de ella, cómo se pasa cada fuente y qué hacer con el histórico cargado aquí si sus cifras difieren
+
+Responsable: Líder · Estado: Planeado
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-30 · Responsables y archivos de origen {#x-30}
+
+Quién mantiene cada carga y la da por buena; qué archivos de origen son confidenciales (define qué puede llegar al portal). Los archivos se guardan en la base (`raw.files`) hasta que TI defina un almacenamiento
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
 ## P-0000 · Decisiones del proyecto (ADR) {#p-0000}
 
 ### P-0001 · Alcance de la etapa 1 sin modelos {#p-0001}
@@ -1424,7 +1757,7 @@ Fuente: [0001-alcance-etapa-1.md](../decisiones/0001-alcance-etapa-1.md)
 
 ### P-0002 · Modelo de datos de la etapa 1 {#p-0002}
 
-Estado: Aceptada
+Estado: Reemplazada por P-0004
 
 Fuente: [0002-modelo-datos-etapa-1.md](../decisiones/0002-modelo-datos-etapa-1.md)
 
@@ -1433,6 +1766,12 @@ Fuente: [0002-modelo-datos-etapa-1.md](../decisiones/0002-modelo-datos-etapa-1.m
 Estado: Aceptada
 
 Fuente: [0003-reglas-versionado.md](../decisiones/0003-reglas-versionado.md)
+
+### P-0004 · Modelo de datos v2 y esquema operacion {#p-0004}
+
+Estado: Aceptada
+
+Fuente: [0004-modelo-datos-v2.md](../decisiones/0004-modelo-datos-v2.md)
 
 ## Externos {#externos}
 

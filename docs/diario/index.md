@@ -4,10 +4,11 @@ Una entrada por PR unido a `develop` (DOC-05), en `AAAA/AAAA-MM-DD-<slug>.md`. R
 
 Lista generada por `scripts/diario.py` desde el encabezado de cada entrada. No editar a mano.
 
-## Entradas (16)
+## Entradas (17)
 
 | Fecha | Entrada | Tipo | Vistas | Features | Issue | PR |
 | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-10 | [Modelo datos v2](2026/2026-11-10-modelo-datos-v2.md) | agrega | — | modelo-datos-v2, reglas-proyecto, fuentes-datos, plan-datos | [#32](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/32) | pendiente |
 | 2026-11-09 | [Readme y mapa](2026/2026-11-09-readme-y-mapa.md) | agrega | — | readme, mapa-repositorio | [#29](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/29) | [#30](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/30) |
 | 2026-11-09 | [Entorno docker](2026/2026-11-09-entorno-docker.md) | corrige | — | entorno-local | [#27](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/27) | [#28](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/28) |
 | 2026-11-09 | [Monitor exogenas](2026/2026-11-09-monitor-exogenas.md) | agrega | monitor-exogenas, tablero-ejecutivo | monitor-exogenas | [#25](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/25) | [#26](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/26) |

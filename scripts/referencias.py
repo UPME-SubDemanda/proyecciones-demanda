@@ -18,6 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RULES = ROOT / "reglas"
+PROJECT_RULES = ROOT / "docs/tecnica/reglas-proyecto.md"  # reglas propias del proyecto (PFL-02)
 PENDING = ROOT / "docs/pendientes.md"
 ADRS = ROOT / "docs/decisiones"
 OUT = ROOT / "docs/tecnica/referencias.md"
@@ -40,6 +41,14 @@ def heading_anchor(text):
     return re.sub(r"[-\s]+", "-", text)
 
 
+def mkdocs_anchor(text):
+    """Ancla como la genera MkDocs (toc de Python-Markdown): además quita las tildes. Se usa en los
+    enlaces internos del sitio; los enlaces a GitHub usan heading_anchor, que las conserva."""
+    import unicodedata
+    plain = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    return heading_anchor(plain)
+
+
 def is_fence(line):
     return line.lstrip().startswith("```")
 
@@ -56,9 +65,20 @@ def take_block(lines, i):
 
 
 def parse_rules():
-    """Devuelve {familia: (nombre de la sección, archivo, [entradas])} en orden de aparición."""
+    """Devuelve {familia: (nombre de la sección, archivo, [entradas])} en orden de aparición.
+
+    Lee las reglas del estándar (`reglas/`) y las propias del proyecto (`docs/tecnica/reglas-proyecto.md`).
+    """
     families, seen = {}, {}
-    for path in sorted(RULES.glob("*.md")):
+    sources = [*sorted(RULES.glob("*.md"))]
+    if PROJECT_RULES.exists():
+        sources.append(PROJECT_RULES)
+    for path in sources:
+        rel = path.relative_to(ROOT).as_posix()
+        if path == PROJECT_RULES:  # misma carpeta que la página de referencias: enlace interno
+            base_url, anchor = path.name, mkdocs_anchor
+        else:
+            base_url, anchor = f"{REPO_URL}/{rel}", heading_anchor
         lines = path.read_text(encoding="utf-8").splitlines()
         section = subsection = ""
         in_fence = False
@@ -98,7 +118,7 @@ def parse_rules():
                 "level": (level or "").strip(),
                 "body": body,
                 "source": f"{path.name} · {heading}",
-                "url": f"{REPO_URL}/reglas/{path.name}#{heading_anchor(heading)}",
+                "url": f"{base_url}#{anchor(heading)}",
             }
             if ref_id in seen:  # mismo ID en dos lugares (resumen y detalle): se unen
                 prev = seen[ref_id]
@@ -106,7 +126,7 @@ def parse_rules():
                 prev["source"] += f"; {entry['source']}"
                 continue
             seen[ref_id] = entry
-            families.setdefault(family, (heading, path.name, []))[2].append(entry)
+            families.setdefault(family, (heading, rel, []))[2].append(entry)
     return families
 
 
@@ -194,7 +214,7 @@ def render():
         "",
         "Qué significa cada ID que se cita en el proyecto. Escriba el ID en el buscador (por ejemplo `DOC-04` o `T-05`) o use el índice.",
         "",
-        "Generado por `scripts/referencias.py` desde `reglas/`, `docs/pendientes.md` y `docs/decisiones/`. No editar a mano: cambie la fuente y regenere.",
+        "Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proyecto.md`, `docs/pendientes.md` y `docs/decisiones/`. No editar a mano: cambie la fuente y regenere.",
         "",
         "## Índice",
         "",
@@ -202,7 +222,7 @@ def render():
         "| --- | --- | --- | --- |",
     ]
     for family, (section, fname, entries) in families.items():
-        out.append(f"| [{family}](#{slug(family)}) | {section} | `reglas/{fname}` | {len(entries)} |")
+        out.append(f"| [{family}](#{slug(family)}) | {section} | `{fname}` | {len(entries)} |")
     out += [
         f"| [T](#t) | Plan de trabajo | `docs/pendientes.md` | {len(steps)} |",
         f"| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | {len(decisions)} |",
