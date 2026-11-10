@@ -1,7 +1,8 @@
-"""Cargas de prueba de T-24: un anexo de revisión de EE y una variable diaria de XM SINERGOX.
+"""Cargas de un anexo de revisión de EE (T-24, base de T-27) y de una variable diaria de XM SINERGOX (T-24;
+la usa el flujo ingest-observed-demand de T-28).
 
-Siguen el recorrido raw → staging → core (PDA-01) y dejan bitácora (PDA-05). Son la base de los flujos de
-Prefect de T-27 (anexos) y T-28/T-29 (XM), que agregarán anomalías, avisos y horarios.
+Siguen el recorrido raw → staging → core (PDA-01) y dejan bitácora (PDA-05). Las anomalías, los avisos y la
+programación son de T-29.
 """
 from __future__ import annotations
 
@@ -146,17 +147,31 @@ def _promote_revision(cur, run_id, meta, annex, file_id) -> int:
     return revision_id
 
 
-def load_xm_daily(conn, variable: str, start: date, end: date, client: httpx.Client | None = None) -> int:
-    """Carga una variable diaria de SINERGOX entre start y end. Guarda solo lo nuevo o lo que cambió (PBD-05).
+XM_FLOW = "ingest-observed-demand"
 
-    En esta prueba todo entra como accepted: las anomalías son de T-29 (X-24).
-    """
-    run_id = store.start_run(conn, "trial-load-xm-daily", "xm_sinergox", "backfill", start, end)
-    messages: list[Message] = []
+
+def xm_variable(conn, variable: str) -> tuple[str, str]:
+    """Métrica y entidad de XM de una variable de core.variables. Falla con un mensaje claro si no es de XM."""
     with conn.cursor() as cur:
         cur.execute("SELECT source_metric, source_entity FROM core.variables WHERE code = %s AND source = 'xm_sinergox'",
                     [variable])
-        metric, entity = cur.fetchone()
+        row = cur.fetchone()
+    if row is None:
+        raise ValueError(f"La variable {variable} no está en core.variables con fuente xm_sinergox.")
+    return row
+
+
+def load_xm_daily(conn, variable: str, start: date, end: date, client: httpx.Client | None = None,
+                  flow: str = XM_FLOW, load_type: str = "backfill") -> int:
+    """Carga una variable diaria de SINERGOX entre start y end. Guarda solo lo nuevo o lo que cambió (PBD-05).
+
+    Devuelve el id de la carga (operacion.load_runs). Todo entra como accepted: las anomalías son de T-29 (X-24).
+    """
+    if start > end:
+        raise ValueError(f"El rango está al revés: desde {start} hasta {end}.")
+    metric, entity = xm_variable(conn, variable)
+    run_id = store.start_run(conn, flow, "xm_sinergox", load_type, start, end)
+    messages: list[Message] = []
     client = client or httpx.Client()
     extraction_ids, found, retries = [], set(), 0
     for chunk_start, chunk_end in xm_sinergox.month_chunks(start, end):

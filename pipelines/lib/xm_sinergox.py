@@ -16,6 +16,8 @@ import httpx
 
 BASE_URL = "https://servapibi.xm.com.co"
 RETRY_WAITS = (1, 2, 4)  # segundos entre reintentos (ficha, sección 3)
+# Un 4xx no se arregla esperando (petición mal formada, métrica que no existe en esa frecuencia): no se reintenta.
+# Excepción: 429, demasiadas consultas.
 
 
 @dataclass
@@ -49,8 +51,9 @@ def parse_daily(payload: dict) -> list[dict]:
     return rows
 
 
-def fetch_daily(client: httpx.Client, metric: str, entity: str, start: date, end: date, sleep=time.sleep) -> Extraction:
+def fetch_daily(client: httpx.Client, metric: str, entity: str, start: date, end: date, sleep=None) -> Extraction:
     """Pide un tramo diario con reintentos. Nunca lanza: el error queda en la extracción."""
+    sleep = sleep or time.sleep  # se resuelve al llamar, para que las pruebas puedan quitar las esperas
     request = {"MetricId": metric, "Entity": entity, "StartDate": start.isoformat(), "EndDate": end.isoformat(),
                "Filter": []}
     status, error = None, None
@@ -64,9 +67,32 @@ def fetch_daily(client: httpx.Client, metric: str, entity: str, start: date, end
             return Extraction(request, status, parse_daily(payload), hashlib.sha256(content).hexdigest(), None, attempt)
         except (httpx.HTTPError, ValueError) as exc:
             error = f"{type(exc).__name__}: {exc}"
+            if status is not None and 400 <= status < 500 and status != 429:
+                return Extraction(request, status, [], None, error, attempt)
             if attempt < len(RETRY_WAITS):
                 sleep(RETRY_WAITS[attempt])
     return Extraction(request, status, [], None, error, len(RETRY_WAITS))
+
+
+def parse_metric_list(payload: dict) -> dict[tuple[str, str], str]:
+    """Respuesta de ListadoMetricas → {(métrica, entidad): tipo}, con tipo DailyEntities, HourlyEntities…"""
+    out = {}
+    for item in payload.get("Items") or []:
+        for entity in item.get("ListEntities") or []:
+            values = entity.get("Values") or {}
+            if values.get("MetricId") and values.get("Entity"):
+                out[(values["MetricId"], values["Entity"])] = values.get("Type")
+    return out
+
+
+def fetch_metric_list(client: httpx.Client) -> dict[tuple[str, str], str] | None:
+    """Qué publica XM y con qué frecuencia. None si XM no responde: quien llama decide si sigue sin verificar."""
+    try:
+        response = client.post(f"{BASE_URL}/lists", json={"MetricId": "ListadoMetricas"}, timeout=60)
+        response.raise_for_status()
+        return parse_metric_list(response.json())
+    except (httpx.HTTPError, ValueError):
+        return None
 
 
 def missing_days(found: set[date], start: date, end: date) -> list[tuple[date, date]]:

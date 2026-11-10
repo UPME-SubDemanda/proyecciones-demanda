@@ -57,6 +57,7 @@ docker compose up -d                         # db, api, web, docs, prefect (api 
 # Usuario admin@local de desarrollo: contraseña en DEV_ADMIN_PASSWORD de .env (docs/tecnica/index.md). No la muestres ni la copies.
 cd backend && uv run pytest
 cd pipelines && uv run pytest                 # lector de anexos y cliente de XM (sin base ni internet)
+docker compose exec prefect-worker prefect deployment run ingest-observed-demand/xm-historico-diario   # carga de XM (docs/tecnica/flujos.md)
 cd frontend && pnpm dev | pnpm test | pnpm screenshots
 python scripts/lint_design.py frontend/src
 python scripts/inventario.py                 # regenera docs/usuario/inventario/index.md

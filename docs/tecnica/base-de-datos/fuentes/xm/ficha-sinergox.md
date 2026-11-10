@@ -1,6 +1,6 @@
 # Ficha: XM SINERGOX
 
-Fuente del dato real de demanda de energía eléctrica. Contexto completo en la [guía de XM](guia-api-xm.md). Esta ficha dice cómo se usa aquí (PFU-01); la carga se construye en la etapa 3 (T-28, T-29), y lo marcado «por confirmar» está en X-24 y X-26.
+Fuente del dato real de demanda de energía eléctrica. Contexto completo en la [guía de XM](guia-api-xm.md). Esta ficha dice cómo se usa aquí (PFU-01); la carga histórica diaria es el flujo `ingest-observed-demand` (T-28, [Flujos de datos](../../../flujos.md)); la carga diaria automática y la conciliación son T-29, y lo marcado «por confirmar» está en X-24.
 
 ## 1. Qué es y definición oficial
 
@@ -17,12 +17,12 @@ La UPME usa como histórico de sus proyecciones la serie «Sinergox: Históricos
 | Métrica / entidad | Código en `core.variables` | Unidad en XM → en la base | Frecuencia | Uso |
 | --- | --- | --- | --- | --- |
 | `DemaSIN` / `Sistema` | `xm_demasin` | kWh → GWh | Diaria | **Oficial para el error** (PER-01, provisional hasta T-26) |
-| `DemaReal` / `Sistema` | `xm_demareal` | kWh → GWh | Horaria | Comparación y modelos horarios |
-| `DemaCome` / `Sistema` | `xm_demacome` | kWh → GWh | Horaria | Comparación |
-| `ExpoEner` / `Sistema` | `xm_expoener` | kWh → GWh | Horaria | Restar exportaciones si se compara con `DemaReal` o `DemaCome` |
+| `DemaReal` / `Sistema` | `xm_demareal` | kWh → GWh | Solo horaria en SINERGOX: a demanda (T-36) | Comparación y modelos horarios |
+| `DemaCome` / `Sistema` | `xm_demacome` | kWh → GWh | Solo horaria en SINERGOX: a demanda (T-36) | Comparación |
+| `ExpoEner` / `Sistema` | `xm_expoener` | kWh → GWh | Solo horaria en SINERGOX: a demanda (T-36) | Restar exportaciones si se compara con `DemaReal` o `DemaCome` |
 | `DemaMaxPot` / `Sistema` | `xm_demamaxpot` | kW → MW | Diaria | Potencia máxima («El sistema hoy») |
 
-**Cargado (T-24, 2026-11-10):** `DemaSIN` diaria desde el 2010-01-01, por decisión del líder. Llegaron todos los días hasta el anterior a la carga, sin huecos. Las demás variables y si se carga desde el inicio de la serie siguen en X-26. Muchas métricas existen desde el año 2000.
+**Cargado (2026-11-10):** `DemaSIN` diaria desde el 2010-01-01 (T-24, y de nuevo con el flujo de T-28, sin cambios) y `DemaMaxPot` diaria desde el 2010-01-01 hasta el 2026-09-30 (T-28). Llegaron todos los días, sin huecos, salvo el rezago de cada una. `DemaReal`, `DemaCome` y `ExpoEner` son horarias: T-36. Muchas métricas existen desde el año 2000; por decisión del líder se carga desde 2010 (X-26).
 
 ## 3. Cómo se extrae
 
@@ -33,7 +33,11 @@ La UPME usa como histórico de sus proyecciones la serie «Sinergox: Históricos
 
 ## 4. Frecuencia y rezago
 
-XM publica el día anterior con rezago. Los últimos días llegan incompletos y se corrigen después.
+XM publica el día anterior con rezago.
+
+**Frecuencia de cada métrica:** el listado de métricas de XM (`/lists`, `ListadoMetricas`) dice si se publica por día (`DailyEntities`) o por hora (`HourlyEntities`). `DemaSIN` y `DemaMaxPot` / `Sistema` son diarias; `DemaReal`, `DemaCome` y `ExpoEner` / `Sistema` solo son horarias: pedirlas a `/daily` da 400 (comprobado el 2026-11-10). El flujo de T-28 verifica el listado antes de cargar.
+
+**Rezago de `DemaMaxPot`:** más de un mes. El 2026-11-10 su último día publicado era el 2026-09-30, mientras `DemaSIN` llegaba hasta el día anterior. Lo debe tener en cuenta la carga diaria (T-29, X-24). Los últimos días llegan incompletos y se corrigen después.
 
 ## 5. Versionamiento
 
