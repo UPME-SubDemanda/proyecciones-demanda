@@ -42,7 +42,7 @@ Su nombre lleva el número del issue y una descripción corta en inglés: `featu
 
 Al terminar, se abre un PR con la plantilla del proyecto. En el PR:
 
-- La **CI** corre sola (`.github/workflows/ci.yml`): CHANGELOG obligatorio (FLU-10), lint de diseño, inventario completo (DOC-02), pruebas de backend y frontend, y construcción de los dos sitios de documentación.
+- La **CI** corre sola (`.github/workflows/ci.yml`) y aparece en el PR como dos checks: **ci / checks** (CHANGELOG, diseño, páginas generadas, pruebas de backend, pipelines y frontend, y documentación) y **ci / base-de-datos** (migraciones, comentarios y pruebas contra un PostgreSQL real). Qué hace cada paso y cómo correrlo en local: [ficha de GitHub Actions](herramientas/github-actions.md).
 - Alguien puede revisar y comentar. Mientras P-06 siga pendiente, el autor puede unir su propio PR con la CI en verde (FLU-05).
 - En el campo *Issue* de la plantilla, escribir `Closes #<n>`: al unir el PR a `develop` (rama por defecto del repositorio), GitHub cierra el issue solo. Con `Refs: #<n>` solo lo enlaza y hay que cerrarlo a mano.
 

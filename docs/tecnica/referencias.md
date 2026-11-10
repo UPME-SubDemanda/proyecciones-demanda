@@ -1840,4 +1840,4 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | P-10 | Experimentos y modelos  MLflow  —  Planeada (fase 2, P-10)  mlflow | `reglas/REGLAS-TECNICAS.md` |
 | P-11 | …tras esa base no exista, se cargan en raw del producto con su fuente (pendiente P-11). | `reglas/REGLAS-TECNICAS.md` |
 | P-12 | Observabilidad  Grafana + Prometheus  —  Planeada (P-12)  grafana | `reglas/REGLAS-TECNICAS.md` |
-| P-17 | …ivados esta regla se cumple por disciplina del equipo y la revisión automática (P-17). | `reglas/REGLAS-FLUJO.md` |
+| P-17 | …ivados esta regla se cumple por disciplina del equipo y la revisión automática (P-17). | `docs/tecnica/herramientas/github-actions.md`, `reglas/REGLAS-FLUJO.md` |
