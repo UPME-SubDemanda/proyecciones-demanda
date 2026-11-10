@@ -1,7 +1,7 @@
 ---
 fecha: 2026-11-10
 autor: David Bedoya
-pr: —
+pr: 41
 issue: 40
 tipo: modifica
 vistas: [tablero-ejecutivo, historico-revisiones, portal-inicio, modo-pantalla]

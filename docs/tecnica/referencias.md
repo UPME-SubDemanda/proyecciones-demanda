@@ -1491,7 +1491,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 **Datos reales de EE en las vistas, provisional:** tablero ejecutivo, histórico de revisiones, portal y modo pantalla leen energía eléctrica de una API mínima (`/api/v1/ee`); lo demás sigue ilustrativo y marcado. Decidido por el líder el 2026-11-10 para ver datos reales de una vez: «escenario bajo/alto» = límites del IC 68 %, solo la serie SIN+GCE+ME+GD_UPME, los indicadores que ya usaban las vistas; las gráficas de proyección de EE se pueden ver anuales (por omisión) o mensuales. Lo definitivo sigue en T-32 a T-34
 
-Etapa: 1 · Depende de: T-28 · Issue: #40 · PR: —
+Etapa: 1 · Depende de: T-28 · Issue: #40 · PR: #41
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
