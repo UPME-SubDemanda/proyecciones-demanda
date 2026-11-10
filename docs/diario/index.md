@@ -8,7 +8,7 @@ Lista generada por `scripts/diario.py` desde el encabezado de cada entrada. No e
 
 | Fecha | Entrada | Tipo | Vistas | Features | Issue | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-09 | [Readme y mapa](2026/2026-11-09-readme-y-mapa.md) | agrega | — | readme, mapa-repositorio | [#29](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/29) | pendiente |
+| 2026-11-09 | [Readme y mapa](2026/2026-11-09-readme-y-mapa.md) | agrega | — | readme, mapa-repositorio | [#29](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/29) | [#30](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/30) |
 | 2026-11-09 | [Entorno docker](2026/2026-11-09-entorno-docker.md) | corrige | — | entorno-local | [#27](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/27) | [#28](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/28) |
 | 2026-11-09 | [Monitor exogenas](2026/2026-11-09-monitor-exogenas.md) | agrega | monitor-exogenas, tablero-ejecutivo | monitor-exogenas | [#25](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/25) | [#26](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/26) |
 | 2026-11-09 | [Ciclo con asistentes](2026/2026-11-09-ciclo-con-asistentes.md) | agrega | — | guia-flujo-de-trabajo | [#23](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/23) | [#24](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/24) |
