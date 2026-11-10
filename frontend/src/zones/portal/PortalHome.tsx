@@ -14,7 +14,9 @@ import { formatPercent, formatProvenance, revisionLabel } from '../../lib/format
 import { icons } from '../../lib/icons';
 import { PRODUCT_KEYS, PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
 import { PHONE, useMediaQuery } from '../../lib/useMediaQuery';
-import { eeChartUnit, effectiveResolution, RESOLUTION_OPTIONS, useResolution } from '../../lib/resolution';
+import {
+  eeChartUnit, effectiveResolution, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, useResolution,
+} from '../../lib/resolution';
 import { change, growthTitle, lastObserved, valueAt } from './portalData';
 
 const SITE_NAME = 'Proyecciones de demanda de energía';
@@ -103,7 +105,8 @@ function ProjectionSection() {
   const units = isEE ? eeChartUnit(resolution) : { unit: 'GBTUD', divisor: 1, decimals: 0 };
 
   const input = useMemo(() => {
-    if (!chartObserved.data || !chartValues.data) return null;
+    if (!chartObserved.data || !chartValues.data || !current) return null;
+    const lastPeriod = chartObserved.data.data.points.at(-1)!.period;
     return {
       product: product.key,
       observed: chartObserved.data.data.points,
@@ -113,8 +116,11 @@ function ProjectionSection() {
       divisor: units.divisor,
       scenarioLabels: true,
       compact: phone,
+      // Mensual: alrededor de la revisión vigente; anual: toda la serie (issue #40).
+      range: resolution === 'M' ? publicationWindow(current.publishedOn, lastPeriod) : undefined,
+      publication: { period: publicationPeriod(current.publishedOn, resolution), label: publicationLabel(current.publishedOn) },
     };
-  }, [chartObserved.data, chartValues.data, product.key, units.unit, units.divisor, phone]);
+  }, [chartObserved.data, chartValues.data, current, product.key, units.unit, units.divisor, phone, resolution]);
   const option = useMemo(() => (input ? projectionChartOption(input) : null), [input]);
 
   if (observed.isError || revisions.isError || values.isError || chartObserved.isError || chartValues.isError)

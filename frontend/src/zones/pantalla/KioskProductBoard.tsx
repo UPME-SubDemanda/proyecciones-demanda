@@ -14,7 +14,9 @@ import { SCENARIO_LABEL, type Scenario } from '../../data/types';
 import { cn } from '../../lib/cn';
 import { formatMonth, formatNumber, formatPercent, formatValue, revisionLabel } from '../../lib/format';
 import { PRODUCTS, type ProductKey } from '../../lib/product';
-import { eeChartUnit, RESOLUTION_OPTIONS, type Resolution } from '../../lib/resolution';
+import {
+  DEFAULT_RESOLUTION, eeChartUnit, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, type Resolution,
+} from '../../lib/resolution';
 import { SegmentedControl } from '../../components/SegmentedControl/SegmentedControl';
 import { averageGrowth, deviationTitle } from './kioskData';
 
@@ -64,9 +66,9 @@ function Panel({ title, subtitle, children, className, action }: { title: string
 export function KioskProductBoard({ product }: { product: ProductKey }) {
   const info = PRODUCTS[product];
   const { short, divisor, decimals } = chartUnit(product);
-  // Resolución del gráfico principal (issue #40): anual por omisión; mensual solo en energía eléctrica.
+  // Resolución del gráfico principal (issue #40): mensual por omisión en energía eléctrica; gas natural, anual.
   // Es un filtro del tablero: se reinicia con él (TV-04).
-  const [resolution, setResolution] = useState<Resolution>('A');
+  const [resolution, setResolutionState] = useState<Resolution>(DEFAULT_RESOLUTION);
   const chartRes = product === 'ee' ? resolution : 'A';
   const chart = chartUnit(product, chartRes);
   const observed = useObservedSeries(product);
@@ -74,12 +76,18 @@ export function KioskProductBoard({ product }: { product: ProductKey }) {
   const revisions = useRevisions(product);
   const list = revisions.data?.data ?? [];
   const current = list.find((r) => r.isCurrent);
-  const [code, setCode] = useState<string>();
+  const [code, setCodeState] = useState<string>();
   const selected = list.find((r) => r.code === (code ?? current?.code));
   const values = useRevisionValues(selected?.id);
   const chartValues = useRevisionValues(selected?.id, chartRes);
   const perf = useRevisionPerformance(selected?.id);
-  const [range, setRange] = useState<[number, number]>(DEFAULT_RANGE);
+  // Rango elegido con el control; sin elegir, en mensual se ve alrededor de la revisión (issue #40).
+  const [rangeChoice, setRange] = useState<[number, number] | null>(null);
+  const setResolution = (r: Resolution) => { setResolutionState(r); setRange(null); };
+  const setCode = (c: string) => { setCodeState(c); setRange(null); };
+  const lastPeriod = chartObserved.data?.data.points.at(-1)?.period;
+  const range: [number, number] = rangeChoice
+    ?? (chartRes === 'M' && selected && lastPeriod ? publicationWindow(selected.publishedOn, lastPeriod) : DEFAULT_RANGE);
   const [scenarios, setScenarios] = useState<Scenario[]>(SCENARIOS);
 
   const input = useMemo(() => {
@@ -97,8 +105,9 @@ export function KioskProductBoard({ product }: { product: ProductKey }) {
       kiosk: true,
       scenarios,
       range,
+      publication: { period: publicationPeriod(selected.publishedOn, chartRes), label: publicationLabel(selected.publishedOn) },
     };
-  }, [chartObserved.data, chartValues.data, selected, product, chart.unit, chart.divisor, scenarios, range]);
+  }, [chartObserved.data, chartValues.data, selected, product, chart.unit, chart.divisor, scenarios, range, chartRes]);
   const mainOption = useMemo(() => (input ? projectionChartOption(input) : null), [input]);
   const deviationOption = useMemo(
     () => (perf.data ? deviationChartOption({ product, points: perf.data.data.monthlyDeviation, threshold: perf.data.data.threshold }) : null),

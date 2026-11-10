@@ -72,9 +72,9 @@ Los controles del encabezado son íconos; al dejar el cursor encima, cada uno di
 | Opción | Qué hace |
 | --- | --- |
 | Proyección | Elige la revisión que se compara; por defecto, la vigente. |
-| Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, 2015–2035. |
+| Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, en mensual, de un año antes de la publicación de la revisión a un año después del último dato real (2025–2027 para jul-2026); en anual, 2015–2035. |
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
-| Anual / Mensual (en la gráfica principal de energía eléctrica y en «Comparar proyecciones») | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Como los demás filtros, vuelve a anual cuando el tablero rota. |
+| Mensual / Anual (en la gráfica principal de energía eléctrica y en «Comparar proyecciones») | Muestra el gráfico por mes (GWh/mes, por omisión) o por año (TWh/año). En mensual se ve la estacionalidad y el detalle real frente a proyectado mes a mes, y el gráfico abre alrededor de la revisión: desde un año antes de su publicación hasta un año después del último dato real (para la revisión jul-2026 con datos a oct-2026, de 2025 a 2027). Una línea vertical marca el mes de publicación («Publicado») y otra el corte del dato real. Solo energía eléctrica: gas natural siempre se ve anual. Como los demás filtros, vuelve a mensual cuando el tablero rota. Al cambiar la resolución o la revisión, el rango vuelve al de omisión. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
 | Ícono de pausa / reproducir (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
 | Ícono de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |

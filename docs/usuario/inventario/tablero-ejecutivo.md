@@ -44,8 +44,8 @@ Responde en un minuto si **la proyección vigente sigue siendo válida** para en
 | Opción | Qué hace |
 | --- | --- |
 | Energía eléctrica / Gas natural (encabezado) | Producto del gráfico; se mantiene en toda la app. |
-| 5 años / 10 años / Todo | Años que muestra el gráfico; queda en la dirección (`?rango=5`). |
-| Anual / Mensual | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=mensual`). En mensual no se dibuja el punto del año corrido. |
+| Revisión / 5 años / 10 años / Todo | Años que muestra el gráfico; queda en la dirección (`?rango=5`). «Revisión» va de un año antes de la publicación de la vigente a un año después del último dato real; es el rango por omisión en mensual (en anual, 10 años). |
+| Anual / Mensual | Muestra el gráfico por mes (GWh/mes, por omisión) o por año (TWh/año). En mensual se ve la estacionalidad y el detalle real frente a proyectado mes a mes, y el gráfico abre alrededor de la revisión: desde un año antes de su publicación hasta un año después del último dato real (para la revisión jul-2026 con datos a oct-2026, de 2025 a 2027). Una línea vertical marca el mes de publicación («Publicado») y otra el corte del dato real. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=anual`). En mensual no se dibuja el punto del año corrido. |
 | Descargar datos, Descargar imagen, Ver como tabla, Pantalla completa | Acciones del gráfico. |
 | Descargar informe | **En construcción** (X-19). |
 | Ver alertas, Ver todas y las acciones de cada alerta | **En construcción**: llevarán a las vistas de alertas, del monitor de variables y de desempeño cuando existan. |

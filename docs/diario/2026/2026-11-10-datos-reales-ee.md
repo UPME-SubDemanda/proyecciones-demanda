@@ -21,7 +21,7 @@ Es una conexión **provisional**, para ver datos reales de una vez mientras se t
 - Solo se muestra la serie SIN+GCE+ME+GD_UPME, la que se compara con el dato real.
 - Los indicadores de error son los que ya tenían las vistas. El umbral de ±1,5 % sigue siendo ilustrativo y ahora lo dice.
 
-Las gráficas de proyección de energía eléctrica se pueden ver **por año o por mes** con un control «Anual / Mensual». Por omisión siguen anuales, como los diseños aprobados. En mensual se ve la estacionalidad de la demanda y, mes a mes, cómo va el dato real frente a lo proyectado.
+Las gráficas de proyección de energía eléctrica se ven **por mes** (por omisión) o por año, con un control «Anual / Mensual». En mensual se ve la estacionalidad de la demanda y, mes a mes, cómo va el dato real frente a lo proyectado. Abren alrededor de la revisión: un año antes de su publicación y hasta un año después del último dato real (para jul-2026, de 2025 a 2027). Una línea vertical marca cuándo se publicó la revisión («Publicado») y otra el corte del dato real.
 
 Lo que todavía no tiene datos reales sigue con cifras de ejemplo, y cada gráfico o tarjeta lo dice:
 - gas natural;

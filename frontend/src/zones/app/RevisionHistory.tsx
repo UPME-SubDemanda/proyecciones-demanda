@@ -15,7 +15,9 @@ import { downloadFile, fileName, toCsv } from '../../lib/download';
 import { formatMonth, formatPercent, revisionLabel } from '../../lib/format';
 import { icons } from '../../lib/icons';
 import { useProduct } from '../../lib/product';
-import { eeChartUnit, effectiveResolution, periodLabel, periodYear, RESOLUTION_OPTIONS, useResolution } from '../../lib/resolution';
+import {
+  eeChartUnit, effectiveResolution, periodLabel, periodYear, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, useResolution,
+} from '../../lib/resolution';
 import { AppPage } from './AppPage';
 
 const SCENARIOS: Scenario[] = ['low', 'mid', 'high'];
@@ -76,7 +78,10 @@ export function RevisionHistory() {
 
   const option = useMemo(() => {
     if (!chartObserved.data || !chartValues.data) return null;
-    const last = periodYear(chartObserved.data.data.points.at(-1)!.period);
+    const lastPeriod = chartObserved.data.data.points.at(-1)!.period;
+    const last = periodYear(lastPeriod);
+    // La revisión resaltada (la seleccionada o la vigente) marca la publicación y, en mensual, el rango (issue #40).
+    const focus = list.find((r) => r.code === selectedCode) ?? list.find((r) => r.isCurrent);
     return historyChartOption({
       product: product.key,
       observed: chartObserved.data.data.points,
@@ -90,9 +95,10 @@ export function RevisionHistory() {
       selectedColor: cssVar('--primary', 'currentColor'),
       unit,
       divisor,
-      range: [last - 7, last + 5],
+      range: resolution === 'M' && focus ? publicationWindow(focus.publishedOn, lastPeriod) : [last - 7, last + 5],
+      publication: focus ? { period: publicationPeriod(focus.publishedOn, resolution), label: publicationLabel(focus.publishedOn) } : undefined,
     });
-  }, [chartObserved.data, chartValues.data, list, scenario, selectedCode, product.key, unit, divisor]);
+  }, [chartObserved.data, chartValues.data, list, scenario, selectedCode, product.key, unit, divisor, resolution]);
 
   const filtered = rows.filter((r) => {
     const q = query.trim().toLowerCase();

@@ -17,7 +17,9 @@ import { formatDate, formatMonth, formatNumber, formatPercent, formatProvenance,
 import { icons } from '../../lib/icons';
 import { deviationTitle, outOfThresholdSince, sinceText } from '../../lib/insights';
 import { PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
-import { eeChartUnit, effectiveResolution, RESOLUTION_OPTIONS, useResolution } from '../../lib/resolution';
+import {
+  eeChartUnit, effectiveResolution, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, useResolution,
+} from '../../lib/resolution';
 import { AppPage } from './AppPage';
 import { isBuilt } from './navigation';
 import { parseRange, RANGE_LABEL, RANGES, rangeYears, yearToDateEstimate, type RangeKey } from './dashboardData';
@@ -82,7 +84,6 @@ function ProductKpis({ product, status }: { product: ProductKey; status: Status 
 export function ExecutiveDashboard() {
   const [product] = useProduct();
   const [params, setParams] = useSearchParams();
-  const range = parseRange(params.get('rango'));
   const ee = useProductStatus('ee');
   const gn = useProductStatus('gn');
   const alerts = useAlerts();
@@ -92,6 +93,8 @@ export function ExecutiveDashboard() {
   const [resolutionParam, setResolution] = useResolution();
   const resolution = effectiveResolution(product.key, resolutionParam);
   const monthly = resolution === 'M';
+  // Sin rango elegido: «Revisión» en mensual (un año antes de la publicación a un año después del último dato real).
+  const range = parseRange(params.get('rango'), monthly);
   const chartObserved = useObservedSeries(product.key, resolution);
   const chartValues = useRevisionValues(active.current?.id, resolution);
 
@@ -127,7 +130,8 @@ export function ExecutiveDashboard() {
       divisor: unitDivisor,
       decimals: units.decimals,
       scenarioLabels: false,
-      range: rangeYears(range, Number(last.period)),
+      range: rangeYears(range, Number(last.period), publicationWindow(active.current!.publishedOn, chartPoints.at(-1)!.period)),
+      publication: { period: publicationPeriod(active.current!.publishedOn, resolution), label: publicationLabel(active.current!.publishedOn) },
       // El punto del año corrido es anual: en mensual ya se ven los meses reales.
       ytdPoint: monthly ? undefined : {
         period: year,

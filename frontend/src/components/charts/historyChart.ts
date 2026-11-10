@@ -8,6 +8,7 @@ import type { Point } from '../../data/types';
 import { formatNumber, formatPercent } from '../../lib/format';
 import type { ProductKey } from '../../lib/product';
 import { inYearRange, periodLabel } from '../../lib/resolution';
+import { referenceLines } from './projectionChart';
 
 export type HistoryRevision = { code: string; label: string; points: Point[]; current: boolean };
 
@@ -23,6 +24,8 @@ export type HistoryChartInput = {
   divisor?: number;
   range?: [number, number];
   dark?: boolean;
+  /** Línea de publicación de la revisión resaltada (la vigente o la seleccionada), issue #40. */
+  publication?: { period: string; label: string };
 };
 
 export const OTHERS = 'Otras revisiones';
@@ -90,6 +93,7 @@ export function historyChartOption(input: HistoryChartInput): EChartsOption {
       data: at(real),
       lineStyle: { width: lineWidth.real, color: theme.real },
       itemStyle: { color: theme.real },
+      markLine: referenceLines(periods, theme.reference, undefined, input.publication),
       z: 4,
     },
   ];

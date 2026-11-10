@@ -1,6 +1,9 @@
 /**
- * Resolución de las gráficas de proyección: anual (por omisión, como los mockups aprobados) o mensual (issue #40).
- * Solo energía eléctrica tiene datos mensuales reales; gas natural sigue anual con cifras ilustrativas.
+ * Resolución de las gráficas de proyección: mensual (por omisión, decidido por el líder el 2026-11-10) o anual
+ * (issue #40). Solo energía eléctrica tiene datos mensuales reales; gas natural sigue anual con cifras ilustrativas.
+ *
+ * En mensual, cada gráfica abre alrededor de la revisión: desde un año antes de su publicación hasta un año después
+ * del último dato real (`publicationWindow`), con una línea vertical en el mes de publicación.
  */
 import { useSearchParams } from 'react-router-dom';
 import type { SegmentOption } from '../components/SegmentedControl/SegmentedControl';
@@ -14,9 +17,11 @@ export const RESOLUTION_OPTIONS: SegmentOption<Resolution>[] = [
   { value: 'M', label: 'Mensual' },
 ];
 
-/** `?resolucion=mensual` en la URL; cualquier otro valor es anual. */
+export const DEFAULT_RESOLUTION: Resolution = 'M';
+
+/** `?resolucion=anual` en la URL; cualquier otro valor (o ninguno) es mensual. */
 export function parseResolution(value: string | null): Resolution {
-  return value === 'mensual' ? 'M' : 'A';
+  return value === 'anual' ? 'A' : DEFAULT_RESOLUTION;
 }
 
 /** Resolución guardada en la URL (vistas de la app y del portal), para compartir el enlace tal como se ve. */
@@ -25,7 +30,7 @@ export function useResolution(): [Resolution, (r: Resolution) => void] {
   const set = (r: Resolution) =>
     setParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (r === 'M') next.set('resolucion', 'mensual'); else next.delete('resolucion');
+      if (r === 'A') next.set('resolucion', 'anual'); else next.delete('resolucion');
       return next;
     }, { replace: true, preventScrollReset: true });
   return [parseResolution(params.get('resolucion')), set];
@@ -49,6 +54,24 @@ export function periodLabel(period: string): string {
 /** Si el periodo cae en el rango de años, ambos incluidos. */
 export function inYearRange(period: string, range?: [number, number]): boolean {
   return !range || (periodYear(period) >= range[0] && periodYear(period) <= range[1]);
+}
+
+/**
+ * Años que se ven por omisión en mensual: desde un año antes de la publicación de la revisión hasta un año después
+ * del último dato real. Revisión jul-2026 con datos a oct-2026 → 2025–2027.
+ */
+export function publicationWindow(publishedOn: string, lastRealPeriod: string): [number, number] {
+  return [periodYear(publishedOn) - 1, periodYear(lastRealPeriod) + 1];
+}
+
+/** Periodo de la publicación en la resolución de la gráfica: `2026-07` en mensual, `2026` en anual. */
+export function publicationPeriod(publishedOn: string, resolution: Resolution): string {
+  return resolution === 'M' ? publishedOn.slice(0, 7) : publishedOn.slice(0, 4);
+}
+
+/** Rótulo de la línea de publicación: «Publicado» (el mes ya se lee en el eje y en el nombre de la revisión). */
+export function publicationLabel(_publishedOn?: string): string {
+  return 'Publicado';
 }
 
 /** Unidad de las gráficas de energía eléctrica: TWh por año, o GWh por mes. */

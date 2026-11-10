@@ -7,6 +7,7 @@ import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import type { Point } from '../../data/types';
 import { formatMonth, formatNumber, formatPercent } from '../../lib/format';
 import { inYearRange, periodLabel } from '../../lib/resolution';
+import { referenceLines } from './projectionChart';
 import type { ProductKey } from '../../lib/product';
 
 export type DeviationInput = {
@@ -74,8 +75,12 @@ export type FanRevision = { label: string; points: Point[]; color: string; curre
  * en orden; la vigente siempre discontinua y más gruesa (GRA-06).
  */
 export function revisionsFanOption({
-  observed, revisions, range, divisor, unit, dark = true, kiosk = true,
-}: { observed: Point[]; revisions: FanRevision[]; range: [number, number]; divisor: number; unit: string; dark?: boolean; kiosk?: boolean }): EChartsOption {
+  observed, revisions, range, divisor, unit, dark = true, kiosk = true, publication,
+}: {
+  observed: Point[]; revisions: FanRevision[]; range: [number, number]; divisor: number; unit: string; dark?: boolean; kiosk?: boolean;
+  /** Línea de publicación de la revisión vigente (issue #40). */
+  publication?: { period: string; label: string };
+}): EChartsOption {
   const theme = dark ? roles.dark : roles.light;
   const fontSize = kiosk ? 16 : 12;
   const scaleMap = (points: Point[]) => new Map(points.map((p) => [p.period, Math.round((p.value / divisor) * 10) / 10]));
@@ -115,6 +120,7 @@ export function revisionsFanOption({
         data: at(real),
         lineStyle: { width: kiosk ? lineWidth.kiosk : lineWidth.real, color: theme.real },
         itemStyle: { color: theme.real },
+        markLine: referenceLines(periods, theme.reference, undefined, publication),
         z: 4,
       },
     ],

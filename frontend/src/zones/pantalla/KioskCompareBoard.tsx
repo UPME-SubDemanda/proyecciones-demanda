@@ -9,7 +9,9 @@ import { EChart } from '../../components/charts/EChart';
 import { revisionsFanOption } from '../../components/charts/kioskCharts';
 import { useObservedSeries, useRevisions, useRevisionsPerformance, useRevisionsValues } from '../../data/queries';
 import { formatMonth, formatPercent, revisionLabel } from '../../lib/format';
-import { eeChartUnit, RESOLUTION_OPTIONS, type Resolution } from '../../lib/resolution';
+import {
+  DEFAULT_RESOLUTION, eeChartUnit, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, type Resolution,
+} from '../../lib/resolution';
 import { SegmentedControl } from '../../components/SegmentedControl/SegmentedControl';
 import { icons } from '../../lib/icons';
 import { HorizontalBars, KioskHeader, Panel } from './KioskParts';
@@ -36,12 +38,18 @@ export function KioskCompareBoard() {
   const ids = list.map((r) => r.id);
   const values = useRevisionsValues(ids);
   const perf = useRevisionsPerformance(ids);
-  // Resolución del abanico (issue #40): anual por omisión o mensual; se reinicia con el tablero (TV-04).
-  const [resolution, setResolution] = useState<Resolution>('A');
+  // Resolución del abanico (issue #40): mensual por omisión o anual; se reinicia con el tablero (TV-04).
+  const [resolution, setResolutionState] = useState<Resolution>(DEFAULT_RESOLUTION);
+  const [rangeChoice, setRange] = useState<[number, number] | null>(null);
+  const setResolution = (r: Resolution) => { setResolutionState(r); setRange(null); };
   const chartObserved = useObservedSeries(PRODUCT, resolution);
   const chartValues = useRevisionsValues(ids, resolution);
   const chart = eeChartUnit(resolution);
-  const [range, setRange] = useState<[number, number]>(DEFAULT_RANGE);
+  // Sin rango elegido, en mensual se ve alrededor de la revisión vigente, con su línea de publicación (issue #40).
+  const current = list.find((r) => r.isCurrent);
+  const lastPeriod = chartObserved.data?.data.points.at(-1)?.period;
+  const range: [number, number] = rangeChoice
+    ?? (resolution === 'M' && current && lastPeriod ? publicationWindow(current.publishedOn, lastPeriod) : DEFAULT_RANGE);
   const [shown, setShown] = useState<string[] | null>(null);
   const compared = shown ?? defaultCompared(list.map((r) => r.code));
   const palette = roles.dark.series;
@@ -57,8 +65,9 @@ export function KioskCompareBoard() {
       range,
       divisor: chart.divisor,
       unit: chart.unit,
+      publication: current ? { period: publicationPeriod(current.publishedOn, resolution), label: publicationLabel(current.publishedOn) } : undefined,
     });
-  }, [chartObserved.data, chartValues.data, list, compared, range, palette, chart.divisor, chart.unit]);
+  }, [chartObserved.data, chartValues.data, list, compared, range, palette, chart.divisor, chart.unit, current, resolution]);
 
   if (observed.isError || revisions.isError || values.isError || perf.isError || chartObserved.isError || chartValues.isError)
     return <ErrorState title="No se pudieron cargar las revisiones" description="Se reintentará en unos minutos." />;

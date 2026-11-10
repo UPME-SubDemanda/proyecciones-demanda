@@ -7,9 +7,12 @@ describe('tablero ejecutivo', () => {
     expect(parseRange('todo')).toBe('todo');
     expect(parseRange('20')).toBe('10');
     expect(parseRange(null)).toBe('10');
+    expect(parseRange(null, true)).toBe('revision'); // mensual: alrededor de la revisión (issue #40)
+    expect(parseRange('5', true)).toBe('5');
   });
   it('años visibles: historia y 5 de proyección', () => {
     expect(rangeYears('10', 2025)).toEqual([2015, 2030]);
+    expect(rangeYears('revision', 2025, [2025, 2027])).toEqual([2025, 2027]);
     expect(rangeYears('5', 2025)).toEqual([2020, 2030]);
     expect(rangeYears('todo', 2025)).toBeUndefined();
   });

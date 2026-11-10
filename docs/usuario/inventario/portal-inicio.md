@@ -48,7 +48,7 @@ Es la página principal del sitio: `/`. También se llega desde cualquier págin
 | Opción | Qué hace |
 | --- | --- |
 | Energía eléctrica / Gas natural | Cambia el producto del gráfico. Queda en la dirección de la página (`?producto=gn`), así que se puede compartir. |
-| Anual / Mensual | Muestra el gráfico por año (TWh/año, por omisión) o por mes (GWh/mes), con la estacionalidad y el detalle real frente a proyectado mes a mes. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=mensual`). El título sigue con el crecimiento anual. |
+| Anual / Mensual | Muestra el gráfico por mes (GWh/mes, por omisión) o por año (TWh/año). En mensual se ve la estacionalidad y el detalle real frente a proyectado mes a mes, y el gráfico abre alrededor de la revisión: desde un año antes de su publicación hasta un año después del último dato real (para la revisión jul-2026 con datos a oct-2026, de 2025 a 2027). Una línea vertical marca el mes de publicación («Publicado») y otra el corte del dato real. Solo energía eléctrica: gas natural siempre se ve anual. Queda en la dirección (`?resolucion=anual`). El título sigue con el crecimiento anual. En anual se ve toda la serie. |
 | Descargar datos | Descarga un CSV con el dato real y los tres escenarios, con fuente, versión, fecha de corte y licencia. |
 | Descargar imagen | Descarga el gráfico como imagen PNG. |
 | Ver como tabla | Muestra los datos del gráfico en una tabla. |

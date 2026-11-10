@@ -65,7 +65,15 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     const x = projectionChartOption(input).xAxis as Record<string, unknown>;
     expect('axisLabel' in x).toBe(false);
   });
-  it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
+  it('línea de corte de datos', () =>
+    expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025', label: { formatter: 'Corte sep-2026', position: 'end' } }]));
+  it('línea de publicación de la revisión, si cae en el rango visible (issue #40)', () => {
+    const series = projectionChartOption({ ...input, publication: { period: '2026', label: 'Publicado' } }).series as LineSeriesOption[];
+    const lines = series.find((s) => s.name === 'Real')!.markLine!.data as { xAxis: string }[];
+    expect(lines.map((l) => l.xAxis)).toEqual(['2025', '2026']);
+    const outside = projectionChartOption({ ...input, publication: { period: '1990', label: 'x' } }).series as LineSeriesOption[];
+    expect((outside.find((s) => s.name === 'Real')!.markLine!.data as unknown[]).length).toBe(1);
+  });
   it('en mensual rotula los meses y la tabla dice «Mes» (issue #40)', () => {
     const monthlyInput = {
       ...input,

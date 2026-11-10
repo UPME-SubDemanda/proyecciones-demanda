@@ -20,6 +20,8 @@ export type ProjectionChartInput = {
   past?: { label: string; points: Point[] }[];
   /** Periodo y texto de la línea de corte de datos: «2025», «Corte sep-2026». */
   cutoff?: { period: string; label: string };
+  /** Periodo y texto de la línea de publicación de la revisión: «2026-07», «Publicación jul-2026» (issue #40). */
+  publication?: { period: string; label: string };
   /** Unidad del eje y divisor: GWh → TWh/año con 1000. */
   unit: string;
   divisor?: number;
@@ -41,6 +43,32 @@ export type ProjectionChartInput = {
 };
 
 const DATA_DECIMALS = 1;
+
+type VerticalLine = { period: string; label: string };
+/** Píxeles que sube el rótulo «Publicado» sobre el de «Corte», para que queden en dos filas. */
+const PUBLICATION_LABEL_OFFSET = 20;
+
+/**
+ * Líneas verticales de referencia (GRA-01, `dash.reference`): corte de datos y publicación de la revisión. Solo las que
+ * caen en los periodos visibles. Los dos rótulos van horizontales sobre su línea; el de la publicación, una fila más
+ * arriba, para que no se encimen cuando las líneas están a pocos meses.
+ */
+export function referenceLines(periods: string[], color: string, cutoff?: VerticalLine, publication?: VerticalLine) {
+  const data = [
+    ...(cutoff && periods.includes(cutoff.period)
+      ? [{ xAxis: cutoff.period, label: { formatter: cutoff.label, position: 'end' as const } }] : []),
+    ...(publication && periods.includes(publication.period)
+      ? [{ xAxis: publication.period, label: { formatter: publication.label, position: 'end' as const, distance: [0, PUBLICATION_LABEL_OFFSET] } }] : []),
+  ];
+  if (!data.length) return undefined;
+  return {
+    symbol: 'none',
+    silent: true,
+    lineStyle: { type: dash.reference, color, width: 1 },
+    label: { color },
+    data,
+  };
+}
 
 function scale(points: Point[], divisor: number): Map<string, number> {
   return new Map(points.map((p) => [p.period, Math.round((p.value / divisor) * 10) / 10]));
@@ -157,15 +185,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       data: at(real),
       lineStyle: { width, color: theme.real },
       itemStyle: { color: theme.real },
-      markLine: input.cutoff
-        ? {
-            symbol: 'none',
-            silent: true,
-            lineStyle: { type: dash.reference, color: theme.reference, width: 1 },
-            label: { formatter: input.cutoff.label, color: theme.reference, position: 'end' },
-            data: [{ xAxis: input.cutoff.period }],
-          }
-        : undefined,
+      markLine: referenceLines(periods, theme.reference, input.cutoff, input.publication),
       // Punto del año corrido: marca hueca con su cifra, sobre el eje de categorías (no altera el eje).
       markPoint: ytd
         ? {
