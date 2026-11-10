@@ -81,7 +81,11 @@ va_aqui = "Qué es la plataforma y hacia dónde va. Cambia cuando cambian alcanc
 
 [carpetas."docs/tecnica"]
 breve = "Documentación técnica (sitio privado)"
-va_aqui = "Cómo levantar, arquitectura, frontend, modelo de datos, API, flujos, versionado, despliegue y referencias (DOC-07, DOC-08)."
+va_aqui = "Cómo levantar, arquitectura, frontend, reglas del proyecto, modelo y base de datos, API, flujos, versionado, despliegue y referencias (DOC-07, DOC-08)."
+
+[carpetas."docs/tecnica/base-de-datos"]
+breve = "Documentación de la base de datos y de las fuentes de datos"
+va_aqui = "Una página por esquema (raw, staging, core, publicacion, auth, operacion), convenciones, vistas y, en `fuentes/`, la guía de cada entidad y la ficha de cada fuente (PBD-02, PFU-01, PFU-02). Todo esquema o tabla nueva se documenta aquí en el mismo PR. El diccionario de columnas se genera desde la base."
 
 [carpetas."docs/tecnica/herramientas"]
 breve = "Fichas locales de herramientas"
@@ -133,7 +137,7 @@ va_aqui = "Tipos, hooks de React Query (`queries.ts`) y fuente (`source.ts`). La
 
 [carpetas."frontend/src/demo"]
 breve = "Cifras ilustrativas"
-va_aqui = "Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-18."
+va_aqui = "Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-34."
 
 [carpetas."frontend/src/dev"]
 breve = "Herramientas solo de desarrollo"

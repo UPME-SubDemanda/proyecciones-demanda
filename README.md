@@ -28,7 +28,7 @@ Etapa actual: **1 y 1.1**. Se construyen las vistas con cifras ilustrativas mien
 
 | Construido (con cifras ilustrativas) | Sigue | Bloqueado |
 | --- | --- | --- |
-| Portal público · Modo pantalla (energía, gas, comparar proyecciones, el sistema hoy) · App interna: tablero ejecutivo, histórico de revisiones, monitor de variables exógenas | Reunir los datos reales y conectarlos (T-15 a T-19) | Proyección vs. real, comparar revisiones, usuarios y roles, tablero de exógenas en pantalla: sin mockup (X-06) |
+| Portal público · Modo pantalla (energía, gas, comparar proyecciones, el sistema hoy) · App interna: tablero ejecutivo, histórico de revisiones, monitor de variables exógenas | Modelo de datos v2 documentado (T-22); sigue su migración (T-23) y la carga de los datos reales (plan de datos en 7 fases, T-22 a T-35) | Proyección vs. real, comparar revisiones, usuarios y roles, tablero de exógenas en pantalla: sin mockup (X-06) |
 
 El detalle, paso por paso, está en el [plan de trabajo](docs/pendientes.md#plan-de-trabajo); las preguntas abiertas, en los [pendientes de decisión](docs/pendientes.md#pendientes-de-decisión).
 
@@ -138,7 +138,7 @@ Las que más se aplican:
    Documentación: Markdown en docs/ → MkDocs → guía de usuario (:8002) y técnica (:8001)
 ```
 
-**Hoy** las vistas leen **cifras ilustrativas** desde `frontend/src/demo/`, siempre a través de un único punto de acceso (`frontend/src/data/`) y con el aviso «Cifras ilustrativas». **Cuando lleguen los datos reales** (T-15 a T-18), solo cambia ese punto de acceso: las vistas no se tocan. Detalle: [arquitectura](docs/tecnica/arquitectura.md), [frontend](docs/tecnica/frontend.md) y [modelo de datos](docs/tecnica/modelo-de-datos.md).
+**Hoy** las vistas leen **cifras ilustrativas** desde `frontend/src/demo/`, siempre a través de un único punto de acceso (`frontend/src/data/`) y con el aviso «Cifras ilustrativas». **Cuando lleguen los datos reales** (plan de datos, T-22 a T-34), solo cambia ese punto de acceso: las vistas no se tocan. Detalle: [arquitectura](docs/tecnica/arquitectura.md), [frontend](docs/tecnica/frontend.md) y [modelo de datos](docs/tecnica/modelo-de-datos.md), con el detalle de cada esquema en [base de datos](docs/tecnica/base-de-datos/index.md).
 
 ## Mapa del repositorio
 
@@ -165,6 +165,7 @@ docs/                # Toda la documentación (MkDocs)
   pendientes/        # Detalle de pendientes
   producto/          # Producto: objetivos, públicos y hoja de ruta
   tecnica/           # Documentación técnica (sitio privado)
+    base-de-datos/   # Documentación de la base de datos y de las fuentes de datos
     herramientas/    # Fichas locales de herramientas
     mockups/         # Mockups aprobados
   usuario/           # Guía de usuario (sitio público)
@@ -209,7 +210,8 @@ scripts/             # Scripts del proyecto
 | `docs/diario/` | Una entrada por PR en `AAAA/AAAA-MM-DD-tema.md` (DOC-05). El índice se genera solo (`scripts/diario.py`). |
 | `docs/pendientes/` | Una página por pendiente que necesita contexto, alternativas o un prompt (`x-NN-tema.md`), enlazada desde `docs/pendientes.md`. |
 | `docs/producto/` | Qué es la plataforma y hacia dónde va. Cambia cuando cambian alcance o etapas. |
-| `docs/tecnica/` | Cómo levantar, arquitectura, frontend, modelo de datos, API, flujos, versionado, despliegue y referencias (DOC-07, DOC-08). |
+| `docs/tecnica/` | Cómo levantar, arquitectura, frontend, reglas del proyecto, modelo y base de datos, API, flujos, versionado, despliegue y referencias (DOC-07, DOC-08). |
+| `docs/tecnica/base-de-datos/` | Una página por esquema (raw, staging, core, publicacion, auth, operacion), convenciones, vistas y, en `fuentes/`, la guía de cada entidad y la ficha de cada fuente (PBD-02, PFU-01, PFU-02). Todo esquema o tabla nueva se documenta aquí en el mismo PR. El diccionario de columnas se genera desde la base. |
 | `docs/tecnica/herramientas/` | Una ficha por herramienta usada (DOC-07): cómo encaja aquí, comandos y reglas propias. |
 | `docs/tecnica/mockups/` | Capturas congeladas de cada diseño aprobado, con su registro en `README.md` (FLU-03). |
 | `docs/usuario/` | Escrita para personas no técnicas: inicio, roles, glosario e inventario de vistas. |
@@ -222,7 +224,7 @@ scripts/             # Scripts del proyecto
 | `frontend/src/auth/` | Contexto de sesión, ruta protegida, página de ingreso y regreso a la página pedida. |
 | `frontend/src/components/` | Uno por carpeta con su prueba (CMP-01); solo tokens. Todo componente nuevo se agrega a la galería en el mismo PR. |
 | `frontend/src/data/` | Tipos, hooks de React Query (`queries.ts`) y fuente (`source.ts`). Las vistas solo leen datos por aquí. |
-| `frontend/src/demo/` | Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-18. |
+| `frontend/src/demo/` | Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-34. |
 | `frontend/src/dev/` | Galería de componentes (`/dev/componentes`). No entra al build de producción. |
 | `frontend/src/estandares/` | Tokens, preset de Tailwind, tema de ECharts, logos e íconos (FLU-09). **No editar**: se actualiza copiando una versión. |
 | `frontend/src/iconos-locales/` | Íconos que aún no están en `estandares/`, con su origen en `iconos.json` (X-17). Se vacía al actualizar el estándar. |

@@ -4,7 +4,18 @@ site_dir: site-tecnica
 exclude_docs: |
   usuario/capturas/
 theme: {name: material, language: es, features: [navigation.sections, navigation.indexes, search.highlight, content.code.copy]}
-markdown_extensions: [admonition, tables, attr_list, pymdownx.superfences, {pymdownx.tasklist: {custom_checkbox: true}}, {toc: {permalink: true}}]
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  # Diagramas Mermaid: Material los dibuja si los bloques ```mermaid se marcan con la clase «mermaid».
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist: {custom_checkbox: true}
+  - toc: {permalink: true}
 nav:
   - Inicio: tecnica/index.md
   - Producto: producto/index.md
@@ -14,7 +25,27 @@ nav:
       - tecnica/arquitectura.md
       - tecnica/frontend.md
       - tecnica/diseno-app.md
+      - tecnica/reglas-proyecto.md
       - tecnica/modelo-de-datos.md
+      - Base de datos:
+          - tecnica/base-de-datos/index.md
+          - tecnica/base-de-datos/raw.md
+          - tecnica/base-de-datos/staging.md
+          - tecnica/base-de-datos/core.md
+          - tecnica/base-de-datos/publicacion.md
+          - tecnica/base-de-datos/auth.md
+          - tecnica/base-de-datos/operacion.md
+          - tecnica/base-de-datos/convenciones.md
+          - tecnica/base-de-datos/vistas.md
+          - Fuentes de datos:
+              - tecnica/base-de-datos/fuentes/index.md
+              - tecnica/base-de-datos/fuentes/plantilla-ficha.md
+              - XM:
+                  - tecnica/base-de-datos/fuentes/xm/guia-api-xm.md
+                  - tecnica/base-de-datos/fuentes/xm/ficha-sinergox.md
+                  - tecnica/base-de-datos/fuentes/xm/referencia/Diccionario_pydataxm.md
+                  - tecnica/base-de-datos/fuentes/xm/referencia/Diccionario_SIMEM.md
+                  - tecnica/base-de-datos/fuentes/xm/referencia/Fuentes_XM_Paratec_Sinergox_web.md
       - tecnica/api.md
       - tecnica/flujos.md
       - tecnica/versionado.md
@@ -29,3 +60,4 @@ nav:
       - pendientes/x-17-iconos-al-estandar.md
       - pendientes/x-20-ciclo-con-asistentes.md
       - pendientes/x-21-estandarizar-practicas.md
+      - pendientes/x-22-reglas-al-estandar.md

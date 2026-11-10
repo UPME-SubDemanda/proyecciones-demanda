@@ -11,7 +11,7 @@ frontend/
     components/        componentes del inventario de diseño, uno por carpeta con su prueba (CMP-01)
       charts/          EChart (envoltorio único) y opciones de gráficos reutilizables
     data/              tipos de datos y hooks con los que las vistas leen datos
-    demo/              cifras ilustrativas (se elimina en T-18)
+    demo/              cifras ilustrativas (se elimina en T-34)
     dev/               herramientas solo de desarrollo (galería de componentes)
     lib/               formatos es-CO, descargas, íconos, producto activo
     estandares/        copia de upme-estandares (no editar, FLU-09)
@@ -55,13 +55,13 @@ Falta del inventario: `Stepper` (asistentes, fase 2).
 
 ```
 vista ──> data/queries.ts (hooks React Query) ──> data/source.ts ──> demo/fixtures.ts   (hoy)
-                                                                └──> /api/v1/...        (T-18)
+                                                                └──> /api/v1/...        (T-34)
 ```
 
 - Las vistas **solo** usan los hooks de `data/queries.ts`: `useObservedSeries`, `useRevisions`, `useRevisionValues`, `useExogenous`.
 - Cada hook devuelve `{ data, illustrative }`. Si `illustrative` es `true`, la vista muestra «Cifras ilustrativas» (CON-07).
-- `data/source.ts` decide de dónde salen los datos. Para conectar la API (T-18) se cambia ese archivo, `ILLUSTRATIVE` pasa a `false` y se borra `demo/`.
-- `data/types.ts` sigue el modelo de datos de la etapa 1. Si una vista necesita un campo que no existe, se agrega aquí y se anota en el PR para T-16.
+- `data/source.ts` decide de dónde salen los datos. Para conectar la API (T-34) se cambia ese archivo, `ILLUSTRATIVE` pasa a `false` y se borra `demo/`.
+- `data/types.ts` sigue el modelo de datos de la etapa 1. Si una vista necesita un campo que no existe, se agrega aquí y se anota en el PR; esos campos alimentaron el modelo de datos v2 (T-22).
 
 Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y deterministas, con magnitudes parecidas a las de los mockups. No son datos oficiales.
 
@@ -104,7 +104,7 @@ Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y determinista
 - `zones/app/ExogenousMonitor.tsx` en `/app/variables/exogenas`. Escenario (`?escenario=`) y variable del gráfico (`?variable=`) en la URL.
 - `zones/app/exogenousData.ts`: desvío frente al supuesto, estado según los umbrales (ilustrativos, X-03), cifras de los indicadores, variable por defecto y títulos con hallazgo (`monitorTitle()`, `correlationTitle()`). No calcula impactos ni correlaciones: llegan con los datos (etapa 1).
 - `components/charts/exogenousCharts.ts`: tendencia de la tabla (`Sparkline`), correlación móvil con banda del intervalo (`roles.products.<producto>.band`) y quiebre como `markArea` en `surface-sunken`, e importancia en barras horizontales ordenadas desde cero.
-- Datos: `useExogenousMonitor(product)` → `ExogenousMonitor` (tipos en `data/types.ts`). Campos que pidió la vista, para T-16: supuesto por escenario, observado del año corrido, impacto por escenario, correlación del periodo de estimación, umbrales de vigilancia y fuera de rango, tendencia, correlación móvil con intervalo, mes del quiebre e importancia SHAP del modelo.
+- Datos: `useExogenousMonitor(product)` → `ExogenousMonitor` (tipos en `data/types.ts`). Campos que pidió la vista (insumo del modelo v2, T-22): supuesto por escenario, observado del año corrido, impacto por escenario, correlación del periodo de estimación, umbrales de vigilancia y fuera de rango, tendencia, correlación móvil con intervalo, mes del quiebre e importancia SHAP del modelo.
 - Las unidades largas van en la línea de la fuente (`unitInCell()`), para que la tabla quepa a 1280 px.
 - Las acciones de las alertas del tablero ejecutivo se habilitan cuando su vista existe (`isBuilt()` en `navigation.ts`) y llevan el producto de la alerta.
 

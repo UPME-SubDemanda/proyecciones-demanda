@@ -20,8 +20,21 @@ Copia de `upme-estandares` en `reglas/` (versión en `reglas/VERSION`), marca **
 | Diseñar, revisar o tocar el frontend, gráficos, portal o modo pantalla | `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`; diseño propio de esta app en `docs/tecnica/diseno-app.md` |
 | Agregar, cambiar o quitar una librería o tecnología; tocar arquitectura, base de datos o autenticación | `reglas/REGLAS-TECNICAS.md`. Para una tecnología: **no la instales**; entrega el prompt de TEC-10 para Claude Code en `upme-estandares` |
 | Publicar un release o decidir una versión | `docs/tecnica/versionado.md` |
+| Diseñar o cambiar la base de datos, una tabla, una vista o una carga de datos | `docs/tecnica/reglas-proyecto.md` (PBD, PDA, PFU) y la sección `docs/tecnica/base-de-datos/` (modelo de datos v2, P-0004) |
+| Copiar una versión nueva de `reglas/` desde `upme-estandares` | PFL-02 en `docs/tecnica/reglas-proyecto.md`: revisa qué reglas del proyecto ya están en el estándar y reemplázalas por la referencia; verifica que ninguna contradiga al estándar; repórtalo en el PR |
 
-Cita los IDs de las reglas (GRA-03, FLU-07…) en tus resúmenes y PR. Qué significa cada ID (reglas, pasos T-xx, pendientes X-xx, decisiones): `docs/tecnica/referencias.md`, generada con `python scripts/referencias.py`.
+**Reglas propias del proyecto:** `docs/tecnica/reglas-proyecto.md` (familias PBD, PDA, PFU, PFL y PER). Complementan el estándar; si una necesidad no está cubierta, se vuelve regla allí y entra al pendiente para `upme-estandares` (PFL-01, X-22).
+
+### Fuentes de datos
+Antes de trabajar con datos de una fuente, lee su guía y su ficha (PFU-01, PFU-02):
+
+| Fuente | Lee |
+| --- | --- |
+| XM (API SINERGOX, SIMEM, PARATEC, Sinergox web) | `docs/tecnica/base-de-datos/fuentes/xm/guia-api-xm.md` y, para la demanda, `docs/tecnica/base-de-datos/fuentes/xm/ficha-sinergox.md` |
+| Anexos de revisiones de la UPME | `docs/tecnica/base-de-datos/core.md` (revisiones publicadas) y las observaciones de X-23 |
+| Fuente nueva | Crea su ficha con `docs/tecnica/base-de-datos/fuentes/plantilla-ficha.md` antes de la primera carga |
+
+Cita los IDs de las reglas (GRA-03, FLU-07, PBD-05…) en tus resúmenes y PR. Qué significa cada ID (reglas, pasos T-xx, pendientes X-xx, decisiones): `docs/tecnica/referencias.md`, generada con `python scripts/referencias.py`.
 
 ## Stack
 Python 3.12 + uv · FastAPI · SQLAlchemy 2 + Alembic · PostgreSQL 16 · React + TypeScript + Vite · Tailwind (preset de marca) · ECharts (tema de marca) · Prefect (provisional) · pytest, Vitest, Playwright · Docker Compose · MkDocs.
