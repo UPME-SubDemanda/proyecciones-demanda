@@ -34,13 +34,13 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proy
 | [IA](#ia) | Asistentes de IA (Claude, Cursor, Codex, Gemini) | `reglas/REGLAS-FLUJO.md` | 5 |
 | [TEC](#tec) | Estándar técnico | `reglas/REGLAS-TECNICAS.md` | 10 |
 | [BD](#bd) | Bases de datos | `reglas/REGLAS-TECNICAS.md` | 7 |
-| [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 7 |
+| [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 8 |
 | [PDA](#pda) | Datos y cargas (PDA) | `docs/tecnica/reglas-proyecto.md` | 7 |
 | [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 2 |
 | [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 2 |
 | [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 35 |
-| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 30 |
+| [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 32 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 4 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 18 |
 
@@ -1127,6 +1127,12 @@ Además de los cinco esquemas de BD-03, la base tiene el esquema `operacion` par
 
 Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
 
+### PBD-08 · DEBE {#pbd-08}
+
+Lo que no cambia en una revisión publicada son sus **cifras**: valores, componentes, intervalos, escenarios y supuestos (P-0003, PRI-06). Una cifra equivocada se corrige con una revisión nueva (`2026-11.1`, X-09). Los **metadatos** de la revisión sí se pueden completar o corregir en la misma fila: enlace del informe, fecha de publicación, modelo, nombre y notas. Cada cambio deja registro: qué campo, valor anterior y nuevo, quién, cuándo y por qué. El registro va en la bitácora (`operacion`, PDA-05). Ejemplo: cuando se tenga el enlace del informe de la revisión 2026-07, se reemplaza `https://www.upme.gov.co` por el enlace exacto, sin crear una revisión nueva.
+
+Fuente: [reglas-proyecto.md · Base de datos (PBD)](reglas-proyecto.md#base-de-datos-pbd)
+
 ## PDA · Datos y cargas (PDA) {#pda}
 
 ### PDA-01 · DEBE {#pda-01}
@@ -1677,7 +1683,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-22 · Reglas del proyecto al estándar {#x-22}
 
-Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
+Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1685,7 +1691,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-23 · Observaciones a los anexos de EE {#x-23}
 
-Remitir al equipo de modelación las observaciones a los 5 anexos y al informe Rev. Julio 2026 (7 errores, 7 inconsistencias, 10 dudas y 7 sugerencias) y anotar sus respuestas. Entre ellas: las 5 áreas no suman la serie SIN; qué fue la «v2» de jul-2024; si hay revisiones anteriores a dic-2023; el salto de GD_PNUMA en 2039; el día exacto de publicación de cada revisión; equivalencias de nombres de GCE entre revisiones; si los primeros meses de cada hoja mensual son proyección. La carga de prueba (T-24) agregó tres: la serie anual SIN+GCE+ME+GD_PNUMA no es la suma de sus partes en el primer año (el año mixto) de dic-2024, jul-2025 y 2026-07 (diferencias de 871, 877 y 2249 GWh; las mensuales sí cuadran); falta el enlace de cada informe; y falta el modelo de las revisiones anteriores a 2026-07 (en `pipelines/revisiones_ee.toml` dicen «por confirmar»)
+Remitir al equipo de modelación las observaciones a los 5 anexos y al informe Rev. Julio 2026 (8 errores, 7 inconsistencias, 10 dudas y 7 sugerencias) y anotar sus respuestas. Entre ellas: las 5 áreas no suman la serie SIN; qué fue la «v2» de jul-2024; si hay revisiones anteriores a dic-2023; el salto de GD_PNUMA en 2039; el día exacto de publicación de cada revisión; equivalencias de nombres de GCE entre revisiones; si los primeros meses de cada hoja mensual son proyección. La carga de prueba (T-24) agregó E-8: la serie anual SIN+GCE+ME+GD_PNUMA no es la suma de sus partes en el primer año (el año mixto) de dic-2024, jul-2025 y 2026-07 (diferencias de 871, 877 y 2249 GWh; las mensuales sí cuadran). El enlace y el modelo de cada revisión pasaron a X-31 y X-32
 
 Responsable: Líder · Estado: Abierto
 
@@ -1742,6 +1748,22 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 ### X-30 · Responsables y archivos de origen {#x-30}
 
 Quién mantiene cada carga y la da por buena; qué archivos de origen son confidenciales (define qué puede llegar al portal). Los archivos se guardan en la base (`raw.files`) hasta que TI defina un almacenamiento
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-31 · Enlace del informe de cada revisión {#x-31}
+
+Las 5 revisiones de EE cargadas en T-24 apuntan a `https://www.upme.gov.co` porque falta el enlace exacto de cada informe (`document_url` en `pipelines/revisiones_ee.toml`). Conseguir los 5 enlaces y corregirlos en la misma fila, sin crear revisiones nuevas, con registro del cambio (PBD-08). La primera corrección define cómo queda ese registro en `operacion` (hoy `load_runs.load_type` no tiene un tipo para correcciones: necesita migración)
+
+Responsable: Líder · Estado: Abierto
+
+Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
+
+### X-32 · Modelo de cada revisión {#x-32}
+
+Solo 2026-07 tiene el modelo, tomado de su informe; las otras 4 revisiones de EE dicen «por confirmar». El líder entrega los informes de 2023-12, 2024-07, 2024-12 y 2025-07; de cada uno se toma el modelo (y, si lo dice, el día de publicación y el corte del dato real) y se corrige en la misma fila con registro (PBD-08). Igual que X-31
 
 Responsable: Líder · Estado: Abierto
 

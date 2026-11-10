@@ -32,6 +32,8 @@ Así siempre se puede responder qué se sabía en una fecha dada (FLU-08).
 
 **PBD-07 (DEBE)** Además de los cinco esquemas de BD-03, la base tiene el esquema `operacion` para lo que describe cómo funciona el sistema: bitácora de cargas, mensajes de carga, extracciones, estado de las fuentes, notificaciones y auditoría. No guarda datos del producto ni depende de una fuente, así que sigue igual si cambia el origen de los datos (P-0004).
 
+**PBD-08 (DEBE)** Lo que no cambia en una revisión publicada son sus **cifras**: valores, componentes, intervalos, escenarios y supuestos (P-0003, PRI-06). Una cifra equivocada se corrige con una revisión nueva (`2026-11.1`, X-09). Los **metadatos** de la revisión sí se pueden completar o corregir en la misma fila: enlace del informe, fecha de publicación, modelo, nombre y notas. Cada cambio deja registro: qué campo, valor anterior y nuevo, quién, cuándo y por qué. El registro va en la bitácora (`operacion`, PDA-05). Ejemplo: cuando se tenga el enlace del informe de la revisión 2026-07, se reemplaza `https://www.upme.gov.co` por el enlace exacto, sin crear una revisión nueva.
+
 ## Datos y cargas (PDA)
 
 **PDA-01 (DEBE)** La arquitectura está desacoplada del origen de los datos:

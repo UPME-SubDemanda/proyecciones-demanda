@@ -43,7 +43,8 @@ Sin cambios en la app. En la base: `core.v_ee_revision_vs_real` y las demás vis
   - la única diferencia es la serie anual SIN+GCE+ME+GD_PNUMA en el primer año (el año mixto) de las tres revisiones que la traen; quedó anotada en X-23;
   - la GD venía en negativo hasta dic-2024 y se guarda positiva (PDA-07);
   - `DemaSIN` llegó completa desde 2010; solo faltaba el día anterior a la carga, que XM publica con rezago.
-- **Datos que faltan de cada revisión:** fecha exacta de publicación, enlace del informe y modelo (salvo 2026-07). Quedaron marcados «por confirmar» y anotados en X-23.
+- **Datos que faltan de cada revisión:** fecha exacta de publicación, enlace del informe (X-31) y modelo, salvo en 2026-07 (X-32). Quedaron marcados «por confirmar».
+- **Regla PBD-08:** las cifras de una revisión publicada no cambian; sus metadatos (enlace, fecha, modelo, notas) se completan o corrigen en la misma fila, con registro del cambio. Así, los enlaces y modelos que faltan se agregan sin crear revisiones nuevas.
 - **Migración `0004`:** las 4 vistas, con comentarios. El diccionario se regeneró. Las pruebas de las vistas (`backend/tests/test_db_views.py`) corren en el job `base-de-datos`.
 - **Pruebas del modelo:** las de T-23 ahora usan periodos de 2099, para no chocar con los datos reales al correrlas contra la base de desarrollo.
 - **Librería nueva:** `openpyxl` (TEC-06), anotada en `docs/tecnica/dependencias.md`.

@@ -40,7 +40,7 @@ Qué queda en la base después de correrla:
 - **Mensajes:** cada anexo deja en `operacion.load_messages` las hojas que no se cargan (áreas, promedio diario, capacidad instalada), la normalización del signo de la GD y el resultado de cada verificación de sumas.
 - **Repetir es seguro:**
     - un anexo ya cargado (misma huella SHA-256) no se repite;
-    - una revisión que ya existe no se modifica (P-0003).
+    - una revisión que ya existe no se vuelve a cargar: sus cifras no cambian (P-0003); sus metadatos se corrigen aparte, con registro (PBD-08, X-31, X-32).
 - **`DemaSIN`:** 6156 días, del 2010-01-01 al día anterior a la carga (versión 1, `accepted`). Volver a pedir un tramo solo crea versiones nuevas si XM cambió el valor, y cada cambio queda en `core.observed_changes`.
 
 En esta prueba no hay reglas de anomalía ni avisos: todo entra como `accepted` (T-29, X-24).
