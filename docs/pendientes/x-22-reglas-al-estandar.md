@@ -48,6 +48,8 @@ El proyecto adoptó como protocolo convertir cada necesidad en regla local y en 
 | 16 | Ampliar FLU-09: reglas propias de cada proyecto en un documento con IDs propios; al copiar una versión nueva del estándar, se revisan las que ya pasaron y que no haya contradicciones | PFL-02 | `docs/tecnica/reglas-proyecto.md`, `scripts/referencias.py` |
 | 17 | Corregir BD-03: columnas de `raw` en inglés (`source`, `loaded_at`, `source_file`) con comentarios en español | PBD-01 | — |
 | 18 | Una línea en las fichas generales `postgresql` y `sqlalchemy-alembic` sobre cómo se prueban las migraciones en la CI | PBD-04 | — |
+| 19 | Precisar PRI-06 y UX-03: lo inmutable de lo publicado son sus cifras; los metadatos (enlace, fecha, modelo, notas) se completan o corrigen con registro del cambio | PBD-08 | Enlaces y modelos de las revisiones de EE (X-31, X-32) |
+| 20 | Citar el informe y la página en todo lo que se documente de un modelo o se tome de un informe publicado, y una sección «Modelos» en la guía técnica | PFU-03 | `docs/tecnica/modelos/ee.md` |
 
 No va al estándar: PER-01 (cálculo del error), que es propia del dominio de la Subdirección.
 
@@ -108,6 +110,10 @@ Haz lo siguiente y abre un PR:
       conciliación y avisos (PDA-02 a PDA-04), bitácora de cargas (PDA-05), lectura de archivos
       publicados por encabezados con verificación (PDA-06) y convención única entre versiones de
       una fuente (PDA-07). Nivel DEBE salvo que veas razón para otro.
+   d) precisa PRI-06 (REGLAS-DISENO.md) y la regla de revisiones publicadas: lo inmutable son las
+      cifras; los metadatos se completan o corrigen con registro del cambio (PBD-08).
+   e) documentación: lo que se documente de un modelo o se tome de un informe publicado cita el
+      informe y la página, y la guía técnica tiene una sección «Modelos» (PFU-03).
 2. REGLAS-FLUJO.md:
    a) documentación: sección «Base de datos» de la guía técnica (PBD-02), ficha por fuente con la
       plantilla de 12 secciones (PFU-01) y guía por entidad (PFU-02), en la estructura de

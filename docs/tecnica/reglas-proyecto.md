@@ -32,6 +32,8 @@ Así siempre se puede responder qué se sabía en una fecha dada (FLU-08).
 
 **PBD-07 (DEBE)** Además de los cinco esquemas de BD-03, la base tiene el esquema `operacion` para lo que describe cómo funciona el sistema: bitácora de cargas, mensajes de carga, extracciones, estado de las fuentes, notificaciones y auditoría. No guarda datos del producto ni depende de una fuente, así que sigue igual si cambia el origen de los datos (P-0004).
 
+**PBD-08 (DEBE)** Lo que no cambia en una revisión publicada son sus **cifras**: valores, componentes, intervalos, escenarios y supuestos (P-0003, PRI-06). Una cifra equivocada se corrige con una revisión nueva (`2026-11.1`, X-09). Los **metadatos** de la revisión sí se pueden completar o corregir en la misma fila: enlace del informe, fecha de publicación, modelo, nombre y notas. Cada cambio deja registro: qué campo, valor anterior y nuevo, quién, cuándo y por qué. El registro va en la bitácora (`operacion`, PDA-05). Ejemplo: cuando se tenga el enlace del informe de la revisión 2026-07, se reemplaza `https://www.upme.gov.co` por el enlace exacto, sin crear una revisión nueva.
+
 ## Datos y cargas (PDA)
 
 **PDA-01 (DEBE)** La arquitectura está desacoplada del origen de los datos:
@@ -66,6 +68,8 @@ Cada error, advertencia o información de la carga va en `operacion.load_message
 **PFU-01 (DEBE)** Toda fuente externa tiene su ficha en el apartado [Fuentes de datos](base-de-datos/fuentes/index.md) antes de su primera carga, con la [plantilla de ficha](base-de-datos/fuentes/plantilla-ficha.md).
 
 **PFU-02 (DEBE)** Toda entidad que entrega datos al proyecto tiene una guía de sus fuentes al nivel de la [guía de XM](base-de-datos/fuentes/xm/guia-api-xm.md): mapa de fuentes, endpoints, cómo descubrir una variable, definiciones, trampas, ejemplos y arquitectura recomendada. La guía se construye a medida que se analiza la fuente. `AGENTS.md` dice qué documento leer antes de trabajar con cada fuente.
+
+**PFU-03 (DEBE)** Todo lo que se documente del modelo de una revisión, o de cualquier dato tomado de un informe publicado, cita el informe y la página donde se dice. Se usa la página impresa en el informe y, si el PDF numera distinto, también la del PDF. Aplica a la documentación de [Modelos](modelos/index.md) y a los metadatos de la base (`core.revisions.model`, `notes`). Lo que el informe no dice no se escribe como hecho: se anota como duda (X-23) o como dato por confirmar. Ejemplo: «el VEC lleva variables dummy de impulso o escalón (Rev. Julio 2026, p. 43, nota 38)».
 
 ## Flujo de trabajo (PFL)
 

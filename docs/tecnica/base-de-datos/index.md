@@ -80,7 +80,7 @@ Las vistas leen `core` (y el público, `publicacion`). Ninguna lee `raw`, y por 
 
 1. **Lo que cambia entre productos es un catálogo:** medida, geografía, serie o sector, componente, tipo de valor, variable y fuente. Por eso energía eléctrica y gas natural usan las mismas tablas.
 2. **Lo observado es una sola tabla versionada** para cualquier fuente y variable, con versión y fecha de carga (PBD-05) y estado de calidad (PDA-02).
-3. **Una revisión publicada no se modifica nunca.** Se corrige con una revisión nueva (P-0003).
+3. **Las cifras de una revisión publicada no se modifican nunca.** Se corrigen con una revisión nueva (P-0003). Sus metadatos (enlace, fecha, modelo, notas) sí se completan o corrigen, con registro del cambio (PBD-08).
 4. **Lo oficial no se mezcla con lo experimental** (PBD-06).
 
 ## En esta sección

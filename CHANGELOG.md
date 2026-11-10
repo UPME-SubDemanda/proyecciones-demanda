@@ -4,6 +4,13 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ## [Sin publicar]
 ### Agregado
+- Datos reales de energía eléctrica, carga de prueba (T-24): las 5 revisiones publicadas (2023-12, 2024-07, 2024-12, 2025-07 y 2026-07), con series mensuales y anuales de energía y potencia máxima, intervalos de confianza y componentes (GCE, movilidad eléctrica y GD, siempre positiva), y `DemaSIN` diaria de XM desde el 2010-01-01. Se cargan con `pipelines/carga_prueba.py` por `raw → staging → core`, con bitácora y mensajes en `operacion` (issue #36, PR #37).
+- Lector de anexos de EE por encabezados con verificación de unidades, tipos de valor y sumas (PDA-06) y normalización del signo de la GD (PDA-07); cliente de XM SINERGOX con reintentos; cargas que solo versionan lo nuevo o lo que cambió (PBD-05). Base de T-27 a T-29 (issue #36, PR #37).
+- Vistas anchas de `core` (migración `0004`): `v_revision_wide` (abanico), `v_revisions_side_by_side` (comparar revisiones), `v_ee_revision_vs_real` (proyección frente a real con error provisional, PER-01) y `v_observed_wide` (dato real mensual por variable), con comentarios y pruebas en la base de la CI (issue #36, PR #37).
+- CI: pruebas de `pipelines/` (issue #36, PR #37).
+- Página de librerías de soporte (`docs/tecnica/dependencias.md`, TEC-06), con `openpyxl` para leer los anexos (issue #36, PR #37).
+- Regla PBD-08: las cifras de una revisión publicada no cambian, pero sus metadatos (enlace del informe, fecha, modelo, notas) se completan o corrigen con registro del cambio. Pendientes X-31 (enlace de cada informe) y X-32 (modelo de cada revisión) (issue #36, PR #37).
+- Sección «Modelos de proyección» de la guía técnica, con el modelo de EE de la revisión 2026-07 (combinación VAR y VEC, variables dummy del VEC, variables explicativas y supuestos), citando la página del informe; regla PFU-03 (issue #36, PR #37).
 - Modelo de datos v2 en la base (T-23): migración `0003` con los catálogos, las revisiones, los datos reales versionados (particionados por frecuencia), la calidad, `raw`, `staging` y el esquema `operacion`; lecturas `observed_current`, `observed_latest`, `observed_monthly`, `observed_annual` y `observed_as_of`; catálogos fijos sembrados; comentario en español en cada esquema, tabla, vista, función y columna (PBD-01). Al revertirla, la base vuelve exactamente a la `0002` (issue #34, PR #35).
 - Diccionario de la base (`docs/tecnica/base-de-datos/diccionario.md`) generado por `scripts/diccionario.py` desde los comentarios; con `--check` falla y dice qué comentario falta (PBD-03) (issue #34, PR #35).
 - CI: base PostgreSQL 16 de prueba que aplica las migraciones, verifica comentarios y diccionario, corre las pruebas del modelo de datos y prueba la ida y vuelta de las migraciones (PBD-04) (issue #34, PR #35).
@@ -35,6 +42,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Monitor de variables exógenas (`monitor-exogenas`, T-11): supuestos de la revisión vigente frente a lo observado en el año corrido, con indicadores de variables fuera de rango, en vigilancia e impacto en la demanda; tabla por variable con tendencia, desvío, impacto, correlación y estado, con escenario en la URL; correlación móvil con la demanda con intervalo y quiebre detectado; importancia de las variables en el modelo; descarga en CSV. «Configurar umbrales» deshabilitado hasta X-03. Componente `Sparkline` y tono `warning` en `KpiCard`. Las alertas del tablero ejecutivo llevan al monitor (issue #25, PR #26).
 
 ### Cambiado
+- Las pruebas del modelo de datos usan periodos y códigos de 2099, para poder correrlas también contra la base de desarrollo con datos reales; `docs/pendientes.md`: T-23 y X-09 hechos, T-24 en curso, X-23 y X-26 actualizados (issue #36, PR #37).
 - Docker: el contenedor `api` monta `scripts/` y `docs/` para generar el diccionario con `docker compose exec api uv run --no-dev python /scripts/diccionario.py` (issue #34, PR #35).
 - Modelo de datos: `modelo-de-datos.md` pasa a ser el resumen del modelo v2; P-0002 queda reemplazada; `flujos.md` describe los flujos planeados con bitácora; T-16 a T-19 quedan reemplazados por el plan de datos; X-01, X-02 y X-09 actualizados (issue #32, PR #33).
 - `scripts/referencias.py` también lee las reglas del proyecto (`docs/tecnica/reglas-proyecto.md`) (issue #32, PR #33).

@@ -27,6 +27,9 @@ nav:
       - tecnica/diseno-app.md
       - tecnica/reglas-proyecto.md
       - tecnica/modelo-de-datos.md
+      - Modelos de proyección:
+          - tecnica/modelos/index.md
+          - tecnica/modelos/ee.md
       - Base de datos:
           - tecnica/base-de-datos/index.md
           - tecnica/base-de-datos/raw.md
@@ -50,6 +53,7 @@ nav:
       - tecnica/api.md
       - tecnica/flujos.md
       - tecnica/versionado.md
+      - tecnica/dependencias.md
       - tecnica/despliegue.md
       - Herramientas: tecnica/herramientas/index.md
   - Guía de usuario: usuario/index.md
