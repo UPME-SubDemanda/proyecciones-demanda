@@ -1,5 +1,5 @@
-"""Cargas de un anexo de revisión de EE (T-24, base de T-27) y de una variable diaria de XM SINERGOX (T-24;
-la usa el flujo ingest-observed-demand de T-28).
+"""Cargas de un anexo de revisión de EE (T-24; la usa el flujo load-published-revisions de T-27, issue #42) y de una
+variable diaria de XM SINERGOX (T-24; la usa el flujo ingest-observed-demand de T-28).
 
 Siguen el recorrido raw → staging → core (PDA-01) y dejan bitácora (PDA-05). Las anomalías, los avisos y la
 programación son de T-29.
@@ -29,11 +29,16 @@ class RevisionMeta:
     model: str
     source_consulted_on: date | None = None
     notes: str | None = None
+    annex_url: str | None = None      # de donde se descarga el anexo en el despliegue (issue #42)
+    annex_sha256: str | None = None   # la huella del anexo validado: otra huella no se carga
 
 
-def load_annex(conn, path: Path, meta: RevisionMeta) -> int:
+REVISIONS_FLOW = "load-published-revisions"
+
+
+def load_annex(conn, path: Path, meta: RevisionMeta, flow: str = "trial-load-upme-annex") -> int:
     """Carga un anexo de EE como revisión publicada. Devuelve el id de la carga."""
-    run_id = store.start_run(conn, "trial-load-upme-annex", "upme_annex", "file")
+    run_id = store.start_run(conn, flow, "upme_annex", "file")
     messages: list[Message] = []
     content = path.read_bytes()
     sha = hashlib.sha256(content).hexdigest()
@@ -81,6 +86,63 @@ def load_annex(conn, path: Path, meta: RevisionMeta) -> int:
     summary += f" Mensajes: {levels['error']} errores, {levels['warning']} advertencias, {levels['info']} informativos."
     store.add_messages(conn, run_id, messages)
     store.finish_run(conn, run_id, store.status_for(messages), summary, n_errors=levels["error"], **counts)
+    return run_id
+
+
+def annex_loaded(conn, sha256: str) -> bool:
+    """Si un anexo con esa huella ya está en raw.files (cargado antes, a mano o por el flujo)."""
+    with conn.cursor() as cur:
+        cur.execute("SELECT 1 FROM raw.files WHERE source = 'upme_annex' AND sha256 = %s", [sha256])
+        return cur.fetchone() is not None
+
+
+class AnnexDownloadError(Exception):
+    """El anexo no se pudo descargar o no es el que se validó. `code` va a operacion.load_messages."""
+
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code = code
+
+
+def download_annex(client: httpx.Client, meta: RevisionMeta, attempts: int = 3) -> bytes:
+    """Descarga el anexo de `meta.annex_url` y verifica que su huella sea `meta.annex_sha256`.
+
+    Reintenta los errores de red y los 5xx; un 4xx o una huella distinta no se reintentan. Una huella distinta
+    puede ser otro archivo con otras cifras, y decidir si es una corrección es de una persona (P-0003).
+    """
+    if not meta.annex_url or not meta.annex_sha256:
+        raise AnnexDownloadError("annex_url_missing",
+                                 f"La revisión {meta.code} no tiene annex_url y annex_sha256 en revisiones_ee.toml.")
+    for attempt in range(1, attempts + 1):
+        try:
+            response = client.get(meta.annex_url, follow_redirects=True, timeout=120)
+        except httpx.HTTPError as exc:
+            if attempt == attempts:
+                raise AnnexDownloadError("annex_download_failed",
+                                         f"No se pudo descargar el anexo de {meta.code}: {type(exc).__name__}: {exc}") from exc
+            continue
+        if response.status_code >= 500 and attempt < attempts:
+            continue
+        if response.status_code != 200:
+            raise AnnexDownloadError("annex_download_failed",
+                                     f"El sitio de la UPME respondió {response.status_code} al descargar el anexo de "
+                                     f"{meta.code} ({meta.annex_url}).")
+        sha = hashlib.sha256(response.content).hexdigest()
+        if sha != meta.annex_sha256:
+            raise AnnexDownloadError("annex_hash_mismatch",
+                                     f"El anexo descargado de {meta.code} tiene la huella {sha} y no la validada "
+                                     f"({meta.annex_sha256}): no se carga. Puede ser otro archivo con otras cifras; "
+                                     "decidir si es una corrección es de una persona (P-0003).")
+        return response.content
+    raise AssertionError("inalcanzable")
+
+
+def record_failure(conn, flow: str, meta: RevisionMeta, error: AnnexDownloadError) -> int:
+    """Deja en la bitácora una carga fallida antes de leer el anexo (descarga o huella)."""
+    run_id = store.start_run(conn, flow, "upme_annex", "file")
+    msg = Message("error", error.code, str(error), {"revision": meta.code, "url": meta.annex_url})
+    store.add_messages(conn, run_id, [msg])
+    store.finish_run(conn, run_id, "failed", msg.message, n_errors=1)
     return run_id
 
 

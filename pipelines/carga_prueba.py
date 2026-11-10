@@ -1,6 +1,8 @@
 """Carga de prueba de T-24: los anexos de las revisiones de EE.
 
-No es el pipeline (el flujo de anexos es T-27): se corre a mano contra la base local. Ver docs/tecnica/flujos.md.
+No es el pipeline: desde el issue #42, el flujo load-published-revisions (flows/upme_revisions.py) descarga los
+anexos del sitio de la UPME y corre solo al arrancar el worker. Este script sirve para cargar a mano desde una
+carpeta local (por ejemplo, sin salida a internet). Ver docs/tecnica/flujos.md.
 XM ya tiene su flujo de Prefect (T-28): flows/xm_observed.py.
 
     # Anexos: la carpeta donde están los archivos de revisiones_ee.toml (no entran al repositorio)

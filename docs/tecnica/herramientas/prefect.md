@@ -18,7 +18,7 @@ Prefect ejecuta las cargas de datos y guarda su historial (cuándo corrió cada 
 | **Task** (tarea) | Un paso del flujo, marcado con `@task`. Prefect registra el estado de cada una por separado | `load-xm-variable`, una por medida |
 | **Deployment** (despliegue) | El flujo publicado en el servidor para ejecutarlo sin tocar código: qué flujo, con qué parámetros por omisión, con qué horario (si tiene), con qué etiquetas. Un mismo flujo puede tener varios despliegues | `xm-historico-diario` en `pipelines/deployments.py`. La carga diaria de T-29 será otro despliegue del mismo flujo, con horario y rango corto |
 | **Flow run** (ejecución) | Cada vez que se ejecuta un flujo, desde un despliegue o desde la línea de comandos. Tiene sus *task runs* | Cada carga lanzada desde la interfaz |
-| **Worker** | El proceso que atiende los despliegues. Corre `deployments.py` con `serve` y queda escuchando: cuando alguien oprime *Run*, el servidor le avisa y el worker ejecuta el flujo. Si está apagado, la ejecución queda en espera | Contenedor `prefect-worker` |
+| **Worker** | El proceso que atiende los despliegues. Corre `deployments.py` con `serve` y queda escuchando: cuando alguien oprime *Run*, el servidor le avisa y el worker ejecuta el flujo. Si está apagado, la ejecución queda en espera | Contenedor `prefect-worker`. Al arrancar, antes de `serve`, corre una vez `load-published-revisions` (`start.sh`) |
 
 En pocas palabras: el flujo es la receta, el despliegue es la receta publicada con su forma de usarla, y cada ejecución es una vez que se cocinó.
 
@@ -39,7 +39,7 @@ En pocas palabras: el flujo es la receta, el despliegue es la receta publicada c
 | Pieza | Dónde |
 | --- | --- |
 | Servidor e interfaz | Servicio `prefect-server` de `docker-compose.yml`: http://localhost:4200 |
-| Quien ejecuta los flujos | Servicio `prefect-worker`: imagen de `pipelines/Dockerfile`, corre `deployments.py` con `serve` |
+| Quien ejecuta los flujos | Servicio `prefect-worker`: imagen de `pipelines/Dockerfile`, corre `start.sh`: carga las revisiones que falten y después `deployments.py` con `serve` |
 | Flujos | `pipelines/flows/` |
 | Despliegues | `pipelines/deployments.py` |
 | Pruebas | `pipelines/tests/` |
@@ -55,6 +55,7 @@ En pocas palabras: el flujo es la receta, el despliegue es la receta publicada c
 | Flujo | Despliegue | Qué hace | Paso |
 | --- | --- | --- | --- |
 | `ingest-observed-demand` | `xm-historico-diario` | Carga histórica de las medidas diarias de XM SINERGOX (`DemaSIN` y `DemaMaxPot`) | T-28 |
+| `load-published-revisions` | `revisiones-ee` | Descarga y carga las revisiones de EE de `revisiones_ee.toml` que falten. También corre sola al arrancar el worker | T-27 (issue #42) |
 
 Ejecutar un despliegue:
 
@@ -69,7 +70,9 @@ docker compose exec prefect-worker prefect deployment run ingest-observed-demand
 docker compose exec prefect-worker prefect deployment run ingest-observed-demand/xm-historico-diario -p desde=2026-10-01 -p 'variables=["xm_demasin"]'
 ```
 
-- **Sin pasar por el servidor:** `docker compose exec prefect-worker python -m flows.xm_observed --desde 2026-10-01`.
+- **Sin pasar por el servidor:** `docker compose exec prefect-worker python -m flows.xm_observed --desde 2026-10-01`, o `python -m flows.upme_revisions` para las revisiones.
+
+**Al arrancar el worker** no hace falta oprimir nada para las revisiones: `start.sh` corre `load-published-revisions` y la ejecución aparece en *Runs* como cualquier otra.
 
 El detalle de cada flujo está en [Flujos de datos](../flujos.md).
 

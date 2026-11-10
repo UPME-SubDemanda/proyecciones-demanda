@@ -1455,11 +1455,11 @@ Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-27 · Pendiente {#t-27}
+### T-27 · En curso {#t-27}
 
-Lector de anexos de la UPME (por encabezados, con verificación de sumas y normalización entre versiones) y flujo `load-published-revisions`
+Lector de anexos de la UPME (por encabezados, con verificación de sumas y normalización entre versiones) y flujo `load-published-revisions`. **Hecho en el issue #42:** el flujo descarga del sitio de la UPME los anexos de `revisiones_ee.toml` que falten, verifica su huella y los carga; corre al arrancar el worker, para que el despliegue quede con las revisiones. **Falta:** la normalización entre versiones de anexo
 
-Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-24 · Issue: #42 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1487,7 +1487,7 @@ Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-37 · En curso {#t-37}
+### T-37 · Hecho {#t-37}
 
 **Datos reales de EE en las vistas, provisional:** tablero ejecutivo, histórico de revisiones, portal y modo pantalla leen energía eléctrica de una API mínima (`/api/v1/ee`); lo demás sigue ilustrativo y marcado. Decidido por el líder el 2026-11-10 para ver datos reales de una vez: «escenario bajo/alto» = límites del IC 68 %, solo la serie SIN+GCE+ME+GD_UPME, los indicadores que ya usaban las vistas; las gráficas de proyección de EE se ven mensuales por omisión (alrededor de la publicación de la revisión, con la línea «Publicado») o anuales. Lo definitivo sigue en T-32 a T-34
 
