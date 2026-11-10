@@ -10,12 +10,12 @@
 
 | Tabla | Qué guarda | Columnas principales | Regla |
 | --- | --- | --- | --- |
-| `load_runs` | La bitácora: una fila por ejecución de cada flujo, aunque no encuentre nada | `id`, `flow`, `source`, `load_type` (`daily`, `weekly`, `backfill`, `file`), `started_at`, `finished_at`, `status` (`ok`, `ok_with_warnings`, `failed`), `range_start`, `range_end`, `n_queried`, `n_new`, `n_changed`, `n_unchanged`, `n_anomalous`, `n_errors`, `retries`, `message` | PDA-05 |
+| `load_runs` | La bitácora: una fila por ejecución de cada flujo, aunque no encuentre nada | `id`, `flow`, `source`, `load_type` (`daily`, `weekly`, `backfill`, `file`), `started_at`, `finished_at`, `status` (`running`, `ok`, `ok_with_warnings`, `failed`), `range_start`, `range_end`, `n_queried`, `n_new`, `n_changed`, `n_unchanged`, `n_anomalous`, `n_errors`, `retries`, `message`, `app_version` | PDA-05 |
 | `load_messages` | El detalle de cada carga: una fila por error, advertencia o información | `load_run_id`, `level` (`error`, `warning`, `info`), `code`, `message`, `context` (hoja, serie, periodo, celda, variable o extracción), `created_at` | PDA-05 |
-| `extractions` | Cada consulta a una fuente: qué se pidió, cuándo, respuesta, filas y huella del contenido | `id`, `load_run_id`, `source`, `request` (métrica, entidad, rango), `requested_at`, `http_status`, `rows`, `content_hash`, `error` | PBD-05 |
-| `source_status` | Por fuente: última carga exitosa, último periodo disponible, días sin actualizarse | `source`, `last_success_at`, `last_period`, `days_stale` | Alerta «fuente sin actualizar» (etapa 1.2) |
-| `notifications` | Cada aviso enviado (etapa 1.2) | `event`, `channel`, `recipient`, `sent_at`, `status` | FLU-14 |
-| `audit_log` | Acciones de personas: quién aceptó una anomalía, quién publicó o corrigió una revisión | `user_id`, `action`, `object`, `at`, `detail` | Trazabilidad |
+| `extractions` | Cada consulta a una fuente: qué se pidió, cuándo, respuesta, filas y huella del contenido | `id`, `load_run_id`, `source`, `request` (métrica, entidad, rango), `requested_at`, `http_status`, `row_count`, `content_hash`, `error` | PBD-05 |
+| `source_status` | Por fuente: última carga exitosa, último periodo disponible, días sin actualizarse | `source`, `last_success_at`, `last_period`, `days_stale`, `updated_at` | Alerta «fuente sin actualizar» (etapa 1.2) |
+| `notifications` (se crea en la etapa 1.2) | Cada aviso enviado | `event`, `channel`, `recipient`, `sent_at`, `status` | FLU-14 |
+| `audit_log` (se crea cuando haya acciones de personas en la app) | Acciones de personas: quién aceptó una anomalía, quién publicó o corrigió una revisión | `user_id`, `action`, `object`, `at`, `detail` | Trazabilidad |
 
 ## Las tres capas del registro de una carga
 

@@ -86,14 +86,14 @@ Una sola tabla para toda variable real de cualquier fuente: demanda de XM, PIB d
 | `loaded_at` | Fecha y hora de carga | 2026-11-15 03:10 |
 | `load_run_id`, `extraction_id` | Carga y consulta de donde salió (`operacion`) | 3140 |
 
-**Llave:** `variable` + `geography` + `frequency` + `period` + `version`. Solo se agrega una fila cuando el valor es nuevo o cambió; nunca se modifica una existente (PBD-05).
+**Llave:** `variable` + `geography` + `frequency` + `period` + `version`. Solo se agrega una fila cuando el valor es nuevo o cambió; el valor de una fila nunca se modifica (PBD-05). Lo único que cambia es `quality_status`, cuando una persona acepta o rechaza una anomalía.
 
 **Lectura:**
 
 - `observed_current`: el valor vigente, que es la versión máxima **aceptada** de cada periodo. Lo usan el error y los indicadores.
 - `observed_latest`: lo aceptado más lo provisional, marcado. Lo usan los gráficos y «El sistema hoy», para que se vean los días recientes que la fuente todavía puede corregir (PRI-03).
-- `observed_as_of(fecha)`: lo que se sabía en una fecha, que es la versión máxima aceptada cargada hasta ese día. Con `revisions.source_consulted_on` reconstruye el dato que tuvo cada revisión.
-- `observed_monthly` y `observed_annual`: agregados calculados desde lo diario u horario con la regla de la medida (la energía se suma; la potencia máxima toma el máximo), con los días con dato y una marca `is_complete`. Un mes incompleto se marca, no se escala.
+- `observed_as_of(at_time)`: función que devuelve lo que se sabía en una fecha, que es la versión máxima aceptada cargada hasta ese momento. Con `revisions.source_consulted_on` reconstruye el dato que tuvo cada revisión.
+- `observed_monthly` y `observed_annual`: agregados calculados desde lo diario u horario vigente con la regla de la medida (la energía se suma; la potencia máxima toma el máximo; sin medida, el promedio), con `source_frequency`, `days_with_data`, `days_in_period` e `is_complete`. Un mes incompleto se marca, no se escala.
 
 **Volumen y rendimiento:** diez variables horarias en 25 años son 2 o 3 millones de filas, que con el índice de la llave se consultan de inmediato. La tabla se **particiona por frecuencia** para que lo horario (incluido el que usen los modelos de la fase 2) no afecte las consultas diarias, mensuales y anuales que cruzan con las revisiones.
 

@@ -19,6 +19,8 @@ services:
     command: ["sh", "dev-start.sh"]
     volumes:
       - ./backend:/app        # el código del equipo, siempre al día
+      - ./scripts:/scripts:ro # para generar el diccionario de la base (scripts/diccionario.py)
+      - ./docs:/docs          # donde el diccionario escribe docs/tecnica/base-de-datos/diccionario.md
       - api-venv:/app/.venv   # dependencias de la imagen (Linux), no las del equipo
   web:
     build: ./frontend

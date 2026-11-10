@@ -6,8 +6,8 @@ Resumen del modelo de datos del proyecto. El detalle completo, con cada esquema,
 
 | Versión | Qué es | Estado |
 | --- | --- | --- |
-| **v2** | Modelo de la etapa 1 revisado con los datos reales de EE y GN ([P-0004](../decisiones/0004-modelo-datos-v2.md)) | Aprobado el 2026-11-10. Su migración (`0003`) es el paso T-23 |
-| v1 | Primer modelo de la etapa 1 (migración `0002`, [P-0002](../decisiones/0002-modelo-datos-etapa-1.md)) | Reemplazado. Es el que tiene hoy la base, sin datos salvo los dos productos |
+| **v2** | Modelo de la etapa 1 revisado con los datos reales de EE y GN ([P-0004](../decisiones/0004-modelo-datos-v2.md)) | Aprobado el 2026-11-10 y creado con la migración `0003` (T-23). Detalle de cada columna en el [diccionario](base-de-datos/diccionario.md) |
+| v1 | Primer modelo de la etapa 1 (migración `0002`, [P-0002](../decisiones/0002-modelo-datos-etapa-1.md)) | Reemplazado por la `0003`. Al revertir la `0003` la base vuelve exactamente a este modelo |
 
 ## Modelo v2 en una tabla
 

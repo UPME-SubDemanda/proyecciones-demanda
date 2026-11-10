@@ -37,6 +37,7 @@ nav:
           - tecnica/base-de-datos/operacion.md
           - tecnica/base-de-datos/convenciones.md
           - tecnica/base-de-datos/vistas.md
+          - tecnica/base-de-datos/diccionario.md
           - Fuentes de datos:
               - tecnica/base-de-datos/fuentes/index.md
               - tecnica/base-de-datos/fuentes/plantilla-ficha.md

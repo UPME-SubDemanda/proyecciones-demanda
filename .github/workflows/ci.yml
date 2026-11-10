@@ -32,3 +32,34 @@ jobs:
         run: pnpm install --frozen-lockfile=false && pnpm test && pnpm build
       - name: Documentación
         run: uvx --with mkdocs-material mkdocs build --strict -f mkdocs.usuario.yml && uvx --with mkdocs-material mkdocs build --strict -f mkdocs.tecnica.yml
+
+  # Base PostgreSQL de prueba (PBD-04): migraciones de ida y vuelta, comentarios y diccionario (PBD-01, PBD-03)
+  # y pruebas del modelo de datos. Misma imagen que docker-compose.yml.
+  base-de-datos:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: app, POSTGRES_PASSWORD: app, POSTGRES_DB: proyecciones_demanda}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U app -d proyecciones_demanda"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://app:app@localhost:5432/proyecciones_demanda
+      TEST_POSTGRES_URL: postgresql://app:app@localhost:5432/proyecciones_demanda
+    defaults:
+      run: {working-directory: backend}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - name: Dependencias
+        run: uv sync
+      - name: Migraciones hacia arriba
+        run: uv run alembic upgrade head
+      - name: Comentarios y diccionario al día (PBD-01, PBD-03)
+        run: uv run python ../scripts/diccionario.py --check
+      - name: Pruebas del modelo de datos
+        run: uv run pytest -q tests/test_db_model.py
+      - name: Migraciones de ida y vuelta (PBD-04)
+        run: uv run alembic downgrade base && uv run alembic upgrade head
