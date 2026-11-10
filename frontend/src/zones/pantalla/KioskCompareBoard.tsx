@@ -9,13 +9,16 @@ import { EChart } from '../../components/charts/EChart';
 import { revisionsFanOption } from '../../components/charts/kioskCharts';
 import { useObservedSeries, useRevisions, useRevisionsPerformance, useRevisionsValues } from '../../data/queries';
 import { formatMonth, formatPercent, revisionLabel } from '../../lib/format';
+import {
+  DEFAULT_RESOLUTION, eeChartUnit, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, type Resolution,
+} from '../../lib/resolution';
+import { SegmentedControl } from '../../components/SegmentedControl/SegmentedControl';
 import { icons } from '../../lib/icons';
 import { HorizontalBars, KioskHeader, Panel } from './KioskParts';
 import { fanTitle, defaultCompared } from './kioskData';
 
 const PRODUCT = 'ee' as const;
-const DIVISOR = 1000;
-const UNIT = 'TWh/año';
+const DIVISOR = 1000; // KPIs y barras: TWh
 const COMPARE_YEAR = '2030';
 const DEFAULT_RANGE: [number, number] = [2015, 2035];
 
@@ -35,26 +38,38 @@ export function KioskCompareBoard() {
   const ids = list.map((r) => r.id);
   const values = useRevisionsValues(ids);
   const perf = useRevisionsPerformance(ids);
-  const [range, setRange] = useState<[number, number]>(DEFAULT_RANGE);
+  // Resolución del abanico (issue #40): mensual por omisión o anual; se reinicia con el tablero (TV-04).
+  const [resolution, setResolutionState] = useState<Resolution>(DEFAULT_RESOLUTION);
+  const [rangeChoice, setRange] = useState<[number, number] | null>(null);
+  const setResolution = (r: Resolution) => { setResolutionState(r); setRange(null); };
+  const chartObserved = useObservedSeries(PRODUCT, resolution);
+  const chartValues = useRevisionsValues(ids, resolution);
+  const chart = eeChartUnit(resolution);
+  // Sin rango elegido, en mensual se ve alrededor de la revisión vigente, con su línea de publicación (issue #40).
+  const current = list.find((r) => r.isCurrent);
+  const lastPeriod = chartObserved.data?.data.points.at(-1)?.period;
+  const range: [number, number] = rangeChoice
+    ?? (resolution === 'M' && current && lastPeriod ? publicationWindow(current.publishedOn, lastPeriod) : DEFAULT_RANGE);
   const [shown, setShown] = useState<string[] | null>(null);
   const compared = shown ?? defaultCompared(list.map((r) => r.code));
   const palette = roles.dark.series;
 
   const option = useMemo(() => {
-    if (!observed.data || !values.data) return null;
+    if (!chartObserved.data || !chartValues.data) return null;
     return revisionsFanOption({
-      observed: observed.data.data.points,
+      observed: chartObserved.data.data.points,
       revisions: list
         .map((r, i) => ({ r, i }))
         .filter(({ r }) => compared.includes(r.code))
-        .map(({ r, i }) => ({ label: revisionLabel(r.code), points: values.data!.data[i].scenarios.mid, color: palette[i % palette.length], current: r.isCurrent })),
+        .map(({ r, i }) => ({ label: revisionLabel(r.code), points: chartValues.data!.data[i].scenarios.mid, color: palette[i % palette.length], current: r.isCurrent })),
       range,
-      divisor: DIVISOR,
-      unit: UNIT,
+      divisor: chart.divisor,
+      unit: chart.unit,
+      publication: current ? { period: publicationPeriod(current.publishedOn, resolution), label: publicationLabel(current.publishedOn) } : undefined,
     });
-  }, [observed.data, values.data, list, compared, range, palette]);
+  }, [chartObserved.data, chartValues.data, list, compared, range, palette, chart.divisor, chart.unit, current, resolution]);
 
-  if (observed.isError || revisions.isError || values.isError || perf.isError)
+  if (observed.isError || revisions.isError || values.isError || perf.isError || chartObserved.isError || chartValues.isError)
     return <ErrorState title="No se pudieron cargar las revisiones" description="Se reintentará en unos minutos." />;
   if (!option || !values.data || !perf.data || !list.length) return <Skeleton height={860} label="Cargando comparación de revisiones" />;
 
@@ -74,6 +89,7 @@ export function KioskCompareBoard() {
     <div className="h-full flex flex-col gap-6">
       <div className="flex items-center gap-10 flex-wrap">
         <RangeSlider label="Rango" min={2010} max={2040} value={range} onChange={setRange} />
+        <SegmentedControl ariaLabel="Resolución" size="touch" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />
       </div>
 
       <div className="grid grid-cols-4 gap-6">

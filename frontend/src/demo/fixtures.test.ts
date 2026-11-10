@@ -2,10 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   demoExogenous, demoExogenousMonitor, demoObserved, demoRevisionPerformance, demoRevisions, demoRevisionValues, demoSystemToday,
 } from './fixtures';
-import { ILLUSTRATIVE } from '../data/source';
 
 describe('cifras ilustrativas (CON-07)', () => {
-  it('se declaran como ilustrativas mientras no haya datos reales', () => expect(ILLUSTRATIVE).toBe(true));
 
   it('son deterministas', () => expect(demoObserved('ee')).toEqual(demoObserved('ee')));
 

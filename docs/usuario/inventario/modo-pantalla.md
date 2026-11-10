@@ -8,13 +8,15 @@ estado: desarrollo
 version_desde: 0.1.0
 diseno: docs/tecnica/mockups/modo-pantalla.png, modo-pantalla-comparar-proyecciones.png y modo-pantalla-el-sistema-hoy.png (aprobados el 2026-11-08 por David Bedoya)
 capturas: [../capturas/modo-pantalla.png, ../capturas/modo-pantalla-comparar-proyecciones.png, ../capturas/modo-pantalla-el-sistema-hoy.png]
-actualizado: 2026-11-08
+actualizado: 2026-11-10
 ---
 
 # Modo pantalla
 
-!!! warning "Cifras ilustrativas"
-    Mientras se cargan los datos oficiales, las cifras de los tableros son de ejemplo y lo dice el pie de la pantalla.
+!!! warning "Datos reales provisionales y cifras ilustrativas"
+    **Energía eléctrica ya muestra datos reales** (desde T-37): las revisiones publicadas por la UPME (serie SIN+GCE+ME+GD_UPME) y la demanda del SIN de XM. Es una conexión **provisional**: los escenarios «bajo» y «alto» son los límites del intervalo de confianza del 68 % de la revisión, porque la UPME publica para energía eléctrica un escenario medio con intervalos y no escenarios bajo y alto. Los indicadores de error son provisionales y el umbral es ilustrativo (X-03, X-25).
+
+    Siguen con cifras de ejemplo el tablero de gas natural y, en «El sistema hoy», la demanda máxima de potencia y el gas; lo dice el pie de la pantalla o la tarjeta.
 
 ![Modo pantalla, tablero de energía eléctrica](../capturas/modo-pantalla.png)
 
@@ -70,8 +72,9 @@ Los controles del encabezado son íconos; al dejar el cursor encima, cada uno di
 | Opción | Qué hace |
 | --- | --- |
 | Proyección | Elige la revisión que se compara; por defecto, la vigente. |
-| Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, 2015–2035. |
+| Rango (Desde / Hasta) | Años que se ven en el gráfico principal; por defecto, en mensual, de un año antes de la publicación de la revisión a un año después del último dato real (2025–2027 para jul-2026); en anual, 2015–2035. |
 | Escenarios (Bajo, Medio, Alto) | Muestra u oculta cada escenario. Con bajo y alto se ve la banda. |
+| Mensual / Anual (en la gráfica principal de energía eléctrica y en «Comparar proyecciones») | Muestra el gráfico por mes (GWh/mes, por omisión) o por año (TWh/año). En mensual se ve la estacionalidad y el detalle real frente a proyectado mes a mes, y el gráfico abre alrededor de la revisión: desde un año antes de su publicación hasta un año después del último dato real (para la revisión jul-2026 con datos a oct-2026, de 2025 a 2027). Una línea vertical marca el mes de publicación («Publicado») y otra el corte del dato real. Solo energía eléctrica: gas natural siempre se ve anual. Como los demás filtros, vuelve a mensual cuando el tablero rota. Al cambiar la resolución o la revisión, el rango vuelve al de omisión. |
 | Cada 10 / 20 / 30 / 60 s | Tiempo de cada tablero. |
 | Ícono de pausa / reproducir (Detener / Reanudar rotación) | Detiene la rotación hasta volver a tocarlo; la barra amarilla queda quieta y el pie dice «Rotación detenida». |
 | Ícono de pantalla completa | Ocupa toda la pantalla del televisor, o vuelve a la ventana normal. |
@@ -97,3 +100,4 @@ Nombres de los tableros: `ee` (energía eléctrica), `gn` (gas natural), `compar
 
 ## Historial
 - 2026-11-08: primera versión con cifras ilustrativas: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy (diario técnico: `2026-11-08-modo-pantalla`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional, y gráfica anual o mensual (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

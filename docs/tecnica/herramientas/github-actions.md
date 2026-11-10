@@ -35,7 +35,7 @@ Levanta un PostgreSQL 16 vacío, la misma versión de `docker-compose.yml`, y so
 | --- | --- | --- |
 | Migraciones hacia arriba | Que todas las migraciones de Alembic se apliquen desde cero | BD-04 |
 | Comentarios y diccionario | Que todo esquema, tabla, vista y columna tenga su comentario, y que `diccionario.md` esté al día | PBD-01, PBD-03 |
-| Pruebas del modelo y de las vistas | Que las tablas, las restricciones y las vistas de `core` respondan lo que deben: versiones, abanico, comparación de revisiones, error | PBD-04 |
+| Pruebas del modelo, de las vistas y de la API de datos | Que las tablas, las restricciones y las vistas de `core` respondan lo que deben (versiones, abanico, comparación de revisiones, error) y que la API de datos de EE devuelva lo que leen las vistas (`tests/test_api_ee.py`) | PBD-04 |
 | Carga de XM contra la base | La carga completa de una medida con XM simulado (`pipelines/tests/test_xm_load_db.py`). Revisa cinco cosas: que convierta unidades, que no cree versiones si nada cambió, que registre los cambios, que avise los días que faltan y que marque la carga como fallida si XM no responde | PBD-05, PDA-05 |
 | Migraciones de ida y vuelta | Que todas se puedan revertir y volver a aplicar sin errores | PBD-04 |
 
@@ -73,7 +73,7 @@ uvx --with mkdocs-material mkdocs build --strict -f mkdocs.tecnica.yml
 **Las pruebas de base de datos en local** van contra la base de Docker, porque el puerto 5432 del equipo puede estar ocupado por otro PostgreSQL:
 
 ```bash
-docker compose exec -e TEST_POSTGRES_URL=postgresql://app:app@db:5432/proyecciones_demanda api uv run pytest -q tests/test_db_model.py tests/test_db_views.py
+docker compose exec -e TEST_POSTGRES_URL=postgresql://app:app@db:5432/proyecciones_demanda api uv run pytest -q tests/test_db_model.py tests/test_db_views.py tests/test_api_ee.py
 ```
 
 ```bash

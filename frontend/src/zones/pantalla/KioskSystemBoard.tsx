@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { ILLUSTRATIVE_LABEL } from '../../components/Badge/Badge';
 import { ErrorState } from '../../components/ErrorState/ErrorState';
 import { KpiCard } from '../../components/KpiCard/KpiCard';
 import { Skeleton } from '../../components/Skeleton/Skeleton';
@@ -34,29 +35,30 @@ export function KioskSystemBoard() {
 
   if (today.isError) return <ErrorState title="No se pudo cargar la demanda diaria" description="Se reintentará en unos minutos." />;
   if (!data || !energyOption || !gasOption) return <Skeleton height={860} label="Cargando demanda diaria" />;
+  const parts = data.illustrativeParts; // T-37: la energía es real; potencia máxima y gas, ilustrativos
 
   return (
     <div className="h-full flex flex-col gap-6">
       <NoFilters />
 
       <div className="grid grid-cols-4 gap-6">
-        <KpiCard label="Demanda de energía ayer" value={data.energyYesterday} unit="GWh" provenance={`${formatPercent(data.energyVsLastYear, { signed: true })} frente al mismo día de ${year - 1}`} />
-        <KpiCard label="Demanda máxima de potencia ayer" value={data.peakPowerMW} unit="MW" provenance={`A las ${data.peakTime}`} />
-        <KpiCard label="Demanda de gas natural ayer" value={data.gasYesterday} unit="GBTUD" provenance={`${formatPercent(data.gasVsMonthAverage, { signed: true })} frente al promedio del mes`} />
-        <KpiCard label={`Acumulado ${year} de energía`} value={data.energyYearToDate} unit="GWh" provenance={`Enero a ${monthName(data.lastDay)}`} />
+        <KpiCard label="Demanda de energía ayer" value={data.energyYesterday} unit="GWh" provenance={`${formatPercent(data.energyVsLastYear, { signed: true })} frente al mismo día de ${year - 1}`} illustrative={parts.energy} />
+        <KpiCard label="Demanda máxima de potencia ayer" value={data.peakPowerMW} unit="MW" provenance={`A las ${data.peakTime}`} illustrative={parts.peak} />
+        <KpiCard label="Demanda de gas natural ayer" value={data.gasYesterday} unit="GBTUD" provenance={`${formatPercent(data.gasVsMonthAverage, { signed: true })} frente al promedio del mes`} illustrative={parts.gas} />
+        <KpiCard label={`Acumulado ${year} de energía`} value={data.energyYearToDate} unit="GWh" provenance={`Enero a ${monthName(data.lastDay)}`} illustrative={parts.energy} />
       </div>
 
       <div className="flex-1 min-h-0 grid grid-cols-3 gap-6">
         <Panel
           className="col-span-2"
           title={dailyTitle(data.energyDaily, data.energyPrevYear, data.lastDay)}
-          subtitle={`Demanda diaria del SIN (XM) · los fines de semana bajan cerca de ${formatPercent(data.weekendDrop, { decimals: 0 })}`}
+          subtitle={`Demanda diaria del SIN (XM) · los fines de semana bajan cerca de ${formatPercent(data.weekendDrop, { decimals: 0 })}${parts.energy ? ` · ${ILLUSTRATIVE_LABEL}` : ''}`}
         >
           <EChart option={energyOption} height={430} dark ariaLabel="Demanda diaria de energía frente al mismo día del año anterior" />
         </Panel>
 
         <div className="flex flex-col gap-6 min-h-0">
-          <Panel className="flex-1" title="Gas natural por día" subtitle="Demanda nacional, GBTUD">
+          <Panel className="flex-1" title="Gas natural por día" subtitle={`Demanda nacional, GBTUD${parts.gas ? ` · ${ILLUSTRATIVE_LABEL}` : ''}`}>
             <EChart option={gasOption} height={190} dark ariaLabel="Demanda diaria de gas natural" />
           </Panel>
 

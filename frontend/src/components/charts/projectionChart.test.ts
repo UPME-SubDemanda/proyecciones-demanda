@@ -65,7 +65,28 @@ describe('gráfico real vs. proyección (GRA-01)', () => {
     const x = projectionChartOption(input).xAxis as Record<string, unknown>;
     expect('axisLabel' in x).toBe(false);
   });
-  it('línea de corte de datos', () => expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025' }]));
+  it('línea de corte de datos', () =>
+    expect(byName('Real').markLine?.data).toEqual([{ xAxis: '2025', label: { formatter: 'Corte sep-2026', position: 'end' } }]));
+  it('línea de publicación de la revisión, si cae en el rango visible (issue #40)', () => {
+    const series = projectionChartOption({ ...input, publication: { period: '2026', label: 'Publicado' } }).series as LineSeriesOption[];
+    const lines = series.find((s) => s.name === 'Real')!.markLine!.data as { xAxis: string }[];
+    expect(lines.map((l) => l.xAxis)).toEqual(['2025', '2026']);
+    const outside = projectionChartOption({ ...input, publication: { period: '1990', label: 'x' } }).series as LineSeriesOption[];
+    expect((outside.find((s) => s.name === 'Real')!.markLine!.data as unknown[]).length).toBe(1);
+  });
+  it('en mensual rotula los meses y la tabla dice «Mes» (issue #40)', () => {
+    const monthlyInput = {
+      ...input,
+      observed: [{ period: '2026-03', value: 7000 }],
+      projection: { ...input.projection, scenarios: { low: [{ period: '2026-04', value: 6900 }], mid: [{ period: '2026-04', value: 7100 }], high: [{ period: '2026-04', value: 7300 }] } },
+      cutoff: undefined,
+    };
+    const x = projectionChartOption(monthlyInput).xAxis as { axisLabel: { formatter: (v: string) => string } };
+    expect(x.axisLabel.formatter('2026-04')).toBe('abr-2026');
+    const table = projectionTable(monthlyInput);
+    expect(table.headers[0]).toBe('Mes');
+    expect(table.rows.map((r) => r[0])).toEqual(['mar-2026', 'abr-2026']);
+  });
   it('tema oscuro usa los roles oscuros', () => {
     const dark = projectionChartOption({ ...input, dark: true }).series as LineSeriesOption[];
     expect(dark.find((s) => s.name === 'Real')!.lineStyle?.color).toBe(roles.dark.real);

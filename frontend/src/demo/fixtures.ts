@@ -2,7 +2,7 @@
  * CIFRAS ILUSTRATIVAS (CON-07). No son datos oficiales: sirven para construir las vistas
  * mientras se reúnen los datos reales (T-15). Se generan con fórmulas simples y deterministas,
  * con órdenes de magnitud parecidos a los de los mockups aprobados.
- * Este módulo se elimina en T-18, cuando las vistas lean la API.
+ * Desde T-37 la energía eléctrica sale de la API; este módulo sigue para lo que no tiene datos reales (`data/source.ts`).
  */
 import type { ProductKey } from '../lib/product';
 import type {
@@ -172,6 +172,7 @@ export function demoSystemToday(): SystemToday {
     gasVsMonthAverage: round(((gasLast.value - gasAvg) / gasAvg) * 100, 1),
     energyYearToDate: 64_120,
     weekendDrop: 12,
+    illustrativeParts: { energy: true, peak: true, gas: true },
   };
 }
 

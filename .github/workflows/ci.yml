@@ -62,8 +62,8 @@ jobs:
         run: uv run alembic upgrade head
       - name: Comentarios y diccionario al día (PBD-01, PBD-03)
         run: uv run python ../scripts/diccionario.py --check
-      - name: Pruebas del modelo de datos y de las vistas de core
-        run: uv run pytest -q tests/test_db_model.py tests/test_db_views.py
+      - name: Pruebas del modelo de datos, de las vistas de core y de la API de datos
+        run: uv run pytest -q tests/test_db_model.py tests/test_db_views.py tests/test_api_ee.py
       - name: Carga de XM contra la base, con XM simulado (T-28)
         working-directory: pipelines
         run: uv sync && uv run pytest -q tests/test_xm_load_db.py

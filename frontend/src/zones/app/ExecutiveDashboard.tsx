@@ -17,6 +17,9 @@ import { formatDate, formatMonth, formatNumber, formatPercent, formatProvenance,
 import { icons } from '../../lib/icons';
 import { deviationTitle, outOfThresholdSince, sinceText } from '../../lib/insights';
 import { PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
+import {
+  eeChartUnit, effectiveResolution, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, useResolution,
+} from '../../lib/resolution';
 import { AppPage } from './AppPage';
 import { isBuilt } from './navigation';
 import { parseRange, RANGE_LABEL, RANGES, rangeYears, yearToDateEstimate, type RangeKey } from './dashboardData';
@@ -65,7 +68,7 @@ function ProductKpis({ product, status }: { product: ProductKey; status: Status 
         decimals={1}
         signed
         unit="%"
-        change={`${outside ? 'Fuera' : 'Dentro'} de umbral ±${formatNumber(threshold, { decimals: threshold % 1 ? 1 : 0 })} %`}
+        change={`${outside ? 'Fuera' : 'Dentro'} de umbral${observed!.illustrative ? '' : ' ilustrativo'} ±${formatNumber(threshold, { decimals: threshold % 1 ? 1 : 0 })} %`}
         changeTone={outside ? 'bad' : 'good'}
         provenance={formatProvenance({ cutoff: observed!.data.cutoff, source: observed!.data.source })}
         illustrative={observed!.illustrative}
@@ -81,12 +84,19 @@ function ProductKpis({ product, status }: { product: ProductKey; status: Status 
 export function ExecutiveDashboard() {
   const [product] = useProduct();
   const [params, setParams] = useSearchParams();
-  const range = parseRange(params.get('rango'));
   const ee = useProductStatus('ee');
   const gn = useProductStatus('gn');
   const alerts = useAlerts();
   const active = product.key === 'ee' ? ee : gn;
   const isEE = product.key === 'ee';
+  // Resolución de la gráfica (issue #40): anual por omisión; mensual solo en energía eléctrica.
+  const [resolutionParam, setResolution] = useResolution();
+  const resolution = effectiveResolution(product.key, resolutionParam);
+  const monthly = resolution === 'M';
+  // Sin rango elegido: «Revisión» en mensual (un año antes de la publicación a un año después del último dato real).
+  const range = parseRange(params.get('rango'), monthly);
+  const chartObserved = useObservedSeries(product.key, resolution);
+  const chartValues = useRevisionValues(active.current?.id, resolution);
 
   const setRange = (r: RangeKey) =>
     setParams((prev) => {
@@ -96,40 +106,45 @@ export function ExecutiveDashboard() {
     }, { replace: true, preventScrollReset: true });
 
   const input = useMemo(() => {
-    if (!active.ready) return null;
+    if (!active.ready || !chartObserved.data || !chartValues.data) return null;
     const points = active.observed!.data.points;
     const last = points.at(-1)!;
     const year = String(Number(last.period) + 1);
     const projected = active.values!.data.scenarios.mid.find((p) => p.period === year)?.value ?? 0;
     const ytd = active.perf!.data.yearToDate;
     const ytdValue = yearToDateEstimate(projected, ytd);
-    const unitDivisor = isEE ? 1000 : 1;
+    const units = isEE ? eeChartUnit(resolution) : { unit: 'GBTUD', divisor: 1, decimals: 0 };
+    const unitDivisor = units.divisor;
+    const chartPoints = chartObserved.data.data.points;
     return {
       product: product.key,
-      observed: points,
-      projection: active.values!.data,
+      observed: chartPoints,
+      projection: chartValues.data.data,
       projectionLabel: `Vigente ${formatMonth(active.current!.code)}`,
       past: active.list
         .filter((r) => !r.isCurrent)
         .slice(-2)
         .map((r) => ({ label: formatMonth(r.code), points: [] as typeof points })),
-      cutoff: { period: last.period, label: `Corte ${formatMonth(active.observed!.data.cutoff)}` },
-      unit: isEE ? 'TWh/año' : 'GBTUD',
+      cutoff: { period: chartPoints.at(-1)!.period, label: `Corte ${formatMonth(active.observed!.data.cutoff)}` },
+      unit: units.unit,
       divisor: unitDivisor,
+      decimals: units.decimals,
       scenarioLabels: false,
-      range: rangeYears(range, Number(last.period)),
-      ytdPoint: {
+      range: rangeYears(range, Number(last.period), publicationWindow(active.current!.publishedOn, chartPoints.at(-1)!.period)),
+      publication: { period: publicationPeriod(active.current!.publishedOn, resolution), label: publicationLabel(active.current!.publishedOn) },
+      // El punto del año corrido es anual: en mensual ya se ven los meses reales.
+      ytdPoint: monthly ? undefined : {
         period: year,
         value: ytdValue,
         label: `${year} año corrido: ${formatNumber(ytdValue / unitDivisor, { decimals: isEE ? 1 : 0 })} (${formatPercent(ytd, { signed: true })})`,
       },
     };
-  }, [active, product.key, isEE, range]);
+  }, [active, product.key, isEE, range, resolution, monthly, chartObserved.data, chartValues.data]);
 
   // Valores de las revisiones anteriores para las líneas finas (GRA-01).
   const pastIds = active.list.filter((r) => !r.isCurrent).slice(-2).map((r) => r.id);
-  const pastA = useRevisionValues(pastIds[0]);
-  const pastB = useRevisionValues(pastIds[1]);
+  const pastA = useRevisionValues(pastIds[0], resolution);
+  const pastB = useRevisionValues(pastIds[1], resolution);
   const option = useMemo(() => {
     if (!input) return null;
     const pastValues = [pastA.data?.data, pastB.data?.data];
@@ -150,7 +165,8 @@ export function ExecutiveDashboard() {
       year: s.perf!.data.monthlyDeviation.at(-1)!.period.slice(0, 4),
     }))
     .sort((a, b) => Math.abs(b.ytd) - Math.abs(a.ytd))[0];
-  const highAlerts = alerts.data?.data.filter((a) => a.severity === 'high').length ?? 0;
+  // Las alertas de ejemplo no se cuentan junto a cifras reales (T-37).
+  const highAlerts = alerts.data && !alerts.data.illustrative ? alerts.data.data.filter((a) => a.severity === 'high').length : 0;
 
   const eeObserved = ee.observed?.data;
   const subtitle = eeObserved
@@ -169,6 +185,7 @@ export function ExecutiveDashboard() {
           action={<Button size="sm" disabledReason="La vista de alertas está en construcción">Ver alertas</Button>}
         >
           {`La demanda real va ${formatPercent(Math.abs(banner.ytd))} ${banner.ytd < 0 ? 'por debajo' : 'por encima'} de lo proyectado en ${banner.year}.`}
+          {' El umbral es ilustrativo mientras se define (X-03).'}
           {highAlerts > 0 && ` Hay ${highAlerts} alerta${highAlerts === 1 ? '' : 's'} alta${highAlerts === 1 ? '' : 's'} abierta${highAlerts === 1 ? '' : 's'}.`}
         </Banner>
       )}
@@ -178,7 +195,7 @@ export function ExecutiveDashboard() {
         <ProductKpis product="gn" status={gn} />
       </section>
 
-      {active.isError ? (
+      {active.isError || chartObserved.isError || chartValues.isError ? (
         <ErrorState title="No se pudo cargar el gráfico" description="Intente de nuevo en unos minutos." />
       ) : !input || !option ? (
         <Skeleton height={480} label="Cargando gráfico" />
@@ -196,14 +213,17 @@ export function ExecutiveDashboard() {
             cutoff: active.observed!.data.cutoff,
           }}
           controls={
-            <SegmentedControl
-              ariaLabel="Rango de años"
-              value={range}
-              onChange={setRange}
-              options={RANGES.map((r) => ({ value: r, label: RANGE_LABEL[r] }))}
-            />
+            <>
+              <SegmentedControl
+                ariaLabel="Rango de años"
+                value={range}
+                onChange={setRange}
+                options={RANGES.map((r) => ({ value: r, label: RANGE_LABEL[r] }))}
+              />
+              {isEE && <SegmentedControl ariaLabel="Resolución" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />}
+            </>
           }
-          decimals={isEE ? 1 : 0}
+          decimals={input.decimals}
           illustrative={active.observed!.illustrative}
         />
       )}

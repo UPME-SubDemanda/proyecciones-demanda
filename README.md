@@ -176,6 +176,7 @@ frontend/            # Interfaz en React + TypeScript (Vite)
   e2e/               # Pruebas de punta a punta y capturas (Playwright)
   public/            # Archivos servidos tal cual
   src/               # Código del frontend
+    api/             # Tipos generados de la API
     auth/            # Sesión e ingreso en el frontend
     components/      # Componentes del inventario de diseño
     data/            # Acceso a datos (único punto)
@@ -224,10 +225,11 @@ scripts/             # Scripts del proyecto
 | `frontend/e2e/` | Recorridos de usuario (`app-shell.spec.ts`) y capturas de la guía (`screenshots.spec.ts`). |
 | `frontend/public/` | Fuentes autoalojadas (`fonts/`, UPME-TIP-02) y otros estáticos. Nada que deba pasar por el build. |
 | `frontend/src/` | Organizado por función: zonas, componentes, datos, utilidades. Ver `docs/tecnica/frontend.md`. |
+| `frontend/src/api/` | `schema.d.ts`, generado con `pnpm gen:api` desde el OpenAPI de la API (TEC-08). No se edita a mano: se regenera cuando cambia la API. |
 | `frontend/src/auth/` | Contexto de sesión, ruta protegida, página de ingreso y regreso a la página pedida. |
 | `frontend/src/components/` | Uno por carpeta con su prueba (CMP-01); solo tokens. Todo componente nuevo se agrega a la galería en el mismo PR. |
 | `frontend/src/data/` | Tipos, hooks de React Query (`queries.ts`) y fuente (`source.ts`). Las vistas solo leen datos por aquí. |
-| `frontend/src/demo/` | Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-34. |
+| `frontend/src/demo/` | Datos de ejemplo deterministas para lo que aún no tiene datos reales (CON-07): gas natural, exógenas, alertas, acierto. Energía eléctrica ya sale de la API (T-37). Se elimina en T-34. |
 | `frontend/src/dev/` | Galería de componentes (`/dev/componentes`). No entra al build de producción. |
 | `frontend/src/estandares/` | Tokens, preset de Tailwind, tema de ECharts, logos e íconos (FLU-09). **No editar**: se actualiza copiando una versión. |
 | `frontend/src/iconos-locales/` | Íconos que aún no están en `estandares/`, con su origen en `iconos.json` (X-17). Se vacía al actualizar el estándar. |

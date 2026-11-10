@@ -127,6 +127,10 @@ va_aqui = "Fuentes autoalojadas (`fonts/`, UPME-TIP-02) y otros estáticos. Nada
 breve = "Código del frontend"
 va_aqui = "Organizado por función: zonas, componentes, datos, utilidades. Ver `docs/tecnica/frontend.md`."
 
+[carpetas."frontend/src/api"]
+breve = "Tipos generados de la API"
+va_aqui = "`schema.d.ts`, generado con `pnpm gen:api` desde el OpenAPI de la API (TEC-08). No se edita a mano: se regenera cuando cambia la API."
+
 [carpetas."frontend/src/auth"]
 breve = "Sesión e ingreso en el frontend"
 va_aqui = "Contexto de sesión, ruta protegida, página de ingreso y regreso a la página pedida."
@@ -141,7 +145,7 @@ va_aqui = "Tipos, hooks de React Query (`queries.ts`) y fuente (`source.ts`). La
 
 [carpetas."frontend/src/demo"]
 breve = "Cifras ilustrativas"
-va_aqui = "Datos de ejemplo deterministas mientras no hay datos reales (CON-07). Se elimina en T-34."
+va_aqui = "Datos de ejemplo deterministas para lo que aún no tiene datos reales (CON-07): gas natural, exógenas, alertas, acierto. Energía eléctrica ya sale de la API (T-37). Se elimina en T-34."
 
 [carpetas."frontend/src/dev"]
 breve = "Herramientas solo de desarrollo"

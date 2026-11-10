@@ -14,6 +14,9 @@ import { formatPercent, formatProvenance, revisionLabel } from '../../lib/format
 import { icons } from '../../lib/icons';
 import { PRODUCT_KEYS, PRODUCTS, useProduct, type ProductKey } from '../../lib/product';
 import { PHONE, useMediaQuery } from '../../lib/useMediaQuery';
+import {
+  eeChartUnit, effectiveResolution, publicationLabel, publicationPeriod, publicationWindow, RESOLUTION_OPTIONS, useResolution,
+} from '../../lib/resolution';
 import { change, growthTitle, lastObserved, valueAt } from './portalData';
 
 const SITE_NAME = 'Proyecciones de demanda de energía';
@@ -94,30 +97,40 @@ function ProjectionSection() {
   const values = useRevisionValues(current?.id);
   const isEE = product.key === 'ee';
   const phone = useMediaQuery(PHONE);
+  // Resolución de la gráfica (issue #40): anual por omisión; mensual solo en energía eléctrica. El título sigue anual.
+  const [resolutionParam, setResolution] = useResolution();
+  const resolution = effectiveResolution(product.key, resolutionParam);
+  const chartObserved = useObservedSeries(product.key, resolution);
+  const chartValues = useRevisionValues(current?.id, resolution);
+  const units = isEE ? eeChartUnit(resolution) : { unit: 'GBTUD', divisor: 1, decimals: 0 };
 
   const input = useMemo(() => {
-    if (!observed.data || !values.data) return null;
+    if (!chartObserved.data || !chartValues.data || !current) return null;
+    const lastPeriod = chartObserved.data.data.points.at(-1)!.period;
     return {
       product: product.key,
-      observed: observed.data.data.points,
-      projection: values.data.data,
+      observed: chartObserved.data.data.points,
+      projection: chartValues.data.data,
       projectionLabel: 'Medio',
-      unit: isEE ? 'TWh/año' : 'GBTUD',
-      divisor: isEE ? 1000 : 1,
+      unit: units.unit,
+      divisor: units.divisor,
       scenarioLabels: true,
       compact: phone,
+      // Mensual: alrededor de la revisión vigente; anual: toda la serie (issue #40).
+      range: resolution === 'M' ? publicationWindow(current.publishedOn, lastPeriod) : undefined,
+      publication: { period: publicationPeriod(current.publishedOn, resolution), label: publicationLabel(current.publishedOn) },
     };
-  }, [observed.data, values.data, product.key, isEE, phone]);
+  }, [chartObserved.data, chartValues.data, current, product.key, units.unit, units.divisor, phone, resolution]);
   const option = useMemo(() => (input ? projectionChartOption(input) : null), [input]);
 
-  if (observed.isError || revisions.isError || values.isError)
+  if (observed.isError || revisions.isError || values.isError || chartObserved.isError || chartValues.isError)
     return <ErrorState title="No se pudo cargar la proyección" description="Intente de nuevo en unos minutos." />;
-  if (!input || !option || !current || !observed.data) return <Skeleton height={480} label="Cargando gráfico de la proyección" />;
+  if (!input || !option || !current || !observed.data || !values.data) return <Skeleton height={480} label="Cargando gráfico de la proyección" />;
 
   const region = observed.data.data.region === 'SIN' ? 'Sistema Interconectado Nacional' : 'Total nacional';
   return (
     <ChartCard
-      title={growthTitle(product.key, input.observed, input.projection)}
+      title={growthTitle(product.key, observed.data.data.points, values.data.data)}
       subtitle={`${region} · ${revisionLabel(current.code)} · escenarios bajo, medio y alto`}
       option={option}
       table={projectionTable(input)}
@@ -137,6 +150,7 @@ function ProjectionSection() {
             onChange={setProduct}
             options={PRODUCT_KEYS.map((k) => ({ value: k, label: PRODUCTS[k].name }))}
           />
+          {isEE && <SegmentedControl ariaLabel="Resolución" size="touch" value={resolution} onChange={setResolution} options={RESOLUTION_OPTIONS} />}
           {/* Acceso discreto al modo pantalla; en teléfonos no se muestra (T-07, #15). */}
           <a href={KIOSK_URL} className="hidden lg:inline-flex items-center h-11 px-2 text-body font-bold text-primary hover:underline">
             Ver en modo pantalla →
@@ -145,7 +159,7 @@ function ProjectionSection() {
       }
       actionSize="touch"
       height={phone ? 300 : 360}
-      decimals={isEE ? 1 : 0}
+      decimals={units.decimals}
       illustrative={observed.data.illustrative}
     />
   );

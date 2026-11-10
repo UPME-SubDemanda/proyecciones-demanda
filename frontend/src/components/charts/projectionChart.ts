@@ -1,13 +1,14 @@
 /**
  * Gráfico «¿Cómo va lo real frente a lo estimado?» (GRA-03): línea real + proyección vigente + banda
  * de escenarios bajo–alto, con la codificación fija de GRA-01. Lo usan el portal, el tablero
- * ejecutivo y el modo pantalla.
+ * ejecutivo y el modo pantalla. Los periodos pueden ser años (`2026`) o meses (`2026-04`, issue #40).
  */
 import type { EChartsOption, LineSeriesOption } from 'echarts';
 import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import { SCENARIO_LABEL, type Point, type RevisionValues, type Scenario } from '../../data/types';
 import { formatNumber, formatPercent } from '../../lib/format';
 import { PRODUCTS, type ProductKey } from '../../lib/product';
+import { inYearRange, periodLabel } from '../../lib/resolution';
 
 export type ProjectionChartInput = {
   product: ProductKey;
@@ -19,6 +20,8 @@ export type ProjectionChartInput = {
   past?: { label: string; points: Point[] }[];
   /** Periodo y texto de la línea de corte de datos: «2025», «Corte sep-2026». */
   cutoff?: { period: string; label: string };
+  /** Periodo y texto de la línea de publicación de la revisión: «2026-07», «Publicación jul-2026» (issue #40). */
+  publication?: { period: string; label: string };
   /** Unidad del eje y divisor: GWh → TWh/año con 1000. */
   unit: string;
   divisor?: number;
@@ -41,6 +44,32 @@ export type ProjectionChartInput = {
 
 const DATA_DECIMALS = 1;
 
+type VerticalLine = { period: string; label: string };
+/** Píxeles que sube el rótulo «Publicado» sobre el de «Corte», para que queden en dos filas. */
+const PUBLICATION_LABEL_OFFSET = 20;
+
+/**
+ * Líneas verticales de referencia (GRA-01, `dash.reference`): corte de datos y publicación de la revisión. Solo las que
+ * caen en los periodos visibles. Los dos rótulos van horizontales sobre su línea; el de la publicación, una fila más
+ * arriba, para que no se encimen cuando las líneas están a pocos meses.
+ */
+export function referenceLines(periods: string[], color: string, cutoff?: VerticalLine, publication?: VerticalLine) {
+  const data = [
+    ...(cutoff && periods.includes(cutoff.period)
+      ? [{ xAxis: cutoff.period, label: { formatter: cutoff.label, position: 'end' as const } }] : []),
+    ...(publication && periods.includes(publication.period)
+      ? [{ xAxis: publication.period, label: { formatter: publication.label, position: 'end' as const, distance: [0, PUBLICATION_LABEL_OFFSET] } }] : []),
+  ];
+  if (!data.length) return undefined;
+  return {
+    symbol: 'none',
+    silent: true,
+    lineStyle: { type: dash.reference, color, width: 1 },
+    label: { color },
+    data,
+  };
+}
+
 function scale(points: Point[], divisor: number): Map<string, number> {
   return new Map(points.map((p) => [p.period, Math.round((p.value / divisor) * 10) / 10]));
 }
@@ -52,9 +81,10 @@ export function projectionTable(input: ProjectionChartInput) {
   const { low, mid, high } = input.projection.scenarios;
   const [l, m, h] = [scale(low, divisor), scale(mid, divisor), scale(high, divisor)];
   const periods = [...new Set([...real.keys(), ...m.keys()])].sort();
+  const monthly = periods.some((p) => p.length === 7);
   return {
-    headers: ['Año', `Real (${input.unit})`, `Bajo (${input.unit})`, `Medio (${input.unit})`, `Alto (${input.unit})`],
-    rows: periods.map((p) => [p, real.get(p) ?? null, l.get(p) ?? null, m.get(p) ?? null, h.get(p) ?? null]),
+    headers: [monthly ? 'Mes' : 'Año', `Real (${input.unit})`, `Bajo (${input.unit})`, `Medio (${input.unit})`, `Alto (${input.unit})`],
+    rows: periods.map((p) => [periodLabel(p), real.get(p) ?? null, l.get(p) ?? null, m.get(p) ?? null, h.get(p) ?? null]),
   };
 }
 
@@ -68,7 +98,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const { low, mid, high } = input.projection.scenarios;
   const [l, m, h] = [scale(low, divisor), scale(mid, divisor), scale(high, divisor)];
   const pastScaled = (input.past ?? []).map((r) => ({ label: r.label, values: scale(r.points, divisor) }));
-  const inRange = (p: string) => !input.range || (Number(p) >= input.range[0] && Number(p) <= input.range[1]);
+  const inRange = (p: string) => inYearRange(p, input.range);
   const periods = [...new Set([...real.keys(), ...m.keys(), ...pastScaled.flatMap((r) => [...r.values.keys()])])]
     .sort()
     .filter(inRange);
@@ -76,6 +106,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
   const visible = new Set<Scenario>(input.scenarios ?? ['low', 'mid', 'high']);
   const band = visible.has('low') && visible.has('high');
   const ytd = input.ytdPoint && periods.includes(input.ytdPoint.period) ? input.ytdPoint : undefined;
+  const monthly = periods.some((p) => p.length === 7);
 
   const endLabel = (text: string, color: string): LineSeriesOption['endLabel'] => ({
     show: true, formatter: text, color, fontWeight: 700, fontSize: input.kiosk ? 18 : input.compact ? 11 : 12,
@@ -154,15 +185,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
       data: at(real),
       lineStyle: { width, color: theme.real },
       itemStyle: { color: theme.real },
-      markLine: input.cutoff
-        ? {
-            symbol: 'none',
-            silent: true,
-            lineStyle: { type: dash.reference, color: theme.reference, width: 1 },
-            label: { formatter: input.cutoff.label, color: theme.reference, position: 'end' },
-            data: [{ xAxis: input.cutoff.period }],
-          }
-        : undefined,
+      markLine: referenceLines(periods, theme.reference, input.cutoff, input.publication),
       // Punto del año corrido: marca hueca con su cifra, sobre el eje de categorías (no altera el eje).
       markPoint: ytd
         ? {
@@ -204,7 +227,7 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         const period = String(list[0]?.name ?? '');
         const r = real.get(period);
         const e = m.get(period);
-        const lines = [`<strong>${period}</strong>`];
+        const lines = [`<strong>${periodLabel(period)}</strong>`];
         if (r !== undefined) lines.push(`Real: ${formatNumber(r, { decimals: DATA_DECIMALS })} ${input.unit}`);
         if (e !== undefined) lines.push(`${input.projectionLabel}: ${formatNumber(e, { decimals: DATA_DECIMALS })} ${input.unit}`);
         if (r !== undefined && e !== undefined && e !== 0)
@@ -214,8 +237,11 @@ export function projectionChartOption(input: ProjectionChartInput): EChartsOptio
         return lines.join('<br/>');
       },
     },
-    // Las claves de tamaño solo se agregan en modo pantalla: `axisLabel: undefined` borraría las del tema.
-    xAxis: { type: 'category', data: periods, boundaryGap: false, ...(input.kiosk ? { axisLabel: { fontSize: 16 } } : {}) },
+    // Solo se agregan las claves que hacen falta: `axisLabel` vacío o `undefined` pisaría las del tema.
+    xAxis: {
+      type: 'category', data: periods, boundaryGap: false,
+      ...(input.kiosk || monthly ? { axisLabel: { ...(monthly ? { formatter: periodLabel } : {}), ...(input.kiosk ? { fontSize: 16 } : {}) } } : {}),
+    },
     yAxis: {
       type: 'value',
       name: input.unit,

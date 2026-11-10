@@ -6,6 +6,8 @@ import type { BarSeriesOption, EChartsOption, LineSeriesOption } from 'echarts';
 import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import type { Point } from '../../data/types';
 import { formatMonth, formatNumber, formatPercent } from '../../lib/format';
+import { inYearRange, periodLabel } from '../../lib/resolution';
+import { referenceLines } from './projectionChart';
 import type { ProductKey } from '../../lib/product';
 
 export type DeviationInput = {
@@ -73,8 +75,12 @@ export type FanRevision = { label: string; points: Point[]; color: string; curre
  * en orden; la vigente siempre discontinua y más gruesa (GRA-06).
  */
 export function revisionsFanOption({
-  observed, revisions, range, divisor, unit, dark = true, kiosk = true,
-}: { observed: Point[]; revisions: FanRevision[]; range: [number, number]; divisor: number; unit: string; dark?: boolean; kiosk?: boolean }): EChartsOption {
+  observed, revisions, range, divisor, unit, dark = true, kiosk = true, publication,
+}: {
+  observed: Point[]; revisions: FanRevision[]; range: [number, number]; divisor: number; unit: string; dark?: boolean; kiosk?: boolean;
+  /** Línea de publicación de la revisión vigente (issue #40). */
+  publication?: { period: string; label: string };
+}): EChartsOption {
   const theme = dark ? roles.dark : roles.light;
   const fontSize = kiosk ? 16 : 12;
   const scaleMap = (points: Point[]) => new Map(points.map((p) => [p.period, Math.round((p.value / divisor) * 10) / 10]));
@@ -82,7 +88,7 @@ export function revisionsFanOption({
   const scaled = revisions.map((r) => ({ ...r, values: scaleMap(r.points) }));
   const periods = [...new Set([...real.keys(), ...scaled.flatMap((r) => [...r.values.keys()])])]
     .sort()
-    .filter((p) => Number(p) >= range[0] && Number(p) <= range[1]);
+    .filter((p) => inYearRange(p, range));
   const at = (m: Map<string, number>) => periods.map((p) => m.get(p) ?? null);
   return {
     animationDuration: 400,
@@ -92,12 +98,12 @@ export function revisionsFanOption({
       trigger: 'axis',
       formatter: (params) => {
         const list = Array.isArray(params) ? params : [params];
-        return [`<strong>${list[0]?.name ?? ''}</strong>`, ...list
+        return [`<strong>${periodLabel(String(list[0]?.name ?? ''))}</strong>`, ...list
           .filter((p) => p.value !== null && p.value !== undefined)
           .map((p) => `${p.seriesName}: ${formatNumber(Number(p.value), { decimals: 1 })} ${unit}`)].join('<br/>');
       },
     },
-    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: { fontSize } },
+    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: { fontSize, formatter: periodLabel } },
     yAxis: { type: 'value', name: unit, scale: true, nameTextStyle: { fontSize }, axisLabel: { fontSize, formatter: (v: number) => formatNumber(v) } },
     series: [
       ...scaled.map<LineSeriesOption>((r) => ({
@@ -114,6 +120,7 @@ export function revisionsFanOption({
         data: at(real),
         lineStyle: { width: kiosk ? lineWidth.kiosk : lineWidth.real, color: theme.real },
         itemStyle: { color: theme.real },
+        markLine: referenceLines(periods, theme.reference, undefined, publication),
         z: 4,
       },
     ],

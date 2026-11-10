@@ -4,10 +4,11 @@ Una entrada por PR unido a `develop` (DOC-05), en `AAAA/AAAA-MM-DD-<slug>.md`. R
 
 Lista generada por `scripts/diario.py` desde el encabezado de cada entrada. No editar a mano.
 
-## Entradas (20)
+## Entradas (21)
 
 | Fecha | Entrada | Tipo | Vistas | Features | Issue | PR |
 | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-10 | [Datos reales ee](2026/2026-11-10-datos-reales-ee.md) | modifica | tablero-ejecutivo, historico-revisiones, portal-inicio, modo-pantalla | datos-reales-ee | [#40](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/40) | [#41](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/41) |
 | 2026-11-10 | [Flujo xm historico](2026/2026-11-10-flujo-xm-historico.md) | agrega | — | flujo-xm-historico | [#38](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/38) | [#39](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/39) |
 | 2026-11-10 | [Carga prueba ee](2026/2026-11-10-carga-prueba-ee.md) | agrega | — | carga-prueba-ee, vistas-anchas-core | [#36](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/36) | [#37](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/37) |
 | 2026-11-10 | [Migracion modelo v2](2026/2026-11-10-migracion-modelo-v2.md) | agrega | — | modelo-datos-v2, diccionario-base | [#34](https://github.com/UPME-SubDemanda/proyecciones-demanda/issues/34) | [#35](https://github.com/UPME-SubDemanda/proyecciones-demanda/pull/35) |

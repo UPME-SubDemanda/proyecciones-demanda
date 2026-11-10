@@ -7,6 +7,8 @@ import { dash, lineWidth, roles } from '../../estandares/echarts-theme.js';
 import type { Point } from '../../data/types';
 import { formatNumber, formatPercent } from '../../lib/format';
 import type { ProductKey } from '../../lib/product';
+import { inYearRange, periodLabel } from '../../lib/resolution';
+import { referenceLines } from './projectionChart';
 
 export type HistoryRevision = { code: string; label: string; points: Point[]; current: boolean };
 
@@ -22,6 +24,8 @@ export type HistoryChartInput = {
   divisor?: number;
   range?: [number, number];
   dark?: boolean;
+  /** Línea de publicación de la revisión resaltada (la vigente o la seleccionada), issue #40. */
+  publication?: { period: string; label: string };
 };
 
 export const OTHERS = 'Otras revisiones';
@@ -42,7 +46,7 @@ export function historyChartOption(input: HistoryChartInput): EChartsOption {
   const revs = input.revisions.map((r) => ({ ...r, values: scale(r.points) }));
   const periods = [...new Set([...real.keys(), ...revs.flatMap((r) => [...r.values.keys()])])]
     .sort()
-    .filter((p) => !input.range || (Number(p) >= input.range[0] && Number(p) <= input.range[1]));
+    .filter((p) => inYearRange(p, input.range));
   const at = (m: Map<string, number>) => periods.map((p) => m.get(p) ?? null);
   const current = revs.find((r) => r.current);
   const selected = revs.find((r) => r.code === input.selected && !r.current);
@@ -89,6 +93,7 @@ export function historyChartOption(input: HistoryChartInput): EChartsOption {
       data: at(real),
       lineStyle: { width: lineWidth.real, color: theme.real },
       itemStyle: { color: theme.real },
+      markLine: referenceLines(periods, theme.reference, undefined, input.publication),
       z: 4,
     },
   ];
@@ -106,17 +111,17 @@ export function historyChartOption(input: HistoryChartInput): EChartsOption {
       formatter: (params) => {
         const list = Array.isArray(params) ? params : [params];
         const period = String(list[0]?.name ?? '');
-        if (!focus) return period;
+        if (!focus) return periodLabel(period);
         const p = focus.values.get(period);
         const r = real.get(period);
-        const lines = [`<strong>${period} · Revisión ${focus.label}</strong>`];
+        const lines = [`<strong>${periodLabel(period)} · Revisión ${focus.label}</strong>`];
         if (p !== undefined) lines.push(`Proyectado ${formatNumber(p, { decimals: 1 })} ${input.unit}`);
         if (r !== undefined) lines.push(`Real ${formatNumber(r, { decimals: 1 })} ${input.unit}`);
         if (p !== undefined && r !== undefined) lines.push(errorText(p, r));
         return lines.join('<br/>');
       },
     },
-    xAxis: { type: 'category', data: periods, boundaryGap: false },
+    xAxis: { type: 'category', data: periods, boundaryGap: false, axisLabel: { formatter: periodLabel } },
     yAxis: { type: 'value', name: input.unit, scale: true, axisLabel: { formatter: (v: number) => formatNumber(v) } },
     series,
   };

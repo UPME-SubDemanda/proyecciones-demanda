@@ -8,11 +8,11 @@ Generado por `scripts/inventario.py`. No editar a mano.
 | [Inicio de la app interna](app-inicio.md) | app | `/app` | [viewer, modeler, approver, admin] | retirada | 2026-11-09 |
 | [Comparar revisiones](comparar-revisiones.md) | app | `/app/proyecciones/comparar` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |
 | [Ejecutar proyección](ejecutar-proyeccion.md) | app | `/app/operacion/ejecutar` | [modeler, admin] | diseno | 2026-11-08 |
-| [Histórico de revisiones](historico-revisiones.md) | app | `/app/proyecciones/historico` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-09 |
+| [Histórico de revisiones](historico-revisiones.md) | app | `/app/proyecciones/historico` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-10 |
 | [Ingresar](ingresar.md) | portal | `/ingresar` | [publico] | desarrollo | 2026-11-07 |
-| [Modo pantalla](modo-pantalla.md) | pantalla | `/pantalla` | [publico] | desarrollo | 2026-11-08 |
+| [Modo pantalla](modo-pantalla.md) | pantalla | `/pantalla` | [publico] | desarrollo | 2026-11-10 |
 | [Monitor de variables exógenas](monitor-exogenas.md) | app | `/app/variables/exogenas` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-09 |
-| [Inicio del portal](portal-inicio.md) | portal | `/` | [publico] | desarrollo | 2026-11-08 |
+| [Inicio del portal](portal-inicio.md) | portal | `/` | [publico] | desarrollo | 2026-11-10 |
 | [Proyección vs. real](proyeccion-vs-real.md) | app | `/app/proyecciones` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |
 | [Registro de modelos](registro-modelos.md) | app | `/app/modelos` | [viewer, modeler, approver, admin] | diseno | 2026-11-08 |
-| [Tablero ejecutivo](tablero-ejecutivo.md) | app | `/app` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-09 |
+| [Tablero ejecutivo](tablero-ejecutivo.md) | app | `/app` | [viewer, modeler, approver, admin] | desarrollo | 2026-11-10 |
