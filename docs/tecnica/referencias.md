@@ -1459,7 +1459,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Lector de anexos de la UPME (por encabezados, con verificación de sumas y normalización entre versiones) y flujo `load-published-revisions`. **Hecho en el issue #42:** el flujo descarga del sitio de la UPME los anexos de `revisiones_ee.toml` que falten, verifica su huella y los carga; corre al arrancar el worker, para que el despliegue quede con las revisiones. **Falta:** la normalización entre versiones de anexo
 
-Etapa: 1 · Depende de: T-24 · Issue: #42 · PR: —
+Etapa: 1 · Depende de: T-24 · Issue: #42 · PR: #43
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
