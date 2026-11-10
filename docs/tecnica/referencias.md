@@ -1425,7 +1425,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error) y las vistas anchas de `core`
 
-Etapa: 1 · Depende de: T-23 · Issue: #36 · PR: —
+Etapa: 1 · Depende de: T-23 · Issue: #36 · PR: #37
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
