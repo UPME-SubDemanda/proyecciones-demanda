@@ -1,10 +1,10 @@
 # Flujos de datos (Prefect)
 
-Flujos de carga del modelo de datos v2 ([Base de datos](base-de-datos/index.md)). Se construyen en la fase 3 del plan de datos (T-27 a T-31). El primero es la carga histórica diaria de XM (T-28, abajo); los demás están planeados. La carga de prueba de T-24 dejó el lector de anexos que usará T-27. Cómo se opera Prefect aquí: [ficha local](herramientas/prefect.md). Todo flujo registra cada consulta en `operacion.extractions`, deja su fila en la bitácora `operacion.load_runs` aunque no encuentre nada, y anota cada error o advertencia en `operacion.load_messages` (PDA-05).
+Flujos de carga del modelo de datos v2 ([Base de datos](base-de-datos/index.md)). Se construyen en la fase 3 del plan de datos (T-27 a T-31). Ya están la carga histórica diaria de XM (T-28) y la carga de las revisiones publicadas desde el sitio de la UPME (parte de T-27, issue #42); los demás están planeados. Cómo se opera Prefect aquí: [ficha local](herramientas/prefect.md). Todo flujo registra cada consulta en `operacion.extractions`, deja su fila en la bitácora `operacion.load_runs` aunque no encuentre nada, y anota cada error o advertencia en `operacion.load_messages` (PDA-05).
 
 | Flujo | Qué hace | Cuándo corre | Tablas que toca | Reglas | Notifica (1.2) |
 | --- | --- | --- | --- | --- | --- |
-| `load-published-revisions` | Lee un anexo de revisión de la UPME por sus encabezados, verifica sus sumas, normaliza las convenciones y lo carga | Cuando se publica una revisión; una vez para las históricas | `raw.files`, `raw.file_cells` → `staging.revision_*` → `core.revisions` y tablas de la revisión | PDA-06, PDA-07 | Revisión cargada o rechazada |
+| `load-published-revisions` **construido** (falta la normalización entre versiones de anexo, T-27) | Descarga del sitio de la UPME los anexos de `revisiones_ee.toml` que falten, verifica su huella, los lee por sus encabezados, verifica sus sumas y los carga | **Al arrancar el worker** (`start.sh`) y a mano (despliegue `revisiones-ee`, sin horario) | `raw.files`, `raw.file_cells` → `staging.revision_*` → `core.revisions` y tablas de la revisión | PDA-06, PDA-07, P-0003 | Revisión cargada o rechazada |
 | `ingest-observed-demand` (histórica) **construido** | Carga las medidas diarias de XM (`DemaSIN` y `DemaMaxPot`) en un rango (por omisión, del 2010-01-01 a ayer); guarda solo lo nuevo o cambiado | A mano (despliegue `xm-historico-diario`, sin horario) | `raw.xm_sinergox_values` → `staging.observed_values` → `core.observed_values`, `core.observed_changes` | PBD-05, PDA-05 | — |
 | `ingest-observed-demand` (diaria) | Consulta a XM SINERGOX los últimos días desde el último dato guardado; guarda solo lo nuevo o cambiado; aplica las reglas de anomalía | Todos los días (hora por definir, X-24) | `raw.xm_sinergox_values` → `staging.observed_values` → `core.observed_values`, `core.observed_changes`, `core.data_anomalies` | PBD-05, PDA-02 | Falla o fuente sin actualizar |
 | `ingest-observed-demand` (conciliación) | Vuelve a consultar el histórico (completo o un tramo, X-24) para encontrar cambios que la diaria no vio | Los domingos | Las mismas | PDA-03 | Cambios encontrados |
@@ -42,9 +42,40 @@ Primera ejecución (2026-11-10, del 2010-01-01 al 2026-11-09):
 
 `DemaSIN` ya estaba completa (T-24): volver a pasarla no creó ninguna versión, como pide PBD-05.
 
+## Revisiones publicadas (T-27, issue #42)
+
+Flujo `load-published-revisions` (`pipelines/flows/upme_revisions.py`), despliegue `revisiones-ee`. Sirve para que cualquier servidor donde se despliegue la app quede con todas las revisiones de EE, sin copiar archivos a mano.
+
+**Corre solo al arrancar el contenedor `prefect-worker`** (`pipelines/start.sh`), antes de servir los despliegues. Por eso, al desplegar o actualizar el servidor (`git pull` y `docker compose up -d --build`, ver [Despliegue](despliegue.md)), se cargan las revisiones que falten. También se puede ejecutar a mano desde la interfaz de Prefect.
+
+| Parámetro | Por omisión | Qué es |
+| --- | --- | --- |
+| `solo` | Todas las de `revisiones_ee.toml` | Códigos de revisión (por ejemplo `["2026-07"]`) |
+
+Cómo funciona:
+
+- **De dónde salen los anexos:** de `annex_url` en `pipelines/revisiones_ee.toml`, el enlace del sitio de la UPME. Los archivos no entran al repositorio.
+- **Primero mira qué falta.** Una revisión cuyo anexo ya está en `raw.files` (misma huella SHA-256) se omite **sin descargarla**. Si están todas, deja una sola carga `ok` en la bitácora («Las 5 revisiones… ya estaban cargadas») y termina.
+- **Verifica la huella.** El archivo descargado debe tener la huella `annex_sha256` del TOML, la del anexo que se validó. Si no la tiene, no se carga: queda una carga `failed` con el mensaje `annex_hash_mismatch`. Puede ser otro archivo con otras cifras, y decidir si es una corrección es de una persona (P-0003).
+- **Descarga con reintentos:** 3 intentos ante fallas de red o errores 5xx. Un 4xx (por ejemplo, el enlace cambió) no se reintenta: queda `annex_download_failed`.
+- **Carga con el lector de T-24:** `raw → staging → core` (PDA-01), con verificación de sumas (PDA-06), GD positiva (PDA-07) y bitácora (PDA-05). Una revisión que ya existe con otro anexo no se toca (`revision_exists`).
+- **Una revisión que falla no detiene las demás.** Al final el flujo termina en error y dice cuál falló.
+- **Si falla al arrancar** (por ejemplo, el servidor no tiene salida a internet), el worker arranca igual y sirve los despliegues; el motivo queda en Prefect y en `operacion.load_runs`.
+- **En un servidor nuevo**, el worker puede arrancar antes de que la API termine las migraciones: `start.sh` espera hasta 5 minutos a que exista `core.revisions`.
+
+**Para agregar una revisión nueva:** se agrega su entrada al TOML, con `annex_url`, `annex_sha256` (`shasum -a 256 <anexo>`) y los metadatos que el anexo no trae. Al desplegar, se carga sola; o se ejecuta `revisiones-ee` desde la interfaz.
+
+A mano, sin pasar por el servidor de Prefect:
+
+```bash
+docker compose exec prefect-worker python -m flows.upme_revisions --solo 2026-07
+```
+
+Comprobado el 2026-11-10 con una base nueva, recién migrada: el arranque del worker descargó y cargó las 5 revisiones del sitio de la UPME, con cifras idénticas a las de la carga de T-24. Una segunda ejecución no descargó nada.
+
 ## Carga de prueba (T-24)
 
-Antes de los flujos, T-24 cargó a mano las 5 revisiones de EE y `DemaSIN` diaria desde 2010 para probar el modelo con datos reales. No era un flujo de Prefect ni corría sola: era `pipelines/carga_prueba.py`, que sigue el mismo recorrido `raw → staging → core` (PDA-01) y deja bitácora (PDA-05). Desde T-28 la parte de XM es el flujo de arriba y `carga_prueba.py` solo carga los anexos, hasta que T-27 tenga su flujo.
+Antes de los flujos, T-24 cargó a mano las 5 revisiones de EE y `DemaSIN` diaria desde 2010 para probar el modelo con datos reales. No era un flujo de Prefect ni corría sola: era `pipelines/carga_prueba.py`, que sigue el mismo recorrido `raw → staging → core` (PDA-01) y deja bitácora (PDA-05). Desde T-28, XM tiene su flujo, y desde el issue #42 las revisiones también (arriba). `carga_prueba.py` queda para cargar anexos a mano desde una carpeta local, por ejemplo en un equipo sin salida a internet.
 
 | Pieza | Archivo | Qué hace | La reutiliza |
 | --- | --- | --- | --- |

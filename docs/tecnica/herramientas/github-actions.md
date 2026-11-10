@@ -36,7 +36,7 @@ Levanta un PostgreSQL 16 vacío, la misma versión de `docker-compose.yml`, y so
 | Migraciones hacia arriba | Que todas las migraciones de Alembic se apliquen desde cero | BD-04 |
 | Comentarios y diccionario | Que todo esquema, tabla, vista y columna tenga su comentario, y que `diccionario.md` esté al día | PBD-01, PBD-03 |
 | Pruebas del modelo, de las vistas y de la API de datos | Que las tablas, las restricciones y las vistas de `core` respondan lo que deben (versiones, abanico, comparación de revisiones, error) y que la API de datos de EE devuelva lo que leen las vistas (`tests/test_api_ee.py`) | PBD-04 |
-| Carga de XM contra la base | La carga completa de una medida con XM simulado (`pipelines/tests/test_xm_load_db.py`). Revisa cinco cosas: que convierta unidades, que no cree versiones si nada cambió, que registre los cambios, que avise los días que faltan y que marque la carga como fallida si XM no responde | PBD-05, PDA-05 |
+| Cargas de XM y de revisiones contra la base | La carga completa de una medida con XM simulado (`pipelines/tests/test_xm_load_db.py`). Revisa cinco cosas: que convierta unidades, que no cree versiones si nada cambió, que registre los cambios, que avise los días que faltan y que marque la carga como fallida si XM no responde. Y la carga de una revisión con la descarga simulada (`pipelines/tests/test_revisions_load_db.py`, issue #42): que descargue, verifique la huella y cargue; que la próxima vez no la descargue; y que un archivo con otra huella quede como carga fallida, sin tocar `core` | PBD-05, PDA-05, P-0003 |
 | Migraciones de ida y vuelta | Que todas se puedan revertir y volver a aplicar sin errores | PBD-04 |
 
 ## Dónde está
