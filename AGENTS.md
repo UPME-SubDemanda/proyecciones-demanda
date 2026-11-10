@@ -19,6 +19,7 @@ Copia de `upme-estandares` en `reglas/` (versión en `reglas/VERSION`), marca **
 | Cualquier tarea (ya cargado por `CLAUDE.md`) | `reglas/REGLAS-FLUJO.md` |
 | Diseñar, revisar o tocar el frontend, gráficos, portal o modo pantalla | `reglas/REGLAS-DISENO.md` y `reglas/MARCA-UPME.md`; diseño propio de esta app en `docs/tecnica/diseno-app.md` |
 | Agregar, cambiar o quitar una librería o tecnología; tocar arquitectura, base de datos o autenticación | `reglas/REGLAS-TECNICAS.md`. Para una tecnología: **no la instales**; entrega el prompt de TEC-10 para Claude Code en `upme-estandares` |
+| Crear, cambiar o quitar un paso de la CI (`.github/workflows/`) o un hook (`.githooks/`) | `docs/tecnica/herramientas/github-actions.md`: actualízala en el mismo PR (PFL-03) |
 | Publicar un release o decidir una versión | `docs/tecnica/versionado.md` |
 | Diseñar o cambiar la base de datos, una tabla, una vista o una carga de datos | `docs/tecnica/reglas-proyecto.md` (PBD, PDA, PFU) y la sección `docs/tecnica/base-de-datos/` (modelo de datos v2, P-0004) |
 | Copiar una versión nueva de `reglas/` desde `upme-estandares` | PFL-02 en `docs/tecnica/reglas-proyecto.md`: revisa qué reglas del proyecto ya están en el estándar y reemplázalas por la referencia; verifica que ninguna contradiga al estándar; repórtalo en el PR |

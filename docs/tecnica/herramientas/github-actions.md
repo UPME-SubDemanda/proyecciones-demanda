@@ -86,6 +86,7 @@ Estas pruebas usan periodos de 2099 y borran lo que crean, así que no tocan los
 
 ## Reglas propias
 
+- **Esta ficha se actualiza en el mismo PR que cambia la CI o un hook (PFL-03).** Por cada paso: qué verifica y la regla, en qué job corre, cómo correrlo en local y qué hacer si falla.
 - Los dos checks tienen que salir en verde para unir un PR (FLU-05). Con GitHub Free y un repositorio privado no hay protección de ramas: se cumple por disciplina (P-17).
 - Toda prueba que necesite PostgreSQL va en el job `base-de-datos`. SQLite no la reemplaza (PBD-04).
 - Las pruebas no salen a internet: XM y las demás fuentes se simulan.
@@ -94,4 +95,4 @@ Estas pruebas usan periodos de 2099 y borran lo que crean, así que no tocan los
 
 1. Un paso que no necesita base va en `checks`; uno que sí, en `base-de-datos`.
 2. Cada paso lleva un nombre en español que diga qué verifica y la regla, como los de hoy.
-3. El paso se agrega en esta ficha, en la tabla de su job, en el mismo PR.
+3. El paso se agrega en esta ficha, en la tabla de su job, con cómo correrlo en local, en el mismo PR (PFL-03).

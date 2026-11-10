@@ -37,7 +37,7 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proy
 | [PBD](#pbd) | Base de datos (PBD) | `docs/tecnica/reglas-proyecto.md` | 8 |
 | [PDA](#pda) | Datos y cargas (PDA) | `docs/tecnica/reglas-proyecto.md` | 7 |
 | [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 3 |
-| [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 2 |
+| [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 3 |
 | [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
 | [T](#t) | Plan de trabajo | `docs/pendientes.md` | 36 |
 | [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 33 |
@@ -1221,6 +1221,16 @@ Al copiar una versión nueva de `reglas/` desde `upme-estandares` (FLU-09), el a
 
 Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
 
+### PFL-03 · DEBE {#pfl-03}
+
+Toda automatización de la CI se documenta en el mismo PR que la crea, la cambia o la quita: cada job y cada paso de `.github/workflows/`, y también los hooks de Git que la acompañan (`.githooks/`). La documentación vive en la [ficha de GitHub Actions](herramientas/github-actions.md) y dice, por cada paso:
+1. qué verifica y por qué, con la regla que hace cumplir;
+2. en qué job corre y qué necesita (por ejemplo, PostgreSQL);
+3. cómo correrlo en local antes de abrir el PR;
+4. qué hacer si falla.
+
+Fuente: [reglas-proyecto.md · Flujo de trabajo (PFL)](reglas-proyecto.md#flujo-de-trabajo-pfl)
+
 ## PER · Cálculo del error (PER) {#per}
 
 ### PER-01 · DEBE {#per-01}
@@ -1697,7 +1707,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-22 · Reglas del proyecto al estándar {#x-22}
 
-Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado, citar la página del informe) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
+Llevar a `upme-estandares` las reglas del proyecto que sirven a cualquier proyecto (comentarios y documentación de la base, CI con PostgreSQL, versionamiento y calidad de datos, bitácora, esquema `operacion`, fichas y guías de fuentes, protocolo regla local + pendiente, metadatos corregibles de lo publicado, citar la página del informe, documentar la CI) y corregir BD-03 (columnas de `raw` en inglés). [Detalle, insumos y prompt](../pendientes/x-22-reglas-al-estandar.md)
 
 Responsable: Líder · Estado: Abierto
 

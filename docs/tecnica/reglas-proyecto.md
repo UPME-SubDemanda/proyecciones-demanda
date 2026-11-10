@@ -81,6 +81,15 @@ Cada error, advertencia o información de la carga va en `operacion.load_message
 2. verifica que ninguna regla de aquí contradiga una del estándar;
 3. lo reporta en el PR de la actualización.
 
+**PFL-03 (DEBE)** Toda automatización de la CI se documenta en el mismo PR que la crea, la cambia o la quita: cada job y cada paso de `.github/workflows/`, y también los hooks de Git que la acompañan (`.githooks/`). La documentación vive en la [ficha de GitHub Actions](herramientas/github-actions.md) y dice, por cada paso:
+
+1. qué verifica y por qué, con la regla que hace cumplir;
+2. en qué job corre y qué necesita (por ejemplo, PostgreSQL);
+3. cómo correrlo en local antes de abrir el PR;
+4. qué hacer si falla.
+
+Un paso nuevo lleva un nombre en español que diga qué verifica. Ningún PR que toque la CI se une si la ficha no refleja el cambio.
+
 ## Cálculo del error (PER)
 
 **PER-01 (DEBE)** Provisional hasta validarla con los datos cargados en este proyecto (T-26). El error de una revisión de energía eléctrica se calcula así:

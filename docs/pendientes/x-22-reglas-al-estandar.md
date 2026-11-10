@@ -50,6 +50,7 @@ El proyecto adoptó como protocolo convertir cada necesidad en regla local y en 
 | 18 | Una línea en las fichas generales `postgresql` y `sqlalchemy-alembic` sobre cómo se prueban las migraciones en la CI | PBD-04 | — |
 | 19 | Precisar PRI-06 y UX-03: lo inmutable de lo publicado son sus cifras; los metadatos (enlace, fecha, modelo, notas) se completan o corrigen con registro del cambio | PBD-08 | Enlaces y modelos de las revisiones de EE (X-31, X-32) |
 | 20 | Citar el informe y la página en todo lo que se documente de un modelo o se tome de un informe publicado, y una sección «Modelos» en la guía técnica | PFU-03 | `docs/tecnica/modelos/ee.md` |
+| 21 | Documentar toda automatización de la CI y sus hooks en el mismo PR que la cambia: qué verifica cada paso y la regla, en qué job corre, cómo correrlo en local y qué hacer si falla; y una ficha general de GitHub Actions en `upme-estandares/herramientas/` | PFL-03 | `docs/tecnica/herramientas/github-actions.md` |
 
 No va al estándar: PER-01 (cálculo del error), que es propia del dominio de la Subdirección.
 
@@ -122,6 +123,10 @@ Haz lo siguiente y abre un PR:
       propios, y la revisión al copiar una versión nueva (PFL-02);
    c) el protocolo regla local + pendiente para el estándar (PFL-01);
    d) IA-02: que AGENTS.md incluya la tabla «antes de trabajar con la fuente X, lee Y».
+   e) toda automatización de la CI y sus hooks se documenta en el mismo PR que la cambia: por
+      cada paso, qué verifica y la regla, en qué job corre, cómo correrlo en local y qué hacer si
+      falla (PFL-03). Crea la ficha general de GitHub Actions en herramientas/ si no existe y
+      agrega a la plantilla de proyecto la ficha local con esa estructura.
 3. Plantilla de proyecto: agrega la plantilla de ficha de fuente, un esqueleto de la sección
    «Base de datos», el script del diccionario, el paso de CI con PostgreSQL y la lectura de
    reglas-proyecto.md en referencias.py. Adapta lo que sea propio de proyecciones-demanda (nombres
