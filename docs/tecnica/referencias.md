@@ -1783,7 +1783,7 @@ IDs citados en este repositorio que se definen en `upme-estandares` (por ejemplo
 | ADR-0015 | Almacenamiento de objetos  MinIO  —  Retirada (ADR-0015)  — | `reglas/REGLAS-TECNICAS.md` |
 | ADR-0016 | Plantilla de proyectos  Copier  —  Retirada (ADR-0016): se usa un proyecto de referencia  copier | `reglas/REGLAS-TECNICAS.md` |
 | CMP-04 | …cs/pendientes/) para evaluar componentes compartidos entre proyectos y proponer CMP-04 al estándar (issue #8, PR #12). | `CHANGELOG.md`, `docs/diario/2026/2026-11-08-estructura-base-frontend.md`, `docs/pendientes.md` y 2 más |
-| IA-06 | X-20: ciclo de trabajo con asistentes de IA (regla IA-06). | `docs/pendientes/x-20-ciclo-con-asistentes.md`, `docs/pendientes/x-21-estandarizar-practicas.md` |
+| IA-06 | 1. Una regla nueva en REGLAS-FLUJO.md, sección «Asistentes de IA». Se propone IA-06 (DEBERÍA), con el ciclo de seis pasos, los supuestos en el issue y la revisi… | `docs/pendientes/x-20-ciclo-con-asistentes.md`, `docs/pendientes/x-21-estandarizar-practicas.md` |
 | P-01 | …os diarios y prueba de restauración trimestral (responsable por definir con TI, P-01). | `docs/tecnica/despliegue.md`, `reglas/REGLAS-TECNICAS.md` |
 | P-02 | Identidad centralizada  Keycloak  —  En evaluación (piloto, P-02)  keycloak | `reglas/REGLAS-TECNICAS.md` |
 | P-03 | Versionado de datos  DVC  —  Aplazada (P-03)  dvc | `reglas/REGLAS-TECNICAS.md` |

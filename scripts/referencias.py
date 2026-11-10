@@ -185,8 +185,10 @@ def context(line, ref_id, width=160):
 
 def cited_ids():
     found = {}
-    files = [*RULES.glob("*.md"), ROOT / "AGENTS.md", ROOT / "CHANGELOG.md",
-             *(p for p in (ROOT / "docs").rglob("*.md") if p != OUT)]
+    # Orden fijo: el contexto es la primera cita encontrada, y el orden de rglob depende del sistema de
+    # archivos (macOS y Linux lo devuelven distinto), lo que hacía fallar --check en la CI.
+    files = [*sorted(RULES.glob("*.md")), ROOT / "AGENTS.md", ROOT / "CHANGELOG.md",
+             *sorted(p for p in (ROOT / "docs").rglob("*.md") if p != OUT)]
     for path in files:
         for line in path.read_text(encoding="utf-8").splitlines():
             for ref_id in CITED.findall(line):
