@@ -1457,7 +1457,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Flujo de Prefect para la carga histórica de XM: las medidas que XM publica por día (`DemaSIN` y `DemaMaxPot`) desde 2010 (X-26)
 
-Etapa: 1 · Depende de: T-23 · Issue: #38 · PR: —
+Etapa: 1 · Depende de: T-23 · Issue: #38 · PR: #39
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 

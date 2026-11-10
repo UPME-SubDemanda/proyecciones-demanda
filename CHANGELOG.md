@@ -4,10 +4,10 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ## [Sin publicar]
 ### Agregado
-- Flujo de Prefect `ingest-observed-demand` con el despliegue `xm-historico-diario` (T-28): carga histórica de las medidas que XM SINERGOX publica por día (`DemaSIN` y `DemaMaxPot`) desde el 2010-01-01, sin horario; verifica en el listado de métricas de XM que cada variable exista por día, no reintenta errores 4xx (salvo 429), solo guarda lo nuevo o lo que cambió y deja bitácora por variable (issue #38).
-- Pruebas del flujo con XM simulado y de la carga de XM contra PostgreSQL en el job `base-de-datos` de la CI (issue #38).
-- Enlace y huella SHA-256 del anexo de cada revisión de EE en `pipelines/revisiones_ee.toml`, comprobados contra los archivos cargados, para cargarlos en el despliegue (X-31) (issue #38).
-- Paso T-36 en el plan: `DemaReal`, `DemaCome` y `ExpoEner`, que XM solo publica por hora, a demanda; pendiente X-33 para conocer Prefect a fondo (issue #38).
+- Flujo de Prefect `ingest-observed-demand` con el despliegue `xm-historico-diario` (T-28): carga histórica de las medidas que XM SINERGOX publica por día (`DemaSIN` y `DemaMaxPot`) desde el 2010-01-01, sin horario; verifica en el listado de métricas de XM que cada variable exista por día, no reintenta errores 4xx (salvo 429), solo guarda lo nuevo o lo que cambió y deja bitácora por variable (issue #38, PR #39).
+- Pruebas del flujo con XM simulado y de la carga de XM contra PostgreSQL en el job `base-de-datos` de la CI (issue #38, PR #39).
+- Enlace y huella SHA-256 del anexo de cada revisión de EE en `pipelines/revisiones_ee.toml`, comprobados contra los archivos cargados, para cargarlos en el despliegue (X-31) (issue #38, PR #39).
+- Paso T-36 en el plan: `DemaReal`, `DemaCome` y `ExpoEner`, que XM solo publica por hora, a demanda; pendiente X-33 para conocer Prefect a fondo (issue #38, PR #39).
 - Datos reales de energía eléctrica, carga de prueba (T-24): las 5 revisiones publicadas (2023-12, 2024-07, 2024-12, 2025-07 y 2026-07), con series mensuales y anuales de energía y potencia máxima, intervalos de confianza y componentes (GCE, movilidad eléctrica y GD, siempre positiva), y `DemaSIN` diaria de XM desde el 2010-01-01. Se cargan con `pipelines/carga_prueba.py` por `raw → staging → core`, con bitácora y mensajes en `operacion` (issue #36, PR #37).
 - Lector de anexos de EE por encabezados con verificación de unidades, tipos de valor y sumas (PDA-06) y normalización del signo de la GD (PDA-07); cliente de XM SINERGOX con reintentos; cargas que solo versionan lo nuevo o lo que cambió (PBD-05). Base de T-27 a T-29 (issue #36, PR #37).
 - Vistas anchas de `core` (migración `0004`): `v_revision_wide` (abanico), `v_revisions_side_by_side` (comparar revisiones), `v_ee_revision_vs_real` (proyección frente a real con error provisional, PER-01) y `v_observed_wide` (dato real mensual por variable), con comentarios y pruebas en la base de la CI (issue #36, PR #37).
@@ -46,7 +46,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Monitor de variables exógenas (`monitor-exogenas`, T-11): supuestos de la revisión vigente frente a lo observado en el año corrido, con indicadores de variables fuera de rango, en vigilancia e impacto en la demanda; tabla por variable con tendencia, desvío, impacto, correlación y estado, con escenario en la URL; correlación móvil con la demanda con intervalo y quiebre detectado; importancia de las variables en el modelo; descarga en CSV. «Configurar umbrales» deshabilitado hasta X-03. Componente `Sparkline` y tono `warning` en `KpiCard`. Las alertas del tablero ejecutivo llevan al monitor (issue #25, PR #26).
 
 ### Cambiado
-- Ficha local de Prefect (`docs/tecnica/herramientas/prefect.md`) completa: cómo se ejecutan los despliegues y cómo agregar un flujo (DOC-07); `flujos.md` y ficha de SINERGOX con la carga de T-28; X-26 decidido salvo `EscDemUPME*`; T-24 hecho (issue #38).
+- Ficha local de Prefect (`docs/tecnica/herramientas/prefect.md`) completa: cómo se ejecutan los despliegues y cómo agregar un flujo (DOC-07); `flujos.md` y ficha de SINERGOX con la carga de T-28; X-26 decidido salvo `EscDemUPME*`; T-24 hecho (issue #38, PR #39).
 - Las pruebas del modelo de datos usan periodos y códigos de 2099, para poder correrlas también contra la base de desarrollo con datos reales; `docs/pendientes.md`: T-23 y X-09 hechos, T-24 en curso, X-23 y X-26 actualizados (issue #36, PR #37).
 - Docker: el contenedor `api` monta `scripts/` y `docs/` para generar el diccionario con `docker compose exec api uv run --no-dev python /scripts/diccionario.py` (issue #34, PR #35).
 - Modelo de datos: `modelo-de-datos.md` pasa a ser el resumen del modelo v2; P-0002 queda reemplazada; `flujos.md` describe los flujos planeados con bitácora; T-16 a T-19 quedan reemplazados por el plan de datos; X-01, X-02 y X-09 actualizados (issue #32, PR #33).
@@ -63,7 +63,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Inventario: el campo `diseno` de cada vista apunta a su mockup aprobado; proyección vs. real, comparar revisiones y usuarios y roles quedan sin diseño (issue #2, PR #4).
 
 ### Eliminado
-- Flujo de ejemplo `example-ingest` y el comando `xm` de `pipelines/carga_prueba.py`: los reemplaza el flujo `ingest-observed-demand` (issue #38).
+- Flujo de ejemplo `example-ingest` y el comando `xm` de `pipelines/carga_prueba.py`: los reemplaza el flujo `ingest-observed-demand` (issue #38, PR #39).
 - Inicio provisional de la app interna (`app-inicio`): lo reemplaza el tablero ejecutivo; su página del inventario queda como retirada (issue #19, PR #20).
 - `backend/test.db` del repositorio; las bases SQLite locales quedan ignoradas (issue #1, PR #3).
 

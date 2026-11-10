@@ -63,7 +63,7 @@ Plan de datos acordado el 2026-11-10 en la revisión del modelo de datos (issue 
 | T-25 | Revisiones anteriores a dic-2023 y versiones corregidas (la «v2» de jul-2024) | 1 | T-24 | — | — | Bloqueado (X-02, X-23) |
 | T-26 | Validar la variable real para el cálculo del error (hipótesis: `DemaSIN` frente a `SIN+GCE+ME+GD_UPME`, PER-01) | 1 | T-24 | — | — | Pendiente |
 | T-27 | Lector de anexos de la UPME (por encabezados, con verificación de sumas y normalización entre versiones) y flujo `load-published-revisions` | 1 | T-24 | — | — | Pendiente |
-| T-28 | Flujo de Prefect para la carga histórica de XM: las medidas que XM publica por día (`DemaSIN` y `DemaMaxPot`) desde 2010 (X-26) | 1 | T-23 | #38 | — | En curso |
+| T-28 | Flujo de Prefect para la carga histórica de XM: las medidas que XM publica por día (`DemaSIN` y `DemaMaxPot`) desde 2010 (X-26) | 1 | T-23 | #38 | #39 | En curso |
 | T-29 | Carga diaria y conciliación semanal de XM, con cambios, anomalías y avisos (PDA-02 a PDA-04) | 1 | T-28 | — | — | Pendiente (X-24) |
 | T-36 | Medidas horarias de XM: `DemaReal`, `DemaCome` y `ExpoEner`, que SINERGOX solo publica por hora (`/hourly`), en el flujo `ingest-observed-demand`, cargadas a demanda desde 2010 (su total diario y mensual sale de sumar las horas); migración que hace que `core.v_observed_wide` y `core.v_ee_revision_vs_real` usen lo diario cuando una medida tiene diario y horario en el mismo mes | 1 | T-28 | — | — | Pendiente |
 | T-30 | Bitácora y mensajes de carga, y cómo se consultan (PDA-05). Incluye cerrar como `failed` una carga que quedó `running` porque su ejecución se canceló o se cayó (pasó al cancelar una en T-28) | 1 | T-23 | — | — | Pendiente |
