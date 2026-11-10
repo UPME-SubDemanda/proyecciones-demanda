@@ -1473,7 +1473,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 ### T-29 · Pendiente (X-24) {#t-29}
 
-Carga diaria y conciliación semanal de XM, con cambios, anomalías y avisos (PDA-02 a PDA-04)
+Carga diaria y conciliación semanal de XM, con cambios, anomalías y avisos (PDA-02 a PDA-04). **Incluye la carga al arrancar el worker** (decidido por el líder el 2026-11-10): como las revisiones desde el issue #42, el dato de XM se carga en `pipelines/start.sh` desde el último día guardado (o desde el 2010-01-01 si la base está vacía), para que quien levante el proyecto en otro equipo o servidor tenga los datos básicos de la app sin pasos manuales
 
 Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
 

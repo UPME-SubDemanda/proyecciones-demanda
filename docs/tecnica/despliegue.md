@@ -17,7 +17,7 @@ docker compose up -d --build
 | --- | --- | --- |
 | Esquema de la base | La API aplica las migraciones al arrancar (`backend/dev-start.sh`) | Nada |
 | Revisiones publicadas de EE | El worker corre `load-published-revisions` al arrancar (`pipelines/start.sh`): descarga del sitio de la UPME los anexos de `pipelines/revisiones_ee.toml` que falten, verifica su huella y los carga ([Flujos de datos](flujos.md#revisiones-publicadas-t-27-issue-42)) | Nada. El servidor necesita salida a internet hacia `docs.upme.gov.co` |
-| Dato real de XM | Flujo `ingest-observed-demand`, despliegue `xm-historico-diario` | Ejecutarlo una vez desde la interfaz de Prefect (http://<servidor>:4200). La carga diaria automática es de T-29 |
+| Dato real de XM | Flujo `ingest-observed-demand`, despliegue `xm-historico-diario` | Por ahora, ejecutarlo una vez desde la interfaz de Prefect (http://<servidor>:4200). T-29 lo cargará también al arrancar el worker, desde el último día guardado, y todos los días con horario |
 
 ## Cómo comprobar que quedaron
 
