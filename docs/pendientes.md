@@ -57,7 +57,7 @@ Plan de datos acordado el 2026-11-10 en la revisión del modelo de datos (issue 
 | T-17 | Flujos de carga (Prefect) | 1 | T-16 | — | — | Reemplazado por T-27 a T-31 |
 | T-18 | Endpoints de la API y conexión de cada vista a datos reales; retirar las cifras ilustrativas | 1 y 1.1 | T-17 | — | — | Reemplazado por T-33 y T-34 |
 | T-19 | Vistas `publicacion.*` para el portal y el modo pantalla | 1.1 | T-18 | — | — | Reemplazado por T-33 |
-| T-22 | Documentar el modelo de datos v2, las reglas del proyecto (PBD, PDA, PFU, PFL, PER), la sección «Base de datos», las fuentes de XM y este plan | 1 | T-15 | #32 | — | En curso |
+| T-22 | Documentar el modelo de datos v2, las reglas del proyecto (PBD, PDA, PFU, PFL, PER), la sección «Base de datos», las fuentes de XM y este plan | 1 | T-15 | #32 | #33 | En curso |
 | T-23 | Migración `0003` con el modelo v2 y todos los comentarios; script del diccionario con su verificación; base PostgreSQL de prueba en la CI (PBD-01 a PBD-04) | 1 | T-22 | — | — | Siguiente |
 | T-24 | Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error) | 1 | T-23 | — | — | Pendiente |
 | T-25 | Revisiones anteriores a dic-2023 y versiones corregidas (la «v2» de jul-2024) | 1 | T-24 | — | — | Bloqueado (X-02, X-23) |

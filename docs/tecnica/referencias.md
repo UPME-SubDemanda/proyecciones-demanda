@@ -1397,7 +1397,7 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
 Documentar el modelo de datos v2, las reglas del proyecto (PBD, PDA, PFU, PFL, PER), la sección «Base de datos», las fuentes de XM y este plan
 
-Etapa: 1 · Depende de: T-15 · Issue: #32 · PR: —
+Etapa: 1 · Depende de: T-15 · Issue: #32 · PR: #33
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
