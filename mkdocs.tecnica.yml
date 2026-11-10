@@ -4,7 +4,18 @@ site_dir: site-tecnica
 exclude_docs: |
   usuario/capturas/
 theme: {name: material, language: es, features: [navigation.sections, navigation.indexes, search.highlight, content.code.copy]}
-markdown_extensions: [admonition, tables, attr_list, pymdownx.superfences, {pymdownx.tasklist: {custom_checkbox: true}}, {toc: {permalink: true}}]
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  # Diagramas Mermaid: Material los dibuja si los bloques ```mermaid se marcan con la clase «mermaid».
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist: {custom_checkbox: true}
+  - toc: {permalink: true}
 nav:
   - Inicio: tecnica/index.md
   - Producto: producto/index.md

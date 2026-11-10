@@ -63,4 +63,4 @@ Guía técnica → Base de datos, Reglas del proyecto y Fuentes de datos. `docs/
 - La guía de XM se trajo de un análisis previo de la Subdirección: se quitaron las rutas y enlaces a archivos de ese análisis, se marcó el origen en cada documento y se conservó la fecha de verificación (abril a noviembre de 2026).
 - Pasos T-22 a T-35; T-16 a T-19 reemplazados. Pendientes nuevos X-22 a X-30; X-01, X-02 y X-09 actualizados. ADR P-0004 reemplaza a P-0002.
 - No entran al repositorio: los anexos y el informe de la UPME (irán a `raw.files`), el reporte del análisis previo sobre la variable real ni el documento de observaciones para el equipo de modelación (X-23).
-- Los diagramas están en Mermaid: GitHub los dibuja; el sitio de MkDocs los muestra como código hasta configurar el soporte.
+- Los diagramas están en Mermaid: GitHub los dibuja, y el sitio técnico también, con la función de diagramas de Material activada en `mkdocs.tecnica.yml` (ficha de MkDocs).

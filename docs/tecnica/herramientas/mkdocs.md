@@ -32,3 +32,4 @@ uvx --with mkdocs-material mkdocs build --strict -f mkdocs.tecnica.yml -d /tmp/s
 - Las capturas de la guía (`docs/usuario/capturas/`) se excluyen del sitio técnico: los enlaces a ellas desde la técnica aparecen como «INFO», no como error.
 - Las páginas generadas (`referencias.md`, el índice del inventario y el del diario) no se editan a mano (`docs/tecnica/index.md`, «Páginas generadas»).
 - Al actualizar la versión de Material, cambiarla en `docker-compose.yml` para que coincida con la CI.
+- **Diagramas:** se escriben en bloques ```` ```mermaid ````. El sitio técnico los dibuja con la función de diagramas de Material (configurada en `mkdocs.tecnica.yml`, `pymdownx.superfences` con `custom_fences`); GitHub también los dibuja. Material carga Mermaid desde internet al abrir la página: sin conexión el diagrama se ve como código. No es una dependencia del proyecto: no se instala nada (TEC-06).
