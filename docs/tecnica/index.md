@@ -83,15 +83,22 @@ docker compose exec api uv run python -m app.auth.cli create-user su.correo@upme
 
 ## Páginas generadas
 
-Tres páginas se generan con scripts y la CI falla si no están al día:
+Cuatro páginas se generan con scripts y la CI falla si no están al día:
 
 | Página | Script | Se regenera cuando cambia |
 | --- | --- | --- |
 | `docs/tecnica/referencias.md` | `scripts/referencias.py` | Cualquier `.md` (reglas, pendientes, decisiones o una cita nueva) |
 | `docs/usuario/inventario/index.md` | `scripts/inventario.py` | Una página del inventario o las rutas del frontend |
 | `docs/diario/index.md` | `scripts/diario.py` | Una entrada del diario (su encabezado) |
+| Mapa del repositorio en `README.md` | `scripts/mapa.py` desde `repo-map.toml` | Se agregan o borran archivos, o cambia `repo-map.toml` |
 
 El hook `.githooks/pre-commit` las regenera y las agrega al mismo commit, sin hacer nada a mano. Se activa una vez por copia del repositorio con `git config core.hooksPath .githooks`. Sin el hook, hay que correr los scripts antes del commit; si se olvida, la CI lo avisa.
+
+### Mapa del repositorio: toda carpeta se describe
+
+`repo-map.toml` describe cada carpeta (una línea breve y qué debe ir en ella) y los archivos de configuración principales. Deben estar descritas todas las carpetas versionadas de primer y segundo nivel, y las de tercer nivel dentro de `frontend/src`, `backend/app`, `docs/tecnica` y `docs/usuario`.
+
+Si alguien crea una carpeta y no la describe, **el commit se detiene** (hook) y **la CI falla**, diciendo cuál falta. Lo mismo si se borra una carpeta y su descripción queda. Para arreglarlo, agregar o quitar su entrada en `repo-map.toml`; el mapa del README se regenera solo.
 
 ## Pruebas
 

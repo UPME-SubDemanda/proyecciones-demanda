@@ -33,7 +33,7 @@ frontend/     React: src/zones/{app,portal,pantalla}, src/components, src/estand
 pipelines/    Flujos de Prefect (flows/), lógica pura (lib/), horarios (deployments.py)
 reglas/       Copia de las reglas de upme-estandares (no editar)
 docs/         usuario/ (pública) · tecnica/ (privada) · diario/ · decisiones/ · producto/
-scripts/      lint_design.py · check_changelog.py · inventario.py · referencias.py · diario.py · reporte.py
+scripts/      dev-setup.sh · lint_design.py · check_changelog.py · inventario.py · referencias.py · diario.py · mapa.py · reporte.py
 ```
 
 ## Comandos
@@ -58,7 +58,8 @@ uv run mkdocs serve -f mkdocs.usuario.yml    # o mkdocs.tecnica.yml
 5. **Base de datos**: cambios solo con migraciones de Alembic; esquemas raw/staging/core/publicacion/auth (BD-03, BD-04).
 6. **Si una regla no encaja o falta una**: detente y pregunta. Propón un ADR (en el proyecto si es propio de esta app, o en `upme-estandares` si es general). Anota lo no resuelto en `docs/pendientes.md`.
 7. Interfaz y documentación en español de Colombia; código en inglés.
-8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md` y `docs/diario/index.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py` e `scripts/inventario.py` antes de cada commit que toque Markdown o rutas.
+8. **Páginas generadas**: `docs/tecnica/referencias.md`, `docs/usuario/inventario/index.md`, `docs/diario/index.md` y el mapa del `README.md` no se editan a mano. Si el hook `.githooks/pre-commit` no está activo, ejecuta `scripts/diario.py`, `scripts/referencias.py`, `scripts/inventario.py` y `scripts/mapa.py` antes de cada commit que toque Markdown, rutas o carpetas.
+9. **Carpetas nuevas**: toda carpeta nueva se describe en `repo-map.toml` (`breve` y `va_aqui`) en el mismo PR; si no, el hook detiene el commit y la CI falla (`scripts/mapa.py`). Al borrar una carpeta, quitar su entrada. El mapa del README se regenera solo: no lo edites a mano.
 
 ## Ciclo con un asistente
 Así se trabaja cada paso del plan (T-xx) o cada corrección con un asistente. Explicación para personas: `docs/tecnica/flujo-de-trabajo-equipo.md` (sección «Trabajar con un asistente de IA»). Propuesta al estándar: X-20.
