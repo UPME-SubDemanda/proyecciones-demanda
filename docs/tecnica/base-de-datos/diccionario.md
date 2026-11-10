@@ -492,6 +492,99 @@ Columnas: las de `core.observed_values`.
 | `versioning` | character varying(20) | Sí |  | snapshot (cada consulta puede cambiar) o source_version (la fuente numera versiones) |
 | `doc_page` | character varying(300) | No |  | Ficha de la fuente en la documentación (PFU-01) |
 
+### `core.v_ee_revision_vs_real`
+
+*Vista.* Proyección mensual de EE frente al dato real, con error provisional (PER-01, X-25): solo la serie comparable y desde el primer mes proyectado
+
+| Columna | Tipo | Obligatoria | Llave | Descripción |
+| --- | --- | --- | --- | --- |
+| `revision_id` | integer | No |  | Revisión |
+| `revision_code` | character varying(20) | No |  | Código de la revisión |
+| `revision_name` | character varying(120) | No |  | Nombre oficial |
+| `status` | character varying(20) | No |  | Estado de la revisión |
+| `first_projected_period` | date | No |  | Primer mes proyectado de la revisión |
+| `series` | character varying(60) | No |  | Serie comparable (core.series.is_comparable; PER-01: SIN+GCE+ME+GD_UPME) |
+| `period` | date | No |  | Mes |
+| `months_ahead` | integer | No |  | Meses desde el primer mes proyectado (1 = primer mes) |
+| `projected` | numeric | No |  | Escenario medio proyectado (GWh) |
+| `ci95_lower` | numeric | No |  | Límite inferior del IC 95 % |
+| `ci95_upper` | numeric | No |  | Límite superior del IC 95 % |
+| `ci68_lower` | numeric | No |  | Límite inferior del IC 68 % |
+| `ci68_upper` | numeric | No |  | Límite superior del IC 68 % |
+| `real_variable` | character varying(60) | No |  | Variable del dato real oficial para el error (PER-01: xm_demasin) |
+| `real` | numeric | No |  | Dato real mensual vigente (GWh) |
+| `real_is_complete` | boolean | No |  | Si el mes real está completo |
+| `error` | numeric | No |  | Error = proyectado − real (PER-01); vacío si el mes real está incompleto |
+| `error_pct` | numeric | No |  | Error en % del real; vacío si el mes real está incompleto |
+| `inside_ci95` | boolean | No |  | Si el real cae dentro del IC 95 % |
+| `inside_ci68` | boolean | No |  | Si el real cae dentro del IC 68 % |
+
+### `core.v_observed_wide`
+
+*Vista.* Dato real mensual vigente de XM con una columna por variable
+
+| Columna | Tipo | Obligatoria | Llave | Descripción |
+| --- | --- | --- | --- | --- |
+| `geography` | character varying(80) | No |  | Geografía |
+| `period` | date | No |  | Primer día del mes |
+| `xm_demasin` | numeric | No |  | Valor mensual vigente de xm_demasin (suma o máximo según la medida) |
+| `xm_demasin_complete` | boolean | No |  | Si el mes de xm_demasin tiene todos sus días; un mes incompleto se marca, no se escala |
+| `xm_demareal` | numeric | No |  | Valor mensual vigente de xm_demareal (suma o máximo según la medida) |
+| `xm_demareal_complete` | boolean | No |  | Si el mes de xm_demareal tiene todos sus días; un mes incompleto se marca, no se escala |
+| `xm_demacome` | numeric | No |  | Valor mensual vigente de xm_demacome (suma o máximo según la medida) |
+| `xm_demacome_complete` | boolean | No |  | Si el mes de xm_demacome tiene todos sus días; un mes incompleto se marca, no se escala |
+| `xm_expoener` | numeric | No |  | Valor mensual vigente de xm_expoener (suma o máximo según la medida) |
+| `xm_expoener_complete` | boolean | No |  | Si el mes de xm_expoener tiene todos sus días; un mes incompleto se marca, no se escala |
+| `xm_demamaxpot` | numeric | No |  | Valor mensual vigente de xm_demamaxpot (suma o máximo según la medida) |
+| `xm_demamaxpot_complete` | boolean | No |  | Si el mes de xm_demamaxpot tiene todos sus días; un mes incompleto se marca, no se escala |
+
+### `core.v_revision_wide`
+
+*Vista.* Valores de cada revisión con una columna por tipo de valor: abanico de una revisión
+
+| Columna | Tipo | Obligatoria | Llave | Descripción |
+| --- | --- | --- | --- | --- |
+| `revision_id` | integer | No |  | Revisión (core.revisions.id) |
+| `product` | character varying(10) | No |  | Producto |
+| `revision_code` | character varying(20) | No |  | Código de la revisión |
+| `revision_name` | character varying(120) | No |  | Nombre oficial de la revisión |
+| `status` | character varying(20) | No |  | Estado de la revisión |
+| `published_on` | date | No |  | Fecha de publicación de la revisión |
+| `series` | character varying(60) | No |  | Serie |
+| `measure` | character varying(40) | No |  | Medida |
+| `geography` | character varying(80) | No |  | Geografía |
+| `frequency` | character varying(1) | No |  | M mensual o A anual |
+| `period` | date | No |  | Inicio del periodo |
+| `basis` | text | No |  | projected o mixed (el anual del primer año suma meses reales y proyectados) |
+| `mid` | numeric | No |  | Escenario medio |
+| `low` | numeric | No |  | Escenario bajo (EE no lo publica) |
+| `high` | numeric | No |  | Escenario alto (EE no lo publica) |
+| `ci95_upper` | numeric | No |  | Límite superior del intervalo de confianza del 95 % |
+| `ci95_lower` | numeric | No |  | Límite inferior del intervalo de confianza del 95 % |
+| `ci68_upper` | numeric | No |  | Límite superior del intervalo de confianza del 68 % |
+| `ci68_lower` | numeric | No |  | Límite inferior del intervalo de confianza del 68 % |
+
+### `core.v_revisions_side_by_side`
+
+*Vista.* Escenario medio de cada revisión publicada junto al de la revisión anterior, por periodo: comparar revisiones
+
+| Columna | Tipo | Obligatoria | Llave | Descripción |
+| --- | --- | --- | --- | --- |
+| `product` | character varying(10) | No |  | Producto |
+| `series` | character varying(60) | No |  | Serie |
+| `measure` | character varying(40) | No |  | Medida |
+| `geography` | character varying(80) | No |  | Geografía |
+| `frequency` | character varying(1) | No |  | M mensual o A anual |
+| `period` | date | No |  | Inicio del periodo |
+| `revision_id` | integer | No |  | Revisión |
+| `revision_code` | character varying(20) | No |  | Código de la revisión |
+| `published_on` | date | No |  | Fecha de publicación |
+| `mid` | numeric | No |  | Escenario medio |
+| `previous_revision_code` | character varying | No |  | Revisión publicada antes con valor en ese periodo |
+| `previous_mid` | numeric | No |  | Escenario medio de la revisión anterior |
+| `diff_vs_previous` | numeric | No |  | Diferencia frente a la revisión anterior (esta − anterior) |
+| `diff_pct_vs_previous` | numeric | No |  | Diferencia frente a la revisión anterior, en % |
+
 ### `core.value_types`
 
 *Tabla.* Qué representa un número: escenario (bajo, medio, alto) o límite de un intervalo

@@ -1,0 +1,56 @@
+# Datos de las revisiones de EE que el anexo no trae (T-24). Los usa carga_prueba.py.
+#
+# - code: año y mes del informe oficial (D-54); el anexo puede llamarse distinto (ver_Ago2026 → 2026-07).
+# - published_on: cuando el informe no dice el día, el último día del mes de publicación (supuesto 4 del
+#   issue #36); se marca «fecha aproximada» en notes y queda en X-23.
+# - document_url: el informe oficial. Mientras no se confirme el enlace exacto de cada informe, la página
+#   de la UPME (X-23).
+# - model: lo que dice el informe; si no se tiene el informe, «por confirmar» (X-23).
+# - data_cutoff, first_projected_period y horizon_end salen del anexo: el corte es el mes anterior al
+#   primero de la hoja mensual.
+
+[[revision]]
+code = "2023-12"
+name = "Rev. Diciembre 2023"
+file = "Anexo_proyeccion_demanda_ energia_electrica_rev_dic_2023.xlsx"
+published_on = 2023-12-31
+document_url = "https://www.upme.gov.co"
+model = "Por confirmar con el equipo de modelación (X-23): el anexo no lo dice"
+notes = "Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-23)."
+
+[[revision]]
+code = "2024-07"
+name = "Rev. Julio 2024"
+file = "Anexo_proyeccion_demanda_2024_2038_v2_Jul2024.xlsx"
+published_on = 2024-07-31
+document_url = "https://www.upme.gov.co"
+model = "Por confirmar con el equipo de modelación (X-23): el anexo no lo dice"
+notes = "Se carga el anexo «v2»; falta saber qué corrigió frente a la primera versión (X-23, T-25). Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-23)."
+
+[[revision]]
+code = "2024-12"
+name = "Rev. Diciembre 2024"
+file = "Anexo_proyeccion_demanda_2024_2038_vDic2024.xlsx"
+published_on = 2024-12-31
+document_url = "https://www.upme.gov.co"
+model = "Por confirmar con el equipo de modelación (X-23): el anexo no lo dice"
+notes = "Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-23)."
+
+[[revision]]
+code = "2025-07"
+name = "Rev. Julio 2025"
+file = "Anexo_proyeccion_demanda_2025_2039_verJul2025.xlsx"
+published_on = 2025-07-31
+document_url = "https://www.upme.gov.co"
+model = "Por confirmar con el equipo de modelación (X-23): el anexo no lo dice"
+notes = "Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-23)."
+
+[[revision]]
+code = "2026-07"
+name = "Rev. Julio 2026"
+file = "Anexo_proyeccion_demanda_2026_2040_ver_Ago2026.xlsx"
+published_on = 2026-07-31
+source_consulted_on = 2026-04-14
+document_url = "https://www.upme.gov.co"
+model = "Combinación de pronósticos: VAR endógeno 22 %, VAR exógeno 56 %, VEC 22 % (pesos del ejercicio de 2023), con variables dummy por periodos"
+notes = "El anexo se llama «ver_Ago2026». Datos de XM consultados el 2026-04-14 (informe). Fecha de publicación aproximada (último día del mes). Enlace del informe por confirmar (X-23)."

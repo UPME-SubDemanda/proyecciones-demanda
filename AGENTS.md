@@ -55,6 +55,7 @@ scripts/      dev-setup.sh · lint_design.py · check_changelog.py · inventario
 docker compose up -d                         # db, api, web, docs, prefect (api migra y crea admin@local)
 # Usuario admin@local de desarrollo: contraseña en DEV_ADMIN_PASSWORD de .env (docs/tecnica/index.md). No la muestres ni la copies.
 cd backend && uv run pytest
+cd pipelines && uv run pytest                 # lector de anexos y cliente de XM (sin base ni internet)
 cd frontend && pnpm dev | pnpm test | pnpm screenshots
 python scripts/lint_design.py frontend/src
 python scripts/inventario.py                 # regenera docs/usuario/inventario/index.md

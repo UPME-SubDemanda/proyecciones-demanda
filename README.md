@@ -187,6 +187,7 @@ frontend/            # Interfaz en React + TypeScript (Vite)
 pipelines/           # Flujos de datos (Prefect)
   flows/             # Flujos de Prefect
   lib/               # Lógica de los flujos, sin Prefect
+  tests/             # Pruebas de los pipelines
 reglas/              # Copia de las reglas de upme-estandares
 scripts/             # Scripts del proyecto
 ```
@@ -233,6 +234,7 @@ scripts/             # Scripts del proyecto
 | `pipelines/` | Cargas y cálculos programados. Lógica pura en `lib/`, flujos en `flows/`, horarios en `deployments.py`. |
 | `pipelines/flows/` | Un flujo por carga o cálculo, documentado en `docs/tecnica/flujos.md`. |
 | `pipelines/lib/` | Funciones puras y probables que usan los flujos. |
+| `pipelines/tests/` | Pruebas de `lib/` sin base ni internet (libros de Excel armados en la prueba, respuestas de XM simuladas). Corren en la CI. |
 | `reglas/` | Reglas de flujo, diseño, técnicas y de marca, y `VERSION` (FLU-09). **No editar aquí**: se cambian en upme-estandares. |
 | `scripts/` | Preparación del entorno, verificaciones de la CI y páginas generadas. Python sin librerías externas o bash; la excepción es `diccionario.py`, que usa `psycopg` del backend porque lee la base. |
 

@@ -17,3 +17,6 @@ test-results/
 # Archivos fuente locales (no se versionan)
 data/raw/
 *.tsbuildinfo
+
+# Metadatos de instalación de paquetes Python (pip install -e)
+*.egg-info/

@@ -2,7 +2,10 @@
 name = "proyecciones-demanda-pipelines"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = ["prefect>=3.0", "pandas>=2.2", "sqlalchemy>=2.0", "psycopg[binary]>=3.2", "httpx>=0.27"]
+dependencies = ["prefect>=3.0", "pandas>=2.2", "sqlalchemy>=2.0", "psycopg[binary]>=3.2", "httpx>=0.27", "openpyxl>=3.1"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
 
 [build-system]
 requires = ["setuptools>=69"]
@@ -11,3 +14,12 @@ build-backend = "setuptools.build_meta"
 # Paquetes explícitos: con flows/ y lib/ en la raíz, el descubrimiento automático falla.
 [tool.setuptools.packages.find]
 include = ["flows*", "lib*"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.isort]
+known-first-party = ["lib", "flows"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

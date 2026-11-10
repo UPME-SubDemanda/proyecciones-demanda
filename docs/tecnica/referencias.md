@@ -1401,7 +1401,7 @@ Etapa: 1 · Depende de: T-15 · Issue: #32 · PR: #33
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-23 · En curso {#t-23}
+### T-23 · Hecho {#t-23}
 
 Migración `0003` con el modelo v2 y todos los comentarios; script del diccionario con su verificación; base PostgreSQL de prueba en la CI (PBD-01 a PBD-04)
 
@@ -1409,11 +1409,11 @@ Etapa: 1 · Depende de: T-22 · Issue: #34 · PR: #35
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-24 · Siguiente {#t-24}
+### T-24 · En curso {#t-24}
 
 Carga de prueba de las 5 revisiones de EE y de `DemaSIN`; las consultas que piden las vistas (abanico, comparar revisiones, error) y las vistas anchas de `core`
 
-Etapa: 1 · Depende de: T-23 · Issue: — · PR: —
+Etapa: 1 · Depende de: T-23 · Issue: #36 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1575,7 +1575,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 Agregar estado `superseded` y columna `supersedes_id` en `core.revisions` para enlazar una revisión corregida con la original (P-0003). Resuelto en el diseño del modelo v2 (P-0004); se crea en la migración `0003` (T-23). El mockup aprobado del histórico ya muestra «Crear corrección»: alinear el flujo con esta decisión
 
-Responsable: Equipo · Estado: Decidido (falta T-23)
+Responsable: Equipo · Estado: Hecho (migración `0003`, T-23)
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
@@ -1685,7 +1685,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-23 · Observaciones a los anexos de EE {#x-23}
 
-Remitir al equipo de modelación las observaciones a los 5 anexos y al informe Rev. Julio 2026 (7 errores, 7 inconsistencias, 10 dudas y 7 sugerencias) y anotar sus respuestas. Entre ellas: las 5 áreas no suman la serie SIN; qué fue la «v2» de jul-2024; si hay revisiones anteriores a dic-2023; el salto de GD_PNUMA en 2039; el día exacto de publicación de cada revisión; equivalencias de nombres de GCE entre revisiones; si los primeros meses de cada hoja mensual son proyección
+Remitir al equipo de modelación las observaciones a los 5 anexos y al informe Rev. Julio 2026 (7 errores, 7 inconsistencias, 10 dudas y 7 sugerencias) y anotar sus respuestas. Entre ellas: las 5 áreas no suman la serie SIN; qué fue la «v2» de jul-2024; si hay revisiones anteriores a dic-2023; el salto de GD_PNUMA en 2039; el día exacto de publicación de cada revisión; equivalencias de nombres de GCE entre revisiones; si los primeros meses de cada hoja mensual son proyección. La carga de prueba (T-24) agregó tres: la serie anual SIN+GCE+ME+GD_PNUMA no es la suma de sus partes en el primer año (el año mixto) de dic-2024, jul-2025 y 2026-07 (diferencias de 871, 877 y 2249 GWh; las mensuales sí cuadran); falta el enlace de cada informe; y falta el modelo de las revisiones anteriores a 2026-07 (en `pipelines/revisiones_ee.toml` dicen «por confirmar»)
 
 Responsable: Líder · Estado: Abierto
 
@@ -1709,9 +1709,9 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-26 · Alcance de la carga de XM {#x-26}
 
-Qué medidas se cargan desde el inicio además de `DemaSIN` (propuesta: `DemaReal`, `DemaCome`, `ExpoEner`, `DemaMaxPot`), desde qué año, si el cliente es el REST con `httpx` (propuesto) o `pydataxm` (dependencia nueva, TEC-06), y si se usan las proyecciones UPME que publica XM (`EscDemUPME*`) para cruzar con las revisiones
+Qué medidas se cargan desde el inicio además de `DemaSIN` (propuesta: `DemaReal`, `DemaCome`, `ExpoEner`, `DemaMaxPot`), desde qué año, si el cliente es el REST con `httpx` (propuesto) o `pydataxm` (dependencia nueva, TEC-06), y si se usan las proyecciones UPME que publica XM (`EscDemUPME*`) para cruzar con las revisiones. **Decidido el 2026-11-10:** `DemaSIN` desde el 2010-01-01 (cargada en T-24) y cliente REST con `httpx`. Sigue abierto: las demás medidas y si se carga desde el inicio de la serie
 
-Responsable: Líder · Estado: Abierto
+Responsable: Líder · Estado: Abierto (en parte)
 
 Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 

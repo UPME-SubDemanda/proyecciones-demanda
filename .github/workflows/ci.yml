@@ -25,6 +25,9 @@ jobs:
       - name: Pruebas backend
         working-directory: backend
         run: uv sync && uv run pytest -q
+      - name: Pruebas pipelines
+        working-directory: pipelines
+        run: uv sync && uv run pytest -q
       - uses: pnpm/action-setup@v4
         with: {version: 9}
       - name: Pruebas frontend
@@ -59,7 +62,7 @@ jobs:
         run: uv run alembic upgrade head
       - name: Comentarios y diccionario al día (PBD-01, PBD-03)
         run: uv run python ../scripts/diccionario.py --check
-      - name: Pruebas del modelo de datos
-        run: uv run pytest -q tests/test_db_model.py
+      - name: Pruebas del modelo de datos y de las vistas de core
+        run: uv run pytest -q tests/test_db_model.py tests/test_db_views.py
       - name: Migraciones de ida y vuelta (PBD-04)
         run: uv run alembic downgrade base && uv run alembic upgrade head

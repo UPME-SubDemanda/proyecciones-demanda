@@ -22,11 +22,11 @@ La UPME usa como histórico de sus proyecciones la serie «Sinergox: Históricos
 | `ExpoEner` / `Sistema` | `xm_expoener` | kWh → GWh | Horaria | Restar exportaciones si se compara con `DemaReal` o `DemaCome` |
 | `DemaMaxPot` / `Sistema` | `xm_demamaxpot` | kW → MW | Diaria | Potencia máxima («El sistema hoy») |
 
-Qué variables se cargan desde el inicio y desde qué año está por confirmar (X-26). Muchas métricas existen desde el año 2000.
+**Cargado (T-24, 2026-11-10):** `DemaSIN` diaria desde el 2010-01-01, por decisión del líder. Llegaron todos los días hasta el anterior a la carga, sin huecos. Las demás variables y si se carga desde el inicio de la serie siguen en X-26. Muchas métricas existen desde el año 2000.
 
 ## 3. Cómo se extrae
 
-- **Cliente:** llamada directa al REST con `httpx`, que ya está en `pipelines/`. `pydataxm` sería una dependencia nueva (TEC-06). Propuesto; se confirma en X-26.
+- **Cliente:** llamada directa al REST con `httpx`, que ya está en `pipelines/`: `pipelines/lib/xm_sinergox.py` (T-24). `pydataxm` sería una dependencia nueva (TEC-06) y no se usa.
 - **Peticiones:** `POST /daily` o `/hourly` con `{"MetricId", "Entity", "StartDate", "EndDate", "Filter"}`. Como máximo 31 días por petición, así que se parte por meses calendario.
 - **Reintentos:** 3 intentos con espera creciente (1, 2 y 4 s) y tiempo límite. Si XM no responde, la app sigue con lo último cargado y la bitácora lo registra.
 - **Registro:** cada petición queda en `operacion.extractions`, con la huella del contenido.
@@ -71,7 +71,7 @@ Propuestas para la demanda; los umbrales se fijan en X-24 (PDA-02):
 ## 9. Problemas conocidos
 
 - A `DemaReal` / `Sistema` le faltan los días del 2022-08-08 al 2022-08-27.
-- Los últimos días llegan truncados y se corrigen después.
+- Los últimos días llegan truncados y se corrigen después. En la carga del 2026-11-10 el día anterior todavía no estaba publicado: la carga lo informa como día faltante.
 - Fallos intermitentes y peticiones lentas.
 - `DemaReal` y `DemaCome` incluyen las exportaciones a Ecuador, que subieron en 2023–2024.
 

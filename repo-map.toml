@@ -171,6 +171,10 @@ va_aqui = "Un flujo por carga o cálculo, documentado en `docs/tecnica/flujos.md
 breve = "Lógica de los flujos, sin Prefect"
 va_aqui = "Funciones puras y probables que usan los flujos."
 
+[carpetas."pipelines/tests"]
+breve = "Pruebas de los pipelines"
+va_aqui = "Pruebas de `lib/` sin base ni internet (libros de Excel armados en la prueba, respuestas de XM simuladas). Corren en la CI."
+
 [carpetas.reglas]
 breve = "Copia de las reglas de upme-estandares"
 va_aqui = "Reglas de flujo, diseño, técnicas y de marca, y `VERSION` (FLU-09). **No editar aquí**: se cambian en upme-estandares."

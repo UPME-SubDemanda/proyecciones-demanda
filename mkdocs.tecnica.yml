@@ -50,6 +50,7 @@ nav:
       - tecnica/api.md
       - tecnica/flujos.md
       - tecnica/versionado.md
+      - tecnica/dependencias.md
       - tecnica/despliegue.md
       - Herramientas: tecnica/herramientas/index.md
   - Guía de usuario: usuario/index.md
