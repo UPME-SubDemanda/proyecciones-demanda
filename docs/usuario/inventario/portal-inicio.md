@@ -8,13 +8,15 @@ estado: desarrollo
 version_desde: 0.1.0
 diseno: docs/tecnica/mockups/portal-inicio-escritorio.png y portal-inicio-movil.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/portal-inicio.png, ../capturas/portal-inicio-movil.png]
-actualizado: 2026-11-08
+actualizado: 2026-11-10
 ---
 
 # Inicio del portal
 
-!!! warning "Cifras ilustrativas"
-    Mientras se cargan los datos oficiales, todas las cifras de esta página son de ejemplo y lo dicen junto a cada número y gráfico.
+!!! warning "Datos reales provisionales y cifras ilustrativas"
+    **Energía eléctrica ya muestra datos reales** (desde T-37): las revisiones publicadas por la UPME (serie SIN+GCE+ME+GD_UPME) y la demanda del SIN de XM. Es una conexión **provisional**: los escenarios «bajo» y «alto» son los límites del intervalo de confianza del 68 % de la revisión, porque la UPME publica para energía eléctrica un escenario medio con intervalos y no escenarios bajo y alto. Los indicadores de error son provisionales y el umbral es ilustrativo (X-03, X-25).
+
+    Gas natural y el acierto de las proyecciones siguen con cifras de ejemplo, y lo dicen junto a cada número y gráfico.
 
 ![Inicio del portal en escritorio](../capturas/portal-inicio.png)
 
@@ -62,9 +64,10 @@ En el teléfono, el menú se abre con el botón **Menú**.
 
 **¿Cada cuánto se actualiza?** Las proyecciones se publican cada seis meses y el dato real se actualiza cuando lo publican XM y el Gestor del Mercado de Gas.
 
-**¿Por qué dice «Cifras ilustrativas»?** Porque la página todavía usa datos de ejemplo. Desaparecerá cuando se conecten las cifras oficiales.
+**¿Por qué algunas cifras dicen «Cifras ilustrativas»?** Porque todavía son datos de ejemplo: gas natural y el acierto de las proyecciones. Las de energía eléctrica ya son reales. El aviso desaparecerá cuando se conecten las demás.
 
 ## Historial
 - 2026-11-08: primera versión con cifras ilustrativas (diario técnico: `2026-11-08-portal-inicio`).
 - 2026-11-08: acceso al modo pantalla (diario técnico: `2026-11-08-modo-pantalla`).
 - 2026-11-08: enlace «Ingresar» a la app interna (diario técnico: `2026-11-08-app-interna`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

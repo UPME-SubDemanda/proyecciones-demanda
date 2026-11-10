@@ -65,7 +65,7 @@ function ProductKpis({ product, status }: { product: ProductKey; status: Status 
         decimals={1}
         signed
         unit="%"
-        change={`${outside ? 'Fuera' : 'Dentro'} de umbral ±${formatNumber(threshold, { decimals: threshold % 1 ? 1 : 0 })} %`}
+        change={`${outside ? 'Fuera' : 'Dentro'} de umbral${observed!.illustrative ? '' : ' ilustrativo'} ±${formatNumber(threshold, { decimals: threshold % 1 ? 1 : 0 })} %`}
         changeTone={outside ? 'bad' : 'good'}
         provenance={formatProvenance({ cutoff: observed!.data.cutoff, source: observed!.data.source })}
         illustrative={observed!.illustrative}
@@ -150,7 +150,8 @@ export function ExecutiveDashboard() {
       year: s.perf!.data.monthlyDeviation.at(-1)!.period.slice(0, 4),
     }))
     .sort((a, b) => Math.abs(b.ytd) - Math.abs(a.ytd))[0];
-  const highAlerts = alerts.data?.data.filter((a) => a.severity === 'high').length ?? 0;
+  // Las alertas de ejemplo no se cuentan junto a cifras reales (T-37).
+  const highAlerts = alerts.data && !alerts.data.illustrative ? alerts.data.data.filter((a) => a.severity === 'high').length : 0;
 
   const eeObserved = ee.observed?.data;
   const subtitle = eeObserved
@@ -169,6 +170,7 @@ export function ExecutiveDashboard() {
           action={<Button size="sm" disabledReason="La vista de alertas está en construcción">Ver alertas</Button>}
         >
           {`La demanda real va ${formatPercent(Math.abs(banner.ytd))} ${banner.ytd < 0 ? 'por debajo' : 'por encima'} de lo proyectado en ${banner.year}.`}
+          {' El umbral es ilustrativo mientras se define (X-03).'}
           {highAlerts > 0 && ` Hay ${highAlerts} alerta${highAlerts === 1 ? '' : 's'} alta${highAlerts === 1 ? '' : 's'} abierta${highAlerts === 1 ? '' : 's'}.`}
         </Banner>
       )}

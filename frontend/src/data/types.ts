@@ -1,6 +1,6 @@
 /**
- * Tipos de los datos que leen las vistas. Siguen el modelo de datos de la etapa 1
- * (docs/tecnica/modelo-de-datos.md) y serán la forma de las respuestas de la API (T-18).
+ * Tipos de los datos que leen las vistas. Las respuestas de la API (`src/api/schema.d.ts`, generado con
+ * `pnpm gen:api`, TEC-08) se adaptan a estos tipos en `source.ts`.
  * Cada vista anota en su PR qué campos necesitó; esa lista alimenta T-16.
  */
 import type { ProductKey } from '../lib/product';
@@ -136,6 +136,8 @@ export type SystemToday = {
   gasVsMonthAverage: number; // %
   energyYearToDate: number; // GWh, enero hasta el último mes
   weekendDrop: number; // % que bajan los fines de semana
+  /** Qué partes son ilustrativas (T-37): la energía es real; la potencia máxima de ayer y el gas, todavía no. */
+  illustrativeParts: { energy: boolean; peak: boolean; gas: boolean };
 };
 
 /**

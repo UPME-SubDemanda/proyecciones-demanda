@@ -4,6 +4,9 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 
 ## [Sin publicar]
 ### Agregado
+- Datos reales de energía eléctrica en el tablero ejecutivo, el histórico de revisiones, el portal y el modo pantalla, de forma provisional (T-37): las revisiones publicadas (serie SIN+GCE+ME+GD_UPME) y `DemaSIN`; «escenario bajo» y «alto» son los límites del intervalo de confianza del 68 %. Gas natural, exógenas, alertas, acierto y, en «El sistema hoy», la potencia máxima y el gas siguen con cifras ilustrativas, marcadas en cada gráfico o tarjeta (issue #40).
+- API de solo lectura `/api/v1/ee` (dato real anual, revisiones, valores, desempeño y demanda diaria reciente) sobre las vistas de `core`, sin ingreso porque son datos publicables, con pruebas contra PostgreSQL en la CI y documentada en `docs/tecnica/api.md` (issue #40).
+- Tipos de TypeScript generados desde el OpenAPI de la API (`frontend/src/api/schema.d.ts`, `pnpm gen:api`, TEC-08) (issue #40).
 - Flujo de Prefect `ingest-observed-demand` con el despliegue `xm-historico-diario` (T-28): carga histórica de las medidas que XM SINERGOX publica por día (`DemaSIN` y `DemaMaxPot`) desde el 2010-01-01, sin horario; verifica en el listado de métricas de XM que cada variable exista por día, no reintenta errores 4xx (salvo 429), solo guarda lo nuevo o lo que cambió y deja bitácora por variable (issue #38, PR #39).
 - Pruebas del flujo con XM simulado y de la carga de XM contra PostgreSQL en el job `base-de-datos` de la CI (issue #38, PR #39).
 - Enlace y huella SHA-256 del anexo de cada revisión de EE en `pipelines/revisiones_ee.toml`, comprobados contra los archivos cargados, para cargarlos en el despliegue (X-31) (issue #38, PR #39).
@@ -46,6 +49,9 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/), versiones SemVer 
 - Monitor de variables exógenas (`monitor-exogenas`, T-11): supuestos de la revisión vigente frente a lo observado en el año corrido, con indicadores de variables fuera de rango, en vigilancia e impacto en la demanda; tabla por variable con tendencia, desvío, impacto, correlación y estado, con escenario en la URL; correlación móvil con la demanda con intervalo y quiebre detectado; importancia de las variables en el modelo; descarga en CSV. «Configurar umbrales» deshabilitado hasta X-03. Componente `Sparkline` y tono `warning` en `KpiCard`. Las alertas del tablero ejecutivo llevan al monitor (issue #25, PR #26).
 
 ### Cambiado
+- El aviso «Cifras ilustrativas» va por dato y no para toda la app: `data/source.ts` dice en cada respuesta si es real o ilustrativa; si la API falla, la vista muestra su error y no cifras de ejemplo (issue #40).
+- Capturas de la guía de usuario regeneradas con los datos reales de EE; páginas del inventario de las cuatro vistas actualizadas (issue #40).
+- Plan: T-28 hecho; T-37 con la decisión provisional; X-24 con la evidencia de un día publicado a medias por XM (issue #40).
 - Regla PFL-03: toda automatización de la CI y sus hooks se documenta en la ficha de GitHub Actions en el mismo PR que la cambia; entra a X-22 para `upme-estandares` (issue #38, PR #39).
 - Ficha local de GitHub Actions (`docs/tecnica/herramientas/github-actions.md`): qué verifica cada uno de los dos checks de la CI (`checks` y `base-de-datos`) y cómo correrlos en local (DOC-07) (issue #38, PR #39).
 - Ficha local de Prefect (`docs/tecnica/herramientas/prefect.md`) completa: cómo se ejecutan los despliegues y cómo agregar un flujo (DOC-07); `flujos.md` y ficha de SINERGOX con la carga de T-28; X-26 decidido salvo `EscDemUPME*`; T-24 hecho (issue #38, PR #39).

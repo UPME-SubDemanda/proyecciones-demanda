@@ -39,7 +39,7 @@ Generado por `scripts/referencias.py` desde `reglas/`, `docs/tecnica/reglas-proy
 | [PFU](#pfu) | Fuentes de datos (PFU) | `docs/tecnica/reglas-proyecto.md` | 3 |
 | [PFL](#pfl) | Flujo de trabajo (PFL) | `docs/tecnica/reglas-proyecto.md` | 3 |
 | [PER](#per) | Cálculo del error (PER) | `docs/tecnica/reglas-proyecto.md` | 1 |
-| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 36 |
+| [T](#t) | Plan de trabajo | `docs/pendientes.md` | 37 |
 | [X](#x) | Pendientes de decisión | `docs/pendientes.md` | 33 |
 | [P-0000](#p-0000) | Decisiones del proyecto (ADR) | `docs/decisiones/` | 4 |
 | [Externos](#externos) | Citados pero definidos fuera de este repositorio | `upme-estandares` | 18 |
@@ -1463,7 +1463,7 @@ Etapa: 1 · Depende de: T-24 · Issue: — · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
-### T-28 · En curso {#t-28}
+### T-28 · Hecho {#t-28}
 
 Flujo de Prefect para la carga histórica de XM: las medidas que XM publica por día (`DemaSIN` y `DemaMaxPot`) desde 2010 (X-26)
 
@@ -1484,6 +1484,14 @@ Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 Medidas horarias de XM: `DemaReal`, `DemaCome` y `ExpoEner`, que SINERGOX solo publica por hora (`/hourly`), en el flujo `ingest-observed-demand`, cargadas a demanda desde 2010 (su total diario y mensual sale de sumar las horas); migración que hace que `core.v_observed_wide` y `core.v_ee_revision_vs_real` usen lo diario cuando una medida tiene diario y horario en el mismo mes
 
 Etapa: 1 · Depende de: T-28 · Issue: — · PR: —
+
+Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
+
+### T-37 · En curso {#t-37}
+
+**Datos reales de EE en las vistas, provisional:** tablero ejecutivo, histórico de revisiones, portal y modo pantalla leen energía eléctrica de una API mínima (`/api/v1/ee`); lo demás sigue ilustrativo y marcado. Decidido por el líder el 2026-11-10 para ver datos reales de una vez: «escenario bajo/alto» = límites del IC 68 %, solo la serie SIN+GCE+ME+GD_UPME, los indicadores que ya usaban las vistas. Lo definitivo sigue en T-32 a T-34
+
+Etapa: 1 · Depende de: T-28 · Issue: #40 · PR: —
 
 Fuente: [Plan de trabajo](../pendientes.md#plan-de-trabajo)
 
@@ -1723,7 +1731,7 @@ Fuente: [Pendientes de decisión](../pendientes.md#pendientes-de-decision)
 
 ### X-24 · Calidad de los datos reales {#x-24}
 
-Para las cargas de XM: reglas y umbrales para marcar un dato como anómalo (día incompleto, fuera de rango, salto frente a la versión anterior, incoherencia entre medidas); qué rol acepta o rechaza una anomalía y dónde (una vista nueva necesita diseño, FLU-03); cuántos días recarga la diaria y a qué hora; si la conciliación del domingo baja todo el histórico o un tramo; desde qué tamaño un cambio genera aviso y cómo llega mientras no haya Google Chat (PDA-02 a PDA-04). Además: `operacion.source_status` guarda un estado por fuente y no por variable, así que con `DemaMaxPot` (más de un mes de rezago) XM parece desactualizada aunque `DemaSIN` esté al día (visto en T-28); decidir si pasa a ser por variable
+Para las cargas de XM: reglas y umbrales para marcar un dato como anómalo (día incompleto, fuera de rango, salto frente a la versión anterior, incoherencia entre medidas); qué rol acepta o rechaza una anomalía y dónde (una vista nueva necesita diseño, FLU-03); cuántos días recarga la diaria y a qué hora; si la conciliación del domingo baja todo el histórico o un tramo; desde qué tamaño un cambio genera aviso y cómo llega mientras no haya Google Chat (PDA-02 a PDA-04). Además: `operacion.source_status` guarda un estado por fuente y no por variable, así que con `DemaMaxPot` (más de un mes de rezago) XM parece desactualizada aunque `DemaSIN` esté al día (visto en T-28); decidir si pasa a ser por variable. Evidencia de día incompleto: el 2026-11-10 XM entregó 0,6 GWh de `DemaSIN` para el 2026-11-08 (un día normal tiene ~240) y entró como aceptado; mientras tanto, la API de T-37 omite esos días al final de «El sistema hoy»
 
 Responsable: Líder · Estado: Abierto
 

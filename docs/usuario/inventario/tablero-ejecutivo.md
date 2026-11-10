@@ -8,13 +8,15 @@ estado: desarrollo
 version_desde: 0.1.0
 diseno: docs/tecnica/mockups/tablero-ejecutivo.png (aprobado el 2026-11-08 por David Bedoya)
 capturas: [../capturas/tablero-ejecutivo.png, ../capturas/tablero-ejecutivo-tablet.png]
-actualizado: 2026-11-09
+actualizado: 2026-11-10
 ---
 
 # Tablero ejecutivo
 
-!!! warning "Cifras ilustrativas"
-    Mientras se cargan los datos oficiales, las cifras, el gráfico y las alertas son de ejemplo y lo dicen junto a cada uno.
+!!! warning "Datos reales provisionales y cifras ilustrativas"
+    **Energía eléctrica ya muestra datos reales** (desde T-37): las revisiones publicadas por la UPME (serie SIN+GCE+ME+GD_UPME) y la demanda del SIN de XM. Es una conexión **provisional**: los escenarios «bajo» y «alto» son los límites del intervalo de confianza del 68 % de la revisión, porque la UPME publica para energía eléctrica un escenario medio con intervalos y no escenarios bajo y alto. Los indicadores de error son provisionales y el umbral es ilustrativo (X-03, X-25).
+
+    Gas natural y las alertas siguen con cifras de ejemplo, y lo dicen junto a cada uno.
 
 ![Tablero ejecutivo](../capturas/tablero-ejecutivo.png)
 
@@ -56,3 +58,4 @@ Responde en un minuto si **la proyección vigente sigue siendo válida** para en
 
 ## Historial
 - 2026-11-09: primera versión con cifras ilustrativas (diario técnico: `2026-11-09-tablero-ejecutivo`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).

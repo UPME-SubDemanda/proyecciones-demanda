@@ -2,8 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from app.api.v1 import health
-from app.auth.router import admin_router, router as auth_router
+from app.api.v1 import ee, health
+from app.auth.router import admin_router
+from app.auth.router import router as auth_router
 from app.core.config import settings
 
 app = FastAPI(title="Proyecciones de Demanda", version="0.1.0")
@@ -15,5 +16,6 @@ app.add_middleware(
 
 API = "/api/v1"  # TEC-08
 app.include_router(health.router, prefix=API)
+app.include_router(ee.router, prefix=API)
 app.include_router(auth_router, prefix=API)
 app.include_router(admin_router, prefix=API)

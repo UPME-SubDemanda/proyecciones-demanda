@@ -33,7 +33,7 @@ La UPME usa como histórico de sus proyecciones la serie «Sinergox: Históricos
 
 ## 4. Frecuencia y rezago
 
-XM publica el día anterior con rezago.
+XM publica el día anterior con rezago. **El último día puede llegar a medias:** el 2026-11-10 entregó 0,6 GWh de `DemaSIN` para el 2026-11-08, que XM completa después. Sin reglas de anomalía (T-29, X-24), ese valor entra como aceptado.
 
 **Frecuencia de cada métrica:** el listado de métricas de XM (`/lists`, `ListadoMetricas`) dice si se publica por día (`DailyEntities`) o por hora (`HourlyEntities`). `DemaSIN` y `DemaMaxPot` / `Sistema` son diarias; `DemaReal`, `DemaCome` y `ExpoEner` / `Sistema` solo son horarias: pedirlas a `/daily` da 400 (comprobado el 2026-11-10). El flujo de T-28 verifica el listado antes de cargar.
 

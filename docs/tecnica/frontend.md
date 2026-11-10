@@ -11,7 +11,8 @@ frontend/
     components/        componentes del inventario de diseño, uno por carpeta con su prueba (CMP-01)
       charts/          EChart (envoltorio único) y opciones de gráficos reutilizables
     data/              tipos de datos y hooks con los que las vistas leen datos
-    demo/              cifras ilustrativas (se elimina en T-34)
+    api/               tipos generados de la API (pnpm gen:api)
+    demo/              cifras ilustrativas de lo que aún no tiene datos reales (se elimina en T-34)
     dev/               herramientas solo de desarrollo (galería de componentes)
     lib/               formatos es-CO, descargas, íconos, producto activo
     estandares/        copia de upme-estandares (no editar, FLU-09)
@@ -54,13 +55,16 @@ Falta del inventario: `Stepper` (asistentes, fase 2).
 ## Datos: un solo punto de acceso
 
 ```
-vista ──> data/queries.ts (hooks React Query) ──> data/source.ts ──> demo/fixtures.ts   (hoy)
-                                                                └──> /api/v1/...        (T-34)
+vista ──> data/queries.ts (hooks React Query) ──> data/source.ts ──> /api/v1/ee/...      energía eléctrica (T-37)
+                                                                └──> demo/fixtures.ts   lo demás, ilustrativo
 ```
 
 - Las vistas **solo** usan los hooks de `data/queries.ts`: `useObservedSeries`, `useRevisions`, `useRevisionValues`, `useExogenous`.
-- Cada hook devuelve `{ data, illustrative }`. Si `illustrative` es `true`, la vista muestra «Cifras ilustrativas» (CON-07).
-- `data/source.ts` decide de dónde salen los datos. Para conectar la API (T-34) se cambia ese archivo, `ILLUSTRATIVE` pasa a `false` y se borra `demo/`.
+- Cada hook devuelve `{ data, illustrative }`, y cada respuesta dice si es ilustrativa. Si `illustrative` es `true`, el gráfico o la tarjeta muestra «Cifras ilustrativas» (CON-07). Cuando un hook junta varias respuestas, es ilustrativo si alguna lo es.
+- `data/source.ts` decide de dónde sale cada dato. Desde T-37 (issue #40, provisional), energía eléctrica sale de la API ([API](api.md)); gas natural, exógenas, alertas y acierto siguen en `demo/`. Las revisiones ilustrativas tienen id 100 o más (`DEMO_REVISION_ID`) y no van a la API.
+- «El sistema hoy» mezcla partes reales e ilustrativas: `SystemToday.illustrativeParts` dice cuáles, y cada tarjeta o panel muestra su aviso.
+- Si la API falla, `source.ts` lanza el error y la vista muestra su estado de error: nunca cifras de ejemplo como si fueran reales.
+- Los tipos de las respuestas de la API se generan con `pnpm gen:api` en `src/api/schema.d.ts` (TEC-08) y `source.ts` los adapta a los de `data/types.ts`.
 - `data/types.ts` sigue el modelo de datos de la etapa 1. Si una vista necesita un campo que no existe, se agrega aquí y se anota en el PR; esos campos alimentaron el modelo de datos v2 (T-22).
 
 Las cifras de `demo/fixtures.ts` se generan con fórmulas simples y deterministas, con magnitudes parecidas a las de los mockups. No son datos oficiales.

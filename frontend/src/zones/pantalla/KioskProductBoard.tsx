@@ -144,7 +144,7 @@ export function KioskProductBoard({ product }: { product: ProductKey }) {
           decimals={1}
           signed
           unit="%"
-          change={`${outside ? 'Fuera' : 'Dentro'} del umbral de ±${formatNumber(threshold, { decimals: 1 })} %`}
+          change={`${outside ? 'Fuera' : 'Dentro'} del umbral${perf.data.illustrative ? '' : ' ilustrativo'} de ±${formatNumber(threshold, { decimals: 1 })} %`}
           changeTone={outside ? 'bad' : 'good'}
           provenance={`Datos a ${formatMonth(observed.data.data.cutoff)}`}
         />

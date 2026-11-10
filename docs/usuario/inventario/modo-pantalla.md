@@ -8,13 +8,15 @@ estado: desarrollo
 version_desde: 0.1.0
 diseno: docs/tecnica/mockups/modo-pantalla.png, modo-pantalla-comparar-proyecciones.png y modo-pantalla-el-sistema-hoy.png (aprobados el 2026-11-08 por David Bedoya)
 capturas: [../capturas/modo-pantalla.png, ../capturas/modo-pantalla-comparar-proyecciones.png, ../capturas/modo-pantalla-el-sistema-hoy.png]
-actualizado: 2026-11-08
+actualizado: 2026-11-10
 ---
 
 # Modo pantalla
 
-!!! warning "Cifras ilustrativas"
-    Mientras se cargan los datos oficiales, las cifras de los tableros son de ejemplo y lo dice el pie de la pantalla.
+!!! warning "Datos reales provisionales y cifras ilustrativas"
+    **Energía eléctrica ya muestra datos reales** (desde T-37): las revisiones publicadas por la UPME (serie SIN+GCE+ME+GD_UPME) y la demanda del SIN de XM. Es una conexión **provisional**: los escenarios «bajo» y «alto» son los límites del intervalo de confianza del 68 % de la revisión, porque la UPME publica para energía eléctrica un escenario medio con intervalos y no escenarios bajo y alto. Los indicadores de error son provisionales y el umbral es ilustrativo (X-03, X-25).
+
+    Siguen con cifras de ejemplo el tablero de gas natural y, en «El sistema hoy», la demanda máxima de potencia y el gas; lo dice el pie de la pantalla o la tarjeta.
 
 ![Modo pantalla, tablero de energía eléctrica](../capturas/modo-pantalla.png)
 
@@ -97,3 +99,4 @@ Nombres de los tableros: `ee` (energía eléctrica), `gn` (gas natural), `compar
 
 ## Historial
 - 2026-11-08: primera versión con cifras ilustrativas: tableros de energía eléctrica, gas natural, comparar proyecciones y el sistema hoy (diario técnico: `2026-11-08-modo-pantalla`).
+- 2026-11-10: energía eléctrica con datos reales, de forma provisional (T-37, issue #40; diario técnico: `2026-11-10-datos-reales-ee`).
